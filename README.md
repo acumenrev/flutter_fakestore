@@ -4,7 +4,6 @@
 	- Base Model
 	- HTTPClient
 	- Utils
--
 - CoreUI
 	- Custom Component
 	- Colors
