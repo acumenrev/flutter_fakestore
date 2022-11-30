@@ -6,6 +6,9 @@
       <excludeFolder url="file://$MODULE_DIR$/fakestore_core_ui/build" />
       <excludeFolder url="file://$MODULE_DIR$/fakestore_core_ui/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/fakestore_core_ui/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/fakestore_core_ui/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/fakestore_core_ui/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/fakestore_core_ui/example/.pub" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

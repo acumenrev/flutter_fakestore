@@ -22,7 +22,11 @@ class FSOutlineButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      onPressed: onPressed,
+      onPressed: () {
+        if (onPressed != null) {
+          onPressed!();
+        }
+      },
       child: Text(buttonTitle),
       style: ButtonStyle(
           textStyle:
