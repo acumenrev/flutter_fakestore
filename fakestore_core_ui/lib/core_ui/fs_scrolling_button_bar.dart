@@ -35,7 +35,7 @@ class _ScrollingButtonBarState extends State<ScrollingButtonBar> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (selectedBottomBarItemKey.currentContext != null) {
         widget.scrollController.position.ensureVisible(
           selectedBottomBarItemKey.currentContext!.findRenderObject()!,
@@ -104,7 +104,7 @@ class _ScrollingButtonBarState extends State<ScrollingButtonBar> {
                                             try {
                                               sideButton.onTap();
                                             } catch (e) {
-                                              print(
+                                              debugPrint(
                                                   'onTap implementation is missing');
                                             }
                                             setState(() {

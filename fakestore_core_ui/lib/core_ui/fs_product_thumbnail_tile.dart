@@ -1,82 +1,119 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'dart:ui';
 
 class FSProductThumbnailTile extends StatelessWidget {
-  String sampleUrl =
-      "https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg";
+  late String productImage =
+      "https://images.unsplash.com/photo-1669837127740-8234df727cb5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80";
+  late String title;
+  late double price;
+  late String productDesc;
+  late bool isFavorite;
+  late double rating;
+  VoidCallback? onTap;
+
+  FSProductThumbnailTile(
+      {required this.productImage,
+      required this.title,
+      required this.price,
+      required this.productDesc,
+      this.isFavorite = false,
+      this.rating = 0.0,
+      this.onTap});
   double _kTILE_RATIO_WIDTH_HEIGHT = 308 / 223;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 10.0,
-          ),
-          // Thumbnail
-          _buildThumbnail(context, sampleUrl, false),
-          SizedBox(
-            height: 10.0,
-          ),
-          // Title & Price
-          _buildTitleAndPrice(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
-              140.35),
-          // Rating
-          _buildRating(3.4),
-          // Desc
-          SizedBox(
-            height: 10.0,
-          ),
-          _buildDesc(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor')
-        ],
+      child: InkWell(
+        onTap: () {
+          if (onTap != null) {
+            onTap!();
+          }
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 10.0,
+            ),
+            // Thumbnail
+            _buildThumbnail(context, productImage, isFavorite),
+            SizedBox(
+              height: 10.0,
+            ),
+            // Title & Price
+            _buildTitleAndPrice(title, price),
+            SizedBox(height: 5.0),
+            // Rating
+            _buildRating(rating),
+            // Desc
+            SizedBox(
+              height: 10.0,
+            ),
+            _buildDesc(productDesc),
+            SizedBox(height: 10.0)
+          ],
+        ),
       ),
     );
   }
 
   _buildThumbnail(BuildContext ctx, String networkUrl, bool isLiked) {
-    double width = MediaQuery.of(ctx).size.width - 40;
+    double width = MediaQuery.of(ctx).size.width;
     double height = width / _kTILE_RATIO_WIDTH_HEIGHT - 40;
-
+    debugPrint('width: $width \t height: $height');
     return Row(
       children: [
         SizedBox(
           width: 20.0,
         ),
         Expanded(
-          child: Stack(
-            children: [
-              // Image
-              CachedNetworkImage(
-                imageUrl: networkUrl,
-                fit: BoxFit.fill,
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              ),
-              // Button Love
-              Positioned.fill(
-                  child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  height: 50,
-                  width: 50,
-                  child: Center(
-                    child: FaIcon(
-                      isLiked
-                          ? FontAwesomeIcons.solidHeart
-                          : FontAwesomeIcons.heart,
-                      size: 30,
-                      color: Colors.white,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.0),
+            child: Stack(
+              children: [
+                // Image
+                CachedNetworkImage(
+                  imageUrl: networkUrl,
+                  width: width,
+                  height: height,
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                  progressIndicatorBuilder: (context, url, downloadProgress) {
+                    return CircularProgressIndicator(
+                        value: downloadProgress.progress);
+                  },
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+                Container(
+                  color: Colors.black.withOpacity(0.2),
+                  width: width,
+                  height: height,
+                ),
+                // Button Love
+                Positioned.fill(
+                    child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    child: Center(
+                      child: FaIcon(
+                        isLiked
+                            ? FontAwesomeIcons.solidHeart
+                            : FontAwesomeIcons.heart,
+                        size: 30,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-              ))
-            ],
+                ))
+              ],
+            ),
           ),
         ),
         SizedBox(
@@ -88,7 +125,6 @@ class FSProductThumbnailTile extends StatelessWidget {
 
   _buildTitleAndPrice(String title, double price) {
     return Container(
-      height: 60.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -105,6 +141,8 @@ class FSProductThumbnailTile extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
               textAlign: TextAlign.left,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
 
@@ -113,7 +151,7 @@ class FSProductThumbnailTile extends StatelessWidget {
             _formatCurrency(price),
             textAlign: TextAlign.right,
             style: TextStyle(
-                color: Colors.blue, fontSize: 18, fontWeight: FontWeight.w400),
+                color: Colors.green, fontSize: 18, fontWeight: FontWeight.w700),
           ),
           SizedBox(
             width: 20.0,
@@ -133,7 +171,18 @@ class FSProductThumbnailTile extends StatelessWidget {
   }
 
   _buildRating(double totalRating) {
-    return Container();
+    int maxRating = 5;
+
+    return RatingBarIndicator(
+      rating: totalRating,
+      itemBuilder: (context, index) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemCount: maxRating,
+      itemSize: 50.0,
+      direction: Axis.horizontal,
+    );
   }
 
   _buildDesc(String desc) {
@@ -147,6 +196,7 @@ class FSProductThumbnailTile extends StatelessWidget {
             desc,
             style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
             maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         SizedBox(
