@@ -194,7 +194,8 @@
         <entry key="flutter">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.3.8/packages/flutter/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.3.9/packages/flutter/lib" />
+              <option value="$PROJECT_DIR$/../../../flutter_folder/flutter/packages/flutter/lib" />
             </list>
           </value>
         </entry>
@@ -236,14 +237,15 @@
         <entry key="flutter_test">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.3.8/packages/flutter_test/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.3.9/packages/flutter_test/lib" />
+              <option value="$PROJECT_DIR$/../../../flutter_folder/flutter/packages/flutter_test/lib" />
             </list>
           </value>
         </entry>
         <entry key="flutter_web_plugins">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.3.8/packages/flutter_web_plugins/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.3.9/packages/flutter_web_plugins/lib" />
             </list>
           </value>
         </entry>
@@ -495,7 +497,8 @@
         <entry key="sky_engine">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.3.8/bin/cache/pkg/sky_engine/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.3.9/bin/cache/pkg/sky_engine/lib" />
+              <option value="$PROJECT_DIR$/../../../flutter_folder/flutter/bin/cache/pkg/sky_engine/lib" />
             </list>
           </value>
         </entry>
@@ -516,8 +519,8 @@
         <entry key="sqflite">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.0+3/lib" />
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.1/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.2/lib" />
             </list>
           </value>
         </entry>
@@ -706,8 +709,8 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/rxdart-0.27.7/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/source_gen-1.0.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/source_span-1.9.0/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.0+3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-2.2.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite_common-2.4.0+2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/stack_trace-1.10.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/stream_channel-2.1.0/lib" />
@@ -723,10 +726,13 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/xdg_directories-0.2.0+2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/xml-6.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/yaml-3.1.1/lib" />
-      <root url="file://$USER_HOME$/fvm/versions/3.3.8/bin/cache/pkg/sky_engine/lib" />
-      <root url="file://$USER_HOME$/fvm/versions/3.3.8/packages/flutter/lib" />
-      <root url="file://$USER_HOME$/fvm/versions/3.3.8/packages/flutter_test/lib" />
-      <root url="file://$USER_HOME$/fvm/versions/3.3.8/packages/flutter_web_plugins/lib" />
+      <root url="file://$USER_HOME$/fvm/versions/3.3.9/bin/cache/pkg/sky_engine/lib" />
+      <root url="file://$USER_HOME$/fvm/versions/3.3.9/packages/flutter/lib" />
+      <root url="file://$USER_HOME$/fvm/versions/3.3.9/packages/flutter_test/lib" />
+      <root url="file://$USER_HOME$/fvm/versions/3.3.9/packages/flutter_web_plugins/lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter_folder/flutter/bin/cache/pkg/sky_engine/lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter_folder/flutter/packages/flutter/lib" />
+      <root url="file://$PROJECT_DIR$/../../../flutter_folder/flutter/packages/flutter_test/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

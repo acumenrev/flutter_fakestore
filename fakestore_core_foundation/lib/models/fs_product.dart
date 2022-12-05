@@ -33,6 +33,16 @@ class FSProduct extends TFModel {
       "category": stringFromProductCategory(category)
     };
   }
+
+  static List<FSProduct> parseFromList(List<JSONData> listJson) {
+    List<FSProduct> result = [];
+    FSProduct? temp;
+    listJson.forEach((element) {
+      temp = FSProduct.fromJson(element);
+      result.add(temp!);
+    });
+    return result;
+  }
 }
 
 class FSProductRating extends TFModel {

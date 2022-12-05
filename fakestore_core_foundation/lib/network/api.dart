@@ -42,7 +42,7 @@ class API {
 }
 
 /// API For Products
-extension on API {
+extension APIProductsExt on API {
   Uri getProductAPI(APIProducts api, JSONData data) {
     switch (api) {
       case APIProducts.getProducts:
