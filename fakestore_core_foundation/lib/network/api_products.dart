@@ -33,7 +33,8 @@ extension APIExtensionProducts on API {
     int limit = data["limit"] ?? 20;
     int offset = data["offset"] ?? 0;
     Uri url = buildAPI(
-        path: "/products", queryParams: {"limit": limit, "offset": offset});
+        path: "/products",
+        queryParams: {"limit": limit.toString(), "offset": offset.toString()});
     return url.toString();
   }
 
