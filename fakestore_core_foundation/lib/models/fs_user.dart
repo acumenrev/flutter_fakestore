@@ -17,6 +17,17 @@ class FSUser extends TFModel {
     phone = json["phone"] ?? "";
     address = FSUserAddress.fromJson(json["address"]);
   }
+
+  static List<FSUser> parseFromList(List<JSONData> listJson) {
+    List<FSUser> list = [];
+    FSUser? temp;
+    for (var element in listJson) {
+      temp = null;
+      temp = FSUser.fromJson(element);
+      list.add(temp);
+    }
+    return list;
+  }
 }
 
 class FSUserName extends TFModel {

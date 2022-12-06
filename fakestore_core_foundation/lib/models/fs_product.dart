@@ -37,10 +37,11 @@ class FSProduct extends TFModel {
   static List<FSProduct> parseFromList(List<JSONData> listJson) {
     List<FSProduct> result = [];
     FSProduct? temp;
-    listJson.forEach((element) {
+    for (var element in listJson) {
+      temp = null;
       temp = FSProduct.fromJson(element);
-      result.add(temp!);
-    });
+      result.add(temp);
+    }
     return result;
   }
 }

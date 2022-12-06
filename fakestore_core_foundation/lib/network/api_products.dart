@@ -4,22 +4,61 @@ import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
 
-class APICallProducts {
-  /*
-   Uri getProductAPI(APIProducts api, JSONData data) {
+enum APIProducts {
+  getProducts,
+  getSingleProduct,
+  addProduct,
+  updateProduct,
+  deleteProduct
+}
+
+/// API For Products
+extension APIExtensionProducts on API {
+  Uri getProductAPI(APIProducts api, JSONData data) {
     switch (api) {
       case APIProducts.getProducts:
         return _getProducts(data);
       case APIProducts.getSingleProduct:
         return _getSingleProduct(data);
       case APIProducts.addProduct:
+        return _addProduct(data);
       case APIProducts.updateProduct:
+        return _updateProduct(data);
       case APIProducts.deleteProduct:
         return _deleteProduct(data);
     }
   }
-   */
 
+  _getProducts(JSONData data) {
+    int limit = data["limit"] ?? 20;
+    int offset = data["offset"] ?? 0;
+    Uri url = buildAPI(
+        path: "/products", queryParams: {"limit": limit, "offset": offset});
+    return url.toString();
+  }
+
+  _getSingleProduct(JSONData data) {
+    int productId = data["productId"] ?? 0;
+    Uri url = buildAPI(path: "/products/$productId");
+    return url;
+  }
+
+  _addProduct(JSONData data) {
+    return buildAPI(path: "/products");
+  }
+
+  _updateProduct(JSONData data) {
+    FSProduct product = data["product"];
+    return buildAPI(path: "/products/${product.id}");
+  }
+
+  _deleteProduct(JSONData data) {
+    FSProduct product = data["product"];
+    return buildAPI(path: "/products/${product.id}");
+  }
+}
+
+class APICallProducts {
   /// Get Products
   Future<List<FSProduct>> getProducts(int limit, int offset) async {
     JSONData data = {"limit": limit, "offset": offset};
@@ -37,6 +76,36 @@ class APICallProducts {
     Uri url = API.shared.getProductAPI(APIProducts.getSingleProduct, data);
     TFNetworkResponseModel response = await TFHTTPClient.shared
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
+    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    return result;
+  }
+
+  /// Add Product
+  Future<FSProduct> addProduct(FSProduct product) async {
+    Uri url =
+        API.shared.getProductAPI(APIProducts.addProduct, {"product": product});
+    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
+        path: url.toString(),
+        method: TFHTTPMethod.post,
+        data: product.toJson());
+    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    return result;
+  }
+
+  Future<FSProduct> updateProduct(FSProduct product) async {
+    Uri url =
+        API.shared.getProductAPI(APIProducts.addProduct, {"product": product});
+    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
+        path: url.toString(), method: TFHTTPMethod.put, data: product.toJson());
+    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    return result;
+  }
+
+  Future<FSProduct> deleteProduct(FSProduct product) async {
+    Uri url =
+        API.shared.getProductAPI(APIProducts.addProduct, {"product": product});
+    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
+        path: url.toString(), method: TFHTTPMethod.put, data: product.toJson());
     FSProduct result = FSProduct.fromJson(response.getResponse().data);
     return result;
   }
