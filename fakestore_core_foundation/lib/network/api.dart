@@ -13,6 +13,7 @@ class API {
   APICallCategories apiCallCategories = APICallCategories();
   APICallProducts apiProducts = APICallProducts();
   APICallUsers apiUsers = APICallUsers();
+  APICallCarts apiCarts = APICallCarts();
   API() {
     _baseUrl = "fakestoreapi.com";
   }
