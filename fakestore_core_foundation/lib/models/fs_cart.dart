@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:tf_framework/models/base_model.dart';
 
 import 'fs_cart_product.dart';
@@ -12,7 +13,15 @@ class FSCart extends TFModel {
     id = data["id"] ?? 0;
     userId = data["userId"] ?? 0;
     date = data["date"] ?? "";
-    List<JSONData> listJsonProducts = data["products"];
+    List<JSONData> listJsonProducts = List<JSONData>.from(data["products"]);
+
+    FSCartProduct? tempCartProduct;
+    products = [];
+    for (var element in listJsonProducts) {
+      tempCartProduct = null;
+      tempCartProduct = FSCartProduct.fromJson(element);
+      products.add(tempCartProduct);
+    }
   }
 
   static List<FSCart> parseFromList(List<JSONData> listJson) {

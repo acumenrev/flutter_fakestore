@@ -1,3 +1,4 @@
+import 'package:fakestore_core_foundation/models/fs_cart.dart';
 import 'package:fakestore_core_foundation/network/api.dart';
 import 'package:fakestore_core_foundation/network/api_cart.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -51,7 +52,10 @@ void main() {
   });
   group("test call api", () {
     group("get all carts", () {
-      test("success", () {});
+      test("success", () async {
+        List<FSCart> list = await API.shared.apiCarts.getAllCarts();
+        expect(list.isEmpty, false);
+      });
     });
   });
 }
