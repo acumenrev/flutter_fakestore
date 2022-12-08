@@ -13,7 +13,7 @@ enum APIProducts {
 }
 
 /// API For Products
-extension APIExtensionProducts on API {
+extension APIExtensionProducts on NetworkModule {
   Uri getProductAPI(APIProducts api, JSONData data) {
     switch (api) {
       case APIProducts.getProducts:
@@ -63,8 +63,9 @@ class APICallProducts {
   /// Get Products
   Future<List<FSProduct>> getProducts(int limit, int offset) async {
     JSONData data = {"limit": limit, "offset": offset};
-    Uri url = API.shared.getProductAPI(APIProducts.getProducts, data);
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared.getProductAPI(APIProducts.getProducts, data);
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     List<FSProduct> result =
         FSProduct.parseFromList(response.getResponse().data);
@@ -74,8 +75,10 @@ class APICallProducts {
   /// Get Single product
   Future<FSProduct> getSingleProduct(int productId) async {
     JSONData data = {"productId": productId};
-    Uri url = API.shared.getProductAPI(APIProducts.getSingleProduct, data);
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url =
+        NetworkModule.shared.getProductAPI(APIProducts.getSingleProduct, data);
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     FSProduct result = FSProduct.fromJson(response.getResponse().data);
     return result;
@@ -83,30 +86,40 @@ class APICallProducts {
 
   /// Add Product
   Future<FSProduct> addProduct(FSProduct product) async {
-    Uri url =
-        API.shared.getProductAPI(APIProducts.addProduct, {"product": product});
-    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
-        path: url.toString(),
-        method: TFHTTPMethod.post,
-        data: product.toJson());
+    Uri url = NetworkModule.shared
+        .getProductAPI(APIProducts.addProduct, {"product": product});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.post,
+            data: product.toJson());
     FSProduct result = FSProduct.fromJson(response.getResponse().data);
     return result;
   }
 
   Future<FSProduct> updateProduct(FSProduct product) async {
-    Uri url =
-        API.shared.getProductAPI(APIProducts.addProduct, {"product": product});
-    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
-        path: url.toString(), method: TFHTTPMethod.put, data: product.toJson());
+    Uri url = NetworkModule.shared
+        .getProductAPI(APIProducts.addProduct, {"product": product});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.put,
+            data: product.toJson());
     FSProduct result = FSProduct.fromJson(response.getResponse().data);
     return result;
   }
 
   Future<FSProduct> deleteProduct(FSProduct product) async {
-    Uri url =
-        API.shared.getProductAPI(APIProducts.addProduct, {"product": product});
-    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
-        path: url.toString(), method: TFHTTPMethod.put, data: product.toJson());
+    Uri url = NetworkModule.shared
+        .getProductAPI(APIProducts.addProduct, {"product": product});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.put,
+            data: product.toJson());
     FSProduct result = FSProduct.fromJson(response.getResponse().data);
     return result;
   }

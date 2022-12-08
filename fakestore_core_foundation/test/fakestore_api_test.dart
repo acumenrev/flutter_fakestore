@@ -8,13 +8,13 @@ void main() {
   group("test api", () {
     tearDown(() {
       String expectedResult = "fakestoreapi.com";
-      API.shared.setBaseUrl(expectedResult);
+      NetworkModule.shared.setBaseUrl(expectedResult);
     });
 
     test("convert Map<String, dynamic> to Map<String, String>", () {
       JSONData query = {"limit": 10, "offset": 20, "sort": "asc"};
       QueryParams queryParams =
-          API.shared.convertMapStringDynamicToMapStringString(query);
+          NetworkModule.shared.convertMapStringDynamicToMapStringString(query);
       expect(queryParams["limit"], "10");
       expect(queryParams["offset"], "20");
       expect(queryParams["sort"], "asc");
@@ -22,18 +22,18 @@ void main() {
 
     test("test setup baseUrl", () {
       String expectedUrl = "google.com";
-      API.shared.setBaseUrl(expectedUrl);
-      expect(API.shared.getBaseUrl(), expectedUrl);
+      NetworkModule.shared.setBaseUrl(expectedUrl);
+      expect(NetworkModule.shared.getBaseUrl(), expectedUrl);
     });
 
     test("test initial base url", () {
       String expectedResult = "fakestoreapi.com";
-      expect(API.shared.getBaseUrl(), expectedResult);
+      expect(NetworkModule.shared.getBaseUrl(), expectedResult);
     });
     test("test build api", () {
       String path = "/user";
       String expectedRoute = "https://fakestoreapi.com/user";
-      String result = API.shared.buildAPI(path: path).toString();
+      String result = NetworkModule.shared.buildAPI(path: path).toString();
       expect(result, expectedRoute);
     });
 
@@ -42,11 +42,11 @@ void main() {
       Map<String, dynamic> query = {"limit": 10, "offset": 20, "sort": "asc"};
       String expectedRoute =
           "https://fakestoreapi.com/user?limit=10&offset=20&sort=asc";
-      String result = API.shared
+      String result = NetworkModule.shared
           .buildAPI(
               path: path,
-              queryParams:
-                  API.shared.convertMapStringDynamicToMapStringString(query))
+              queryParams: NetworkModule.shared
+                  .convertMapStringDynamicToMapStringString(query))
           .toString();
       expect(result, expectedRoute);
     });

@@ -4,12 +4,13 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=2.18.5 <3.0.0'
+  sdk: '>=2.18.4 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
   tf_framework:
     git:
       url: 'git@github.com:acumenrev/tf_framework.git'
@@ -20,6 +21,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  http_mock_adapter: ^0.3.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -27,6 +29,8 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
 
+  assets:
+    - test/json_carts/get_all_carts.json
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

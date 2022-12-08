@@ -1,6 +1,5 @@
-import 'dart:convert';
-
 import 'package:fakestore_core_foundation/models/fs_cart.dart';
+import 'package:fakestore_core_foundation/network/APICall.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
@@ -21,7 +20,7 @@ enum APICarts {
 typedef QueryParams = Map<String, String>;
 
 // API on Carts
-extension APIExtensionCarts on API {
+extension APIExtensionCarts on NetworkModule {
   Uri getCartsAPI(APICarts api, JSONData data) {
     switch (api) {
       case APICarts.getAllCarts:
@@ -44,7 +43,6 @@ extension APIExtensionCarts on API {
     String sort = data["sort"] ?? "";
     String startDate = data["startdate"] ?? "";
     String endDate = data["enddate"] ?? "";
-    debugPrint("get all cart: $data");
     QueryParams params = {};
     if (limit > 0) {
       params["limit"] = limit.toString();
@@ -101,7 +99,7 @@ extension APIExtensionCarts on API {
   }
 }
 
-class APICallCarts {
+class APICallCarts extends APICall {
   /**
    * switch (api) {
       case APICarts.getAllCarts:
@@ -126,47 +124,63 @@ class APICallCarts {
       String startDate = "",
       String endDate = ""}) async {
     List<FSCart> list = [];
-    Uri url = API.shared.getCartsAPI(APICarts.getAllCarts, {
+    debugPrint("call request");
+    Uri url = NetworkModule.shared.getCartsAPI(APICarts.getAllCarts, {
       "limit": limit,
       "sort": sort,
       "startdate": startDate,
       "enddate": endDate
     });
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    List<JSONData> listJson =
-        List<JSONData>.from(response.getDecodedJsonResponse());
-    list.addAll(FSCart.parseFromList(listJson));
+
+    var decodedResponse = response.getDecodedJsonResponse();
+    if (decodedResponse is List<JSONData>) {
+      List<JSONData> listJson =
+          List<JSONData>.from(response.getDecodedJsonResponse());
+      list.addAll(FSCart.parseFromList(listJson));
+    }
+
+    debugPrint("error: ${response.getError()}");
+
     return list;
   }
 
   getUserCarts(
       {int limit = 5, String sort = "desc", required int userId}) async {
     List<FSCart> list = [];
-    Uri url = API.shared
+    Uri url = NetworkModule.shared
         .getCartsAPI(APICarts.getUserCart, {"limit": limit, "sort": sort});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    List<JSONData> listJson =
-        List<JSONData>.from(response.getDecodedJsonResponse());
-    list.addAll(FSCart.parseFromList(listJson));
+    var decodedResponse = response.getDecodedJsonResponse();
+    if (decodedResponse is List<JSONData>) {
+      List<JSONData> listJson =
+          List<JSONData>.from(response.getDecodedJsonResponse());
+      list.addAll(FSCart.parseFromList(listJson));
+    }
+
     return list;
   }
 
   getSingleCart(int cartId) async {
-    Uri url =
-        API.shared.getCartsAPI(APICarts.getASingleCart, {"cartId": cartId});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared
+        .getCartsAPI(APICarts.getASingleCart, {"cartId": cartId});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    FSCart cart = FSCart.fromJson(response.getResponse().data);
+    FSCart cart = FSCart.fromJson(response.getDecodedJsonResponse());
     return cart;
   }
 
   addProductsToCart(FSCart cart) async {
-    Uri url = API.shared.getCartsAPI(APICarts.addProductToCart, {});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared.getCartsAPI(APICarts.addProductToCart, {});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    FSCart result = FSCart.fromJson(response.getResponse().data);
+    FSCart result = FSCart.fromJson(response.getDecodedJsonResponse());
     return result;
   }
 }

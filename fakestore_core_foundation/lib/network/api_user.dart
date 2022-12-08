@@ -8,7 +8,7 @@ import 'api.dart';
 enum _APIUsers { getAllUsers, getASingleUser, addUser, updateUser, deleteUser }
 
 // API extension for User
-extension APIExtensionUser on API {
+extension APIExtensionUser on NetworkModule {
   Uri getUserAPI(_APIUsers api, JSONData data) {
     switch (api) {
       case _APIUsers.getAllUsers:
@@ -56,9 +56,10 @@ class APICallUsers {
   /// Get All Users
   getAllUsers(int limit, int offset) async {
     List<FSUser> list = [];
-    Uri url = API.shared
+    Uri url = NetworkModule.shared
         .getUserAPI(_APIUsers.getAllUsers, {"limit": limit, "offset": offset});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     list.addAll(FSUser.parseFromList(response.getResponse().data));
     return list;
@@ -67,9 +68,10 @@ class APICallUsers {
   /// Get info for a user
   getAUser(int userId) async {
     FSUser? result;
-    Uri url =
-        API.shared.getUserAPI(_APIUsers.getASingleUser, {"userId": userId});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared
+        .getUserAPI(_APIUsers.getASingleUser, {"userId": userId});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     result = FSUser.fromJson(response.getResponse().data);
     return result;
@@ -78,8 +80,9 @@ class APICallUsers {
   /// Add a user
   addUser(JSONData data) async {
     FSUser? result;
-    Uri url = API.shared.getUserAPI(_APIUsers.getASingleUser, {});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared.getUserAPI(_APIUsers.getASingleUser, {});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.post, data: data);
     result = FSUser.fromJson(response.getResponse().data);
     return result;
@@ -88,9 +91,14 @@ class APICallUsers {
   /// Update user
   updateUser(FSUser user) async {
     FSUser? result;
-    Uri url = API.shared.getUserAPI(_APIUsers.updateUser, {"userId": user.id});
-    TFNetworkResponseModel response = await TFHTTPClient.shared.fetch(
-        path: url.toString(), method: TFHTTPMethod.put, data: user.toJson());
+    Uri url = NetworkModule.shared
+        .getUserAPI(_APIUsers.updateUser, {"userId": user.id});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.put,
+            data: user.toJson());
     result = FSUser.fromJson(response.getResponse().data);
     return result;
   }
@@ -98,8 +106,10 @@ class APICallUsers {
   /// delete user
   deteleUser(FSUser user) async {
     FSUser? result;
-    Uri url = API.shared.getUserAPI(_APIUsers.deleteUser, {"userId": user.id});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared
+        .getUserAPI(_APIUsers.deleteUser, {"userId": user.id});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.delete);
     result = FSUser.fromJson(response.getResponse().data);
     return result;

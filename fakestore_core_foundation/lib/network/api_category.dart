@@ -4,12 +4,13 @@ import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
 
 import '../models/fs_category.dart';
+import 'APICall.dart';
 import 'api.dart';
 
 enum APIProductCategories { getAllCategories, getProductsInCategory }
 
 // API on Categories
-extension APIExtensionCategories on API {
+extension APIExtensionCategories on NetworkModule {
   Uri getCategoryAPI(APIProductCategories api, JSONData data) {
     switch (api) {
       case APIProductCategories.getAllCategories:
@@ -29,15 +30,16 @@ extension APIExtensionCategories on API {
   }
 }
 
-class APICallCategories {
+class APICallCategories extends APICall {
   /// Get all categories
   Future<List<FSProductCategory>> getCategories() async {
     List<FSProductCategory> list = [];
-    Uri url =
-        API.shared.getCategoryAPI(APIProductCategories.getAllCategories, {});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    Uri url = NetworkModule.shared
+        .getCategoryAPI(APIProductCategories.getAllCategories, {});
+    TFNetworkResponseModel? response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    List<String> names = response.getResponse().data;
+    List<String> names = response?.getResponse().data;
     FSProductCategory? temp;
     for (var element in names) {
       temp = null;
@@ -51,9 +53,10 @@ class APICallCategories {
   Future<List<FSProduct>> getProductsInACategory(
       FSProductCategory category) async {
     List<FSProduct> list = [];
-    Uri url = API.shared.getCategoryAPI(
+    Uri url = NetworkModule.shared.getCategoryAPI(
         APIProductCategories.getProductsInCategory, {"category": category});
-    TFNetworkResponseModel response = await TFHTTPClient.shared
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     list.addAll(FSProduct.parseFromList(response.getResponse().data));
     return list;
