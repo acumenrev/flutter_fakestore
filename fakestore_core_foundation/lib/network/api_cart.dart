@@ -136,13 +136,10 @@ class APICallCarts extends APICall {
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
 
     var decodedResponse = response.getDecodedJsonResponse();
-    if (decodedResponse is List<JSONData>) {
-      List<JSONData> listJson =
-          List<JSONData>.from(response.getDecodedJsonResponse());
+    if (decodedResponse is List<dynamic>) {
+      List<JSONData> listJson = List<JSONData>.from(decodedResponse);
       list.addAll(FSCart.parseFromList(listJson));
     }
-
-    debugPrint("error: ${response.getError()}");
 
     return list;
   }

@@ -14,7 +14,6 @@ class FSCart extends TFModel {
     userId = data["userId"] ?? 0;
     date = data["date"] ?? "";
     List<JSONData> listJsonProducts = List<JSONData>.from(data["products"]);
-
     FSCartProduct? tempCartProduct;
     products = [];
     for (var element in listJsonProducts) {
@@ -24,7 +23,7 @@ class FSCart extends TFModel {
     }
   }
 
-  static List<FSCart> parseFromList(List<JSONData> listJson) {
+  static List<FSCart> parseFromList(List<dynamic> listJson) {
     List<FSCart> list = [];
     FSCart? temp;
     for (var element in listJson) {
@@ -32,6 +31,7 @@ class FSCart extends TFModel {
       temp = FSCart.fromJson(element);
       list.add(temp!);
     }
+    debugPrint("parseFromList: \n $list");
     return list;
   }
 }

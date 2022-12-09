@@ -4,6 +4,7 @@ import 'package:fakestore_core_foundation/models/fs_cart.dart';
 import 'package:fakestore_core_foundation/network/api.dart';
 import 'package:fakestore_core_foundation/network/api_cart.dart';
 import 'package:fakestore_core_foundation/others/fs_core_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:tf_framework/models/base_model.dart';
@@ -70,11 +71,11 @@ void main() {
         urlToMock = NetworkModule.shared
             .getCartsAPI(APICarts.getAllCarts, {}).toString();
       });
+
       test("stub with success response", () async {
         String mockedPath = "test/json_carts/get_all_carts.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
-        List<JSONData> listJson = List<JSONData>.from(jsonDecode(data));
-
+        List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
         dioAdapter.onGet(urlToMock, (server) {
           server.reply(200, listJson);
         });
