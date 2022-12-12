@@ -100,23 +100,6 @@ extension APIExtensionCarts on NetworkModule {
 }
 
 class APICallCarts extends APICall {
-  /**
-   * switch (api) {
-      case APICarts.getAllCarts:
-      return _getAllCarts(data);
-      case APICarts.getUserCart:
-      return _getUserCart(data);
-      case APICarts.getASingleCart:
-      return _getASingleCart(data);
-      case APICarts.addProductToCart:
-      return _addProductToCart(data);
-      case APICarts.updateProductInCart:
-      return _updateProductInCart(data);
-      case APICarts.deleteProductFromCart:
-      return _deleteProductInCart(data);
-      }
-   */
-
   /// Get All Carts
   Future<JSONData> getAllCarts(
       {int limit = 0,

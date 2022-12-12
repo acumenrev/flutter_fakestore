@@ -18,7 +18,9 @@ void main() {
     NetworkModule.shared.getHTTPClient().setHttpClientAdapter(dioAdapter);
   });
 
-  tearDownAll(() {});
+  tearDownAll(() {
+    NetworkModule.shared.getHTTPClient().setHttpClientAdapter(null);
+  });
   group("test build api", () {
     test("get all cart", () {
       Uri url = NetworkModule.shared.getCartsAPI(APICarts.getAllCarts, {});
@@ -75,7 +77,7 @@ void main() {
       });
 
       test("stub with success response", () async {
-        String mockedPath = "test/json_carts/get_all_carts.json";
+        String mockedPath = "test/json/carts/get_all_carts.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
         dioAdapter.onGet(urlToMock, (server) {
@@ -83,7 +85,7 @@ void main() {
         });
 
         final JSONData result =
-            await NetworkModule.shared.apiCarts.getAllCarts();
+            await NetworkModule.shared.apiCallCarts.getAllCarts();
         expect(result != null, true);
         final List<FSCart> list = result["data"];
         expect(list != null, true);
@@ -97,7 +99,7 @@ void main() {
         });
 
         final JSONData result =
-            await NetworkModule.shared.apiCarts.getAllCarts();
+            await NetworkModule.shared.apiCallCarts.getAllCarts();
         expect(result != null, true);
         final List<FSCart> list = result["data"];
         expect(list != null, true);
@@ -110,7 +112,7 @@ void main() {
           server.reply(500, {"message": "error message"});
         });
 
-        final response = await NetworkModule.shared.apiCarts.getAllCarts();
+        final response = await NetworkModule.shared.apiCallCarts.getAllCarts();
         expect(response != null, true);
         List<FSCart> list = response["data"];
         expect(list.isEmpty, true);
@@ -134,7 +136,7 @@ void main() {
       });
 
       test("stub with success response", () async {
-        String mockedPath = "test/json_carts/get_user_carts.json";
+        String mockedPath = "test/json/carts/get_user_carts.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
         dioAdapter.onGet(urlToMock, (server) {
@@ -142,7 +144,7 @@ void main() {
         });
 
         final JSONData result =
-            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+            await NetworkModule.shared.apiCallCarts.getUserCarts(userId: 1);
 
         expect(result != null, true);
         final List<FSCart> list = result["data"];
@@ -157,7 +159,7 @@ void main() {
         });
 
         final JSONData result =
-            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+            await NetworkModule.shared.apiCallCarts.getUserCarts(userId: 1);
         expect(result != null, true);
         final List<FSCart> list = result["data"];
         expect(list != null, true);
@@ -171,7 +173,7 @@ void main() {
         });
 
         final response =
-            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+            await NetworkModule.shared.apiCallCarts.getUserCarts(userId: 1);
         expect(response != null, true);
         List<FSCart> list = response["data"];
         expect(list.isEmpty, true);
@@ -195,7 +197,7 @@ void main() {
       });
 
       test("stub with success response", () async {
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
 
         dioAdapter.onGet(urlToMock, (server) {
@@ -203,7 +205,7 @@ void main() {
         });
 
         final JSONData result =
-            await NetworkModule.shared.apiCarts.getSingleCart(5);
+            await NetworkModule.shared.apiCallCarts.getSingleCart(5);
 
         expect(result != null, true);
         final FSCart cart = result["data"];
@@ -221,7 +223,7 @@ void main() {
         });
 
         final JSONData result =
-            await NetworkModule.shared.apiCarts.getSingleCart(5);
+            await NetworkModule.shared.apiCallCarts.getSingleCart(5);
         expect(result != null, true);
         final FSCart cart = result["data"];
         expect(cart != null, true);
@@ -237,7 +239,8 @@ void main() {
           server.reply(500, {"message": "error message"});
         });
 
-        final response = await NetworkModule.shared.apiCarts.getSingleCart(5);
+        final response =
+            await NetworkModule.shared.apiCallCarts.getSingleCart(5);
         expect(response != null, true);
         final FSCart cart = response["data"];
         expect(cart != null, true);
@@ -265,15 +268,15 @@ void main() {
       });
 
       test("stub with success response", () async {
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
         dioAdapter.onPut(urlToMock, (server) {
           server.reply(200, jsonDecode(data));
         }, data: Matchers.any);
 
-        final JSONData result =
-            await NetworkModule.shared.apiCarts.updateProductsInCart(inputData);
+        final JSONData result = await NetworkModule.shared.apiCallCarts
+            .updateProductsInCart(inputData);
 
         expect(result != null, true);
         final FSCart cart = result["data"];
@@ -292,8 +295,8 @@ void main() {
         String mockedPath = "test/json_carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
-        final JSONData result =
-            await NetworkModule.shared.apiCarts.updateProductsInCart(inputData);
+        final JSONData result = await NetworkModule.shared.apiCallCarts
+            .updateProductsInCart(inputData);
         expect(result != null, true);
         final FSCart cart = result["data"];
         expect(cart != null, true);
@@ -311,8 +314,8 @@ void main() {
         String mockedPath = "test/json_carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
-        final response =
-            await NetworkModule.shared.apiCarts.updateProductsInCart(inputData);
+        final response = await NetworkModule.shared.apiCallCarts
+            .updateProductsInCart(inputData);
         expect(response != null, true);
         final FSCart cart = response["data"];
         expect(cart != null, true);
@@ -341,15 +344,15 @@ void main() {
       });
 
       test("stub with success response", () async {
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
         dioAdapter.onDelete(urlToMock, (server) {
           server.reply(200, jsonDecode(data));
         }, data: Matchers.any);
 
-        final JSONData result =
-            await NetworkModule.shared.apiCarts.deleteProductsInCart(inputData);
+        final JSONData result = await NetworkModule.shared.apiCallCarts
+            .deleteProductsInCart(inputData);
 
         expect(result != null, true);
         final FSCart cart = result["data"];
@@ -365,11 +368,11 @@ void main() {
         dioAdapter.onDelete(urlToMock, (server) {
           server.reply(200, {"status": 200});
         }, data: Matchers.any);
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
-        final JSONData result =
-            await NetworkModule.shared.apiCarts.deleteProductsInCart(inputData);
+        final JSONData result = await NetworkModule.shared.apiCallCarts
+            .deleteProductsInCart(inputData);
         expect(result != null, true);
         final FSCart cart = result["data"];
         expect(cart != null, true);
@@ -384,11 +387,11 @@ void main() {
           final requestOptions = RequestOptions(path: urlToMock);
           server.reply(500, {"message": "error message"});
         }, data: Matchers.any);
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
-        final response =
-            await NetworkModule.shared.apiCarts.deleteProductsInCart(inputData);
+        final response = await NetworkModule.shared.apiCallCarts
+            .deleteProductsInCart(inputData);
         expect(response != null, true);
         final FSCart cart = response["data"];
         expect(cart != null, true);

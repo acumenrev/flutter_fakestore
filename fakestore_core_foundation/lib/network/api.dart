@@ -15,18 +15,18 @@ class NetworkModule {
   String _baseUrl = "";
   late final TFHTTPClient _httpClient;
   late final APICallCategories apiCallCategories;
-  late final APICallProducts apiProducts;
-  late final APICallUsers apiUsers;
-  late final APICallCarts apiCarts;
+  late final APICallProducts apiCallProducts;
+  late final APICallUsers apiCallUsers;
+  late final APICallCarts apiCallCarts;
   static NetworkModule shared = NetworkModule();
 
   NetworkModule({Dio? dio, String baseUrl = "fakestoreapi.com"}) {
     _baseUrl = baseUrl;
     _httpClient = TFHTTPClient(dio: dio);
     apiCallCategories = APICallCategories();
-    apiProducts = APICallProducts();
-    apiUsers = APICallUsers();
-    apiCarts = APICallCarts();
+    apiCallProducts = APICallProducts();
+    apiCallUsers = APICallUsers();
+    apiCallCarts = APICallCarts();
   }
 
   setBaseUrl(String baseUrl) {
