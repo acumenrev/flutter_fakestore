@@ -4,7 +4,7 @@ import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
 
 import '../models/fs_category.dart';
-import 'APICall.dart';
+import 'api_call.dart';
 import 'api.dart';
 
 enum APIProductCategories { getAllCategories, getProductsInCategory }

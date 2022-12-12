@@ -7,6 +7,7 @@ import 'package:fakestore_core_foundation/others/fs_core_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
+import 'package:tf_framework/models/base_error.dart';
 import 'package:tf_framework/models/base_model.dart';
 
 void main() {
@@ -80,10 +81,13 @@ void main() {
           server.reply(200, listJson);
         });
 
-        final List<FSCart> result =
+        final JSONData result =
             await NetworkModule.shared.apiCarts.getAllCarts();
-        expect(result.isEmpty, false);
-        expect(result.length, 7);
+        expect(result != null, true);
+        final List<FSCart> list = result["data"];
+        expect(list != null, true);
+        expect(list.isEmpty, false);
+        expect(list.length, 7);
       });
 
       test("stub with incorrect response", () async {
@@ -91,26 +95,152 @@ void main() {
           server.reply(200, {"status": 200});
         });
 
-        final List<FSCart> result =
+        final JSONData result =
             await NetworkModule.shared.apiCarts.getAllCarts();
-        expect(result.isEmpty, true);
-        expect(result.length, 0);
+        expect(result != null, true);
+        final List<FSCart> list = result["data"];
+        expect(list != null, true);
+        expect(list.length, 0);
       });
 
       test("stub with server return error", () async {
         dioAdapter.onGet(urlToMock, (server) {
-          // server.throws(
-          //     500,
-          //     new DioError(
-          //         requestOptions: RequestOptions(
-          //       path: urlToMock,
-          //     )));
-          server.reply(500, {"message": "error"});
+          final requestOptions = RequestOptions(path: urlToMock);
+          server.reply(500, {"message": "error message"});
         });
-        final List<FSCart> result =
-            await NetworkModule.shared.apiCarts.getAllCarts();
-        expect(result.isEmpty, true);
-        expect(result.length, 0);
+
+        final response = await NetworkModule.shared.apiCarts.getAllCarts();
+        expect(response != null, true);
+        List<FSCart> list = response["data"];
+        expect(list.isEmpty, true);
+        TFError err = response["error"];
+        expect(err != null, true);
+        expect(err.statusCode, 500);
+        expect(err.data != null, true);
+        JSONData errorData = err.data;
+        expect(errorData["message"], "error message");
+      });
+
+      tearDownAll(() {
+        dioAdapter.reset();
+        urlToMock = "";
+      });
+    });
+    group("get user carts", () {
+      setUp(() {
+        urlToMock = NetworkModule.shared.getCartsAPI(APICarts.getUserCart,
+            {"userId": 1, "limit": 5, "sort": "desc"}).toString();
+      });
+
+      test("stub with success response", () async {
+        String mockedPath = "test/json_carts/get_user_carts.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
+        dioAdapter.onGet(urlToMock, (server) {
+          server.reply(200, listJson);
+        });
+
+        final JSONData result =
+            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+
+        expect(result != null, true);
+        final List<FSCart> list = result["data"];
+        expect(list != null, true);
+        expect(list.isEmpty, false);
+        expect(list.length, 2);
+      });
+
+      test("stub with incorrect response", () async {
+        dioAdapter.onGet(urlToMock, (server) {
+          server.reply(200, {"status": 200});
+        });
+
+        final JSONData result =
+            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+        expect(result != null, true);
+        final List<FSCart> list = result["data"];
+        expect(list != null, true);
+        expect(list.length, 0);
+      });
+
+      test("stub with server return error", () async {
+        dioAdapter.onGet(urlToMock, (server) {
+          final requestOptions = RequestOptions(path: urlToMock);
+          server.reply(500, {"message": "error message"});
+        });
+
+        final response =
+            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+        expect(response != null, true);
+        List<FSCart> list = response["data"];
+        expect(list.isEmpty, true);
+        TFError err = response["error"];
+        expect(err != null, true);
+        expect(err.statusCode, 500);
+        expect(err.data != null, true);
+        JSONData errorData = err.data;
+        expect(errorData["message"], "error message");
+      });
+
+      tearDownAll(() {
+        dioAdapter.reset();
+        urlToMock = "";
+      });
+    });
+    group("get single cart", () {
+      setUp(() {
+        urlToMock = NetworkModule.shared.getCartsAPI(APICarts.getASingleCart,
+            {"userId": 1, "limit": 5, "sort": "desc"}).toString();
+      });
+
+      test("stub with success response", () async {
+        String mockedPath = "test/json_carts/get_user_carts.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
+        dioAdapter.onGet(urlToMock, (server) {
+          server.reply(200, listJson);
+        });
+
+        final JSONData result =
+            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+
+        expect(result != null, true);
+        final List<FSCart> list = result["data"];
+        expect(list != null, true);
+        expect(list.isEmpty, false);
+        expect(list.length, 2);
+      });
+
+      test("stub with incorrect response", () async {
+        dioAdapter.onGet(urlToMock, (server) {
+          server.reply(200, {"status": 200});
+        });
+
+        final JSONData result =
+            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+        expect(result != null, true);
+        final List<FSCart> list = result["data"];
+        expect(list != null, true);
+        expect(list.length, 0);
+      });
+
+      test("stub with server return error", () async {
+        dioAdapter.onGet(urlToMock, (server) {
+          final requestOptions = RequestOptions(path: urlToMock);
+          server.reply(500, {"message": "error message"});
+        });
+
+        final response =
+            await NetworkModule.shared.apiCarts.getUserCarts(userId: 1);
+        expect(response != null, true);
+        List<FSCart> list = response["data"];
+        expect(list.isEmpty, true);
+        TFError err = response["error"];
+        expect(err != null, true);
+        expect(err.statusCode, 500);
+        expect(err.data != null, true);
+        JSONData errorData = err.data;
+        expect(errorData["message"], "error message");
       });
 
       tearDownAll(() {

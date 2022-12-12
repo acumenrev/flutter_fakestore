@@ -11,8 +11,6 @@ import 'package:tuple/tuple.dart';
 
 import 'api_user.dart';
 
-typedef NetworkResponse = Tuple2<T, TFError>;
-
 class NetworkModule {
   String _baseUrl = "";
   late final TFHTTPClient _httpClient;

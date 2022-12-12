@@ -1,5 +1,5 @@
 import 'package:fakestore_core_foundation/models/fs_cart.dart';
-import 'package:fakestore_core_foundation/network/APICall.dart';
+import 'package:fakestore_core_foundation/network/api_call.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:tf_framework/models/base_error.dart';
 import 'package:tf_framework/models/base_model.dart';
@@ -50,16 +50,13 @@ extension APIExtensionCarts on NetworkModule {
       params["limit"] = limit.toString();
     }
     if (sort.isNotEmpty) {
-      debugPrint("sort: $sort}");
       params["sort"] = sort;
     }
 
     if (startDate.isNotEmpty) {
-      debugPrint("startDate: $startDate}");
       params["startdate"] = startDate;
     }
     if (endDate.isNotEmpty) {
-      debugPrint("endDate: $endDate}");
       params["enddate"] = endDate;
     }
     return buildAPI(path: "/carts", queryParams: params);
@@ -120,12 +117,11 @@ class APICallCarts extends APICall {
    */
 
   /// Get All Carts
-  getAllCarts(
+  Future<JSONData> getAllCarts(
       {int limit = 0,
       String sort = "",
       String startDate = "",
       String endDate = ""}) async {
-    var result = Tuple2<List<FSCart>, TFError?>([], null);
     List<FSCart> list = [];
 
     Uri url = NetworkModule.shared.getCartsAPI(APICarts.getAllCarts, {
@@ -141,49 +137,75 @@ class APICallCarts extends APICall {
     var decodedResponse = response.getDecodedJsonResponse();
     if (decodedResponse is List<dynamic>) {
       List<JSONData> listJson = List<JSONData>.from(decodedResponse);
-      result.item1.addAll(FSCart.parseFromList(listJson));
+      list.addAll(FSCart.parseFromList(listJson));
     }
-
-    if (response.getError() != null) {
-      result = result.withItem2(response.getError());
-    }
-    return list;
+    return generateNetworkResponse(list, response.getError());
   }
 
-  getUserCarts(
+  /// Get carts for a user
+  Future<JSONData> getUserCarts(
       {int limit = 5, String sort = "desc", required int userId}) async {
     List<FSCart> list = [];
-    Uri url = NetworkModule.shared
-        .getCartsAPI(APICarts.getUserCart, {"limit": limit, "sort": sort});
+    Uri url = NetworkModule.shared.getCartsAPI(
+        APICarts.getUserCart, {"limit": limit, "sort": sort, "userId": userId});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     var decodedResponse = response.getDecodedJsonResponse();
-    if (decodedResponse is List<JSONData>) {
-      List<JSONData> listJson =
-          List<JSONData>.from(response.getDecodedJsonResponse());
+    if (decodedResponse is List<dynamic>) {
+      List<JSONData> listJson = List<JSONData>.from(decodedResponse);
       list.addAll(FSCart.parseFromList(listJson));
     }
 
-    return list;
+    return generateNetworkResponse(list, response.getError());
   }
 
-  getSingleCart(int cartId) async {
+  /// Get a single cart information
+  Future<JSONData> getSingleCart(int cartId) async {
     Uri url = NetworkModule.shared
         .getCartsAPI(APICarts.getASingleCart, {"cartId": cartId});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     FSCart cart = FSCart.fromJson(response.getDecodedJsonResponse());
-    return cart;
+    return generateNetworkResponse(cart, response.getError());
   }
 
-  addProductsToCart(FSCart cart) async {
+  /// Add products to a cart
+  Future<JSONData> addProductsToCart(FSCart cart) async {
     Uri url = NetworkModule.shared.getCartsAPI(APICarts.addProductToCart, {});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     FSCart result = FSCart.fromJson(response.getDecodedJsonResponse());
-    return result;
+    return generateNetworkResponse(result, response.getError());
+  }
+
+  /// Update prodcts in a cart
+  Future<JSONData> updateProductsInCart(FSCart cart) async {
+    Uri url = NetworkModule.shared
+        .getCartsAPI(APICarts.updateProductInCart, {"cartId": cart.id});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.put,
+            data: cart.toJson());
+    FSCart result = FSCart.fromJson(response.getDecodedJsonResponse());
+    return generateNetworkResponse(result, response.getError());
+  }
+
+  /// Delete products in cart
+  Future<JSONData> deleteProductsInCart(FSCart cart) async {
+    Uri url = NetworkModule.shared
+        .getCartsAPI(APICarts.deleteProductFromCart, {"cartId": cart.id});
+    TFNetworkResponseModel response = await NetworkModule.shared
+        .getHTTPClient()
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.delete,
+            data: cart.toJson());
+    FSCart result = FSCart.fromJson(response.getDecodedJsonResponse());
+    return generateNetworkResponse(result, response.getError());
   }
 }
