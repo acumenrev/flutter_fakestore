@@ -36,6 +36,10 @@ flutter:
     - test/json/carts/get_single_cart.json
     - test/json/product_categories/get_all_categories.json
     - test/json/product_categories/get_products_in_cart.json
+    - test/json/products/add_product.json
+    - test/json/products/delete_product.json
+    - test/json/products/get_all_products.json
+    - test/json/products/get_single_product.json
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

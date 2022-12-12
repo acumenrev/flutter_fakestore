@@ -35,7 +35,7 @@ extension APIExtensionProducts on NetworkModule {
     Uri url = buildAPI(
         path: "/products",
         queryParams: {"limit": limit.toString(), "offset": offset.toString()});
-    return url.toString();
+    return url;
   }
 
   _getSingleProduct(JSONData data) {
