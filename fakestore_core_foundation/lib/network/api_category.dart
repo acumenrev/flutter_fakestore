@@ -39,7 +39,7 @@ class APICallCategories extends APICall {
     TFNetworkResponseModel? response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    List<String> names = response?.getResponse().data;
+    List<String> names = response?.getResponse()?.data;
     FSProductCategory? temp;
     for (var element in names) {
       temp = null;
@@ -58,7 +58,7 @@ class APICallCategories extends APICall {
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    list.addAll(FSProduct.parseFromList(response.getResponse().data));
+    list.addAll(FSProduct.parseFromList(response.getResponse()?.data));
     return list;
   }
 }

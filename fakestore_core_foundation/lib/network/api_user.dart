@@ -61,7 +61,7 @@ class APICallUsers {
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    list.addAll(FSUser.parseFromList(response.getResponse().data));
+    list.addAll(FSUser.parseFromList(response.getResponse()?.data));
     return list;
   }
 
@@ -73,7 +73,7 @@ class APICallUsers {
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    result = FSUser.fromJson(response.getResponse().data);
+    result = FSUser.fromJson(response.getResponse()?.data);
     return result;
   }
 
@@ -84,7 +84,7 @@ class APICallUsers {
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.post, data: data);
-    result = FSUser.fromJson(response.getResponse().data);
+    result = FSUser.fromJson(response.getResponse()?.data);
     return result;
   }
 
@@ -99,7 +99,7 @@ class APICallUsers {
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: user.toJson());
-    result = FSUser.fromJson(response.getResponse().data);
+    result = FSUser.fromJson(response.getResponse()?.data);
     return result;
   }
 
@@ -111,7 +111,7 @@ class APICallUsers {
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.delete);
-    result = FSUser.fromJson(response.getResponse().data);
+    result = FSUser.fromJson(response.getResponse()?.data);
     return result;
   }
 }

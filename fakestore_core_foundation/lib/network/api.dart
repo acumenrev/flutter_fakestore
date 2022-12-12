@@ -4,10 +4,14 @@ import 'package:fakestore_core_foundation/models/fs_product.dart';
 import 'package:fakestore_core_foundation/network/api_cart.dart';
 import 'package:fakestore_core_foundation/network/api_category.dart';
 import 'package:fakestore_core_foundation/network/api_products.dart';
+import 'package:tf_framework/models/base_error.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
+import 'package:tuple/tuple.dart';
 
 import 'api_user.dart';
+
+typedef NetworkResponse = Tuple2<T, TFError>;
 
 class NetworkModule {
   String _baseUrl = "";

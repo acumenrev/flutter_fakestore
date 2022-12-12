@@ -1,9 +1,11 @@
 import 'package:fakestore_core_foundation/models/fs_cart.dart';
 import 'package:fakestore_core_foundation/network/APICall.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:tf_framework/models/base_error.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
+import 'package:tuple/tuple.dart';
 
 import '../models/fs_cart_product.dart';
 import 'api.dart';
@@ -123,8 +125,9 @@ class APICallCarts extends APICall {
       String sort = "",
       String startDate = "",
       String endDate = ""}) async {
+    var result = Tuple2<List<FSCart>, TFError?>([], null);
     List<FSCart> list = [];
-    debugPrint("call request");
+
     Uri url = NetworkModule.shared.getCartsAPI(APICarts.getAllCarts, {
       "limit": limit,
       "sort": sort,
@@ -138,9 +141,12 @@ class APICallCarts extends APICall {
     var decodedResponse = response.getDecodedJsonResponse();
     if (decodedResponse is List<dynamic>) {
       List<JSONData> listJson = List<JSONData>.from(decodedResponse);
-      list.addAll(FSCart.parseFromList(listJson));
+      result.item1.addAll(FSCart.parseFromList(listJson));
     }
 
+    if (response.getError() != null) {
+      result = result.withItem2(response.getError());
+    }
     return list;
   }
 

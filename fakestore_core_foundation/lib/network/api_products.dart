@@ -68,7 +68,7 @@ class APICallProducts {
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
     List<FSProduct> result =
-        FSProduct.parseFromList(response.getResponse().data);
+        FSProduct.parseFromList(response.getResponse()?.data);
     return result;
   }
 
@@ -80,7 +80,7 @@ class APICallProducts {
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
     return result;
   }
 
@@ -94,7 +94,7 @@ class APICallProducts {
             path: url.toString(),
             method: TFHTTPMethod.post,
             data: product.toJson());
-    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
     return result;
   }
 
@@ -107,7 +107,7 @@ class APICallProducts {
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: product.toJson());
-    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
     return result;
   }
 
@@ -120,7 +120,7 @@ class APICallProducts {
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: product.toJson());
-    FSProduct result = FSProduct.fromJson(response.getResponse().data);
+    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
     return result;
   }
 }
