@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:tf_framework/models/base_model.dart';
+import 'package:tf_framework/utils/tf_logger.dart';
 
 import 'fs_cart_product.dart';
 
@@ -9,21 +10,27 @@ class FSCart extends TFModel {
   late String date;
   late List<FSCartProduct> products;
 
-  FSCart.fromJson(JSONData data) {
-    id = data["id"] ?? 0;
-    userId = data["userId"] ?? 0;
-    date = data["date"] ?? "";
-    List<JSONData> listJsonProducts = List<JSONData>.from(data["products"]);
-    FSCartProduct? tempCartProduct;
+  FSCart.fromJson(JSONData? data) {
+    id = data?["id"] ?? 0;
+    userId = data?["userId"] ?? 0;
+    date = data?["date"] ?? "";
     products = [];
-    for (var element in listJsonProducts) {
-      tempCartProduct = null;
-      tempCartProduct = FSCartProduct.fromJson(element);
-      products.add(tempCartProduct);
+    if (data?["products"] != null) {
+      List<dynamic> listJsonProducts = List<dynamic>.from(data?["products"]);
+      FSCartProduct? tempCartProduct;
+
+      for (var element in listJsonProducts) {
+        tempCartProduct = null;
+        tempCartProduct = FSCartProduct.fromJson(element);
+        products.add(tempCartProduct);
+      }
     }
   }
 
-  static List<FSCart> parseFromList(List<dynamic> listJson) {
+  static List<FSCart> parseFromList(List<dynamic>? listJson) {
+    if (listJson == null) {
+      return [];
+    }
     List<FSCart> list = [];
     FSCart? temp;
     for (var element in listJson) {
@@ -31,7 +38,23 @@ class FSCart extends TFModel {
       temp = FSCart.fromJson(element);
       list.add(temp!);
     }
-    debugPrint("parseFromList: \n $list");
     return list;
+  }
+
+  @override
+  JSONData? toJson() {
+    List<JSONData> listProducts = [];
+    for (var element in products) {
+      if (element.toJson() != null) {
+        listProducts.add(element.toJson()!);
+      }
+    }
+    JSONData result = {
+      "id": id,
+      "userId": userId,
+      "date": date,
+      "products": listProducts
+    };
+    return result;
   }
 }

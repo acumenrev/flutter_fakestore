@@ -5,6 +5,7 @@ import 'package:tf_framework/models/base_error.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
+import 'package:tf_framework/utils/tf_logger.dart';
 import 'package:tuple/tuple.dart';
 
 import '../models/fs_cart_product.dart';
@@ -191,6 +192,7 @@ class APICallCarts extends APICall {
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: cart.toJson());
+    TFLogger.logger.d("response data: ${response.getResponse()}");
     FSCart result = FSCart.fromJson(response.getDecodedJsonResponse());
     return generateNetworkResponse(result, response.getError());
   }

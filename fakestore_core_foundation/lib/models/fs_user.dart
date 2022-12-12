@@ -9,16 +9,19 @@ class FSUser extends TFModel {
   late final String password;
   late final FSUserAddress address;
 
-  FSUser.fromJson(JSONData json) {
-    id = json["id"] ?? 0;
-    email = json["email"] ?? "";
-    username = json["username"] ?? "";
-    fullName = FSUserName.fromJson(json["name"]);
-    phone = json["phone"] ?? "";
-    address = FSUserAddress.fromJson(json["address"]);
+  FSUser.fromJson(JSONData? json) {
+    id = json?["id"] ?? 0;
+    email = json?["email"] ?? "";
+    username = json?["username"] ?? "";
+    fullName = FSUserName.fromJson(json?["name"]);
+    phone = json?["phone"] ?? "";
+    address = FSUserAddress.fromJson(json?["address"]);
   }
 
-  static List<FSUser> parseFromList(List<JSONData> listJson) {
+  static List<FSUser> parseFromList(List<dynamic>? listJson) {
+    if (listJson == null) {
+      return [];
+    }
     List<FSUser> list = [];
     FSUser? temp;
     for (var element in listJson) {
@@ -34,9 +37,9 @@ class FSUserName extends TFModel {
   late final String firstName;
   late final String lastName;
 
-  FSUserName.fromJson(JSONData json) {
-    firstName = json["firstname"];
-    lastName = json["lastname"];
+  FSUserName.fromJson(JSONData? json) {
+    firstName = json?["firstname"] ?? "";
+    lastName = json?["lastname"] ?? "";
   }
 
   @override
@@ -52,12 +55,12 @@ class FSUserAddress extends TFModel {
   late final String zipcode;
   late final FSGeoLocation geoLocation;
 
-  FSUserAddress.fromJson(JSONData json) {
-    city = json["city"] ?? "";
-    street = json["street"] ?? "";
-    number = json["number"] ?? 0;
-    zipcode = json["zipcode"] ?? "";
-    geoLocation = FSGeoLocation.fromJson(json["geolocation"]);
+  FSUserAddress.fromJson(JSONData? json) {
+    city = json?["city"] ?? "";
+    street = json?["street"] ?? "";
+    number = json?["number"] ?? 0;
+    zipcode = json?["zipcode"] ?? "";
+    geoLocation = FSGeoLocation.fromJson(json?["geolocation"]);
   }
 
   @override
@@ -76,9 +79,9 @@ class FSGeoLocation extends TFModel {
   late final String latitude;
   late final String longitude;
 
-  FSGeoLocation.fromJson(JSONData json) {
-    latitude = json["lat"] ?? "";
-    longitude = json["long"] ?? "";
+  FSGeoLocation.fromJson(JSONData? json) {
+    latitude = json?["lat"] ?? "";
+    longitude = json?["long"] ?? "";
   }
 
   @override
