@@ -8,8 +8,8 @@ class FSProduct extends TFModel {
   late final double price;
   late final String description;
   late final String image;
-  late final FSProductRating rating;
-  late final FSProductCategory category;
+  FSProductRating? rating = null;
+  FSProductCategory? category;
 
   FSProduct.fromJson(JSONData? json) {
     id = json?["id"] ?? 0;
@@ -33,8 +33,9 @@ class FSProduct extends TFModel {
       "price": price,
       "description": description,
       "image": image,
-      "rating": rating.toJson(),
-      "category": stringFromProductCategory(category)
+      "rating": rating?.toJson(),
+      "category":
+          stringFromProductCategory(category ?? FSProductCategory.unknown)
     };
   }
 
@@ -58,7 +59,7 @@ class FSProductRating extends TFModel {
   late final int count;
 
   FSProductRating.fromJson(JSONData? json) {
-    rate = json?["rate"] ?? 0;
+    rate = (json?["rate"] ?? 0).toDouble();
     count = json?["count"] ?? 0;
   }
 

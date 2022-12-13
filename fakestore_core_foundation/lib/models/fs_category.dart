@@ -1,6 +1,12 @@
 import 'package:tf_framework/models/base_model.dart';
 
-enum FSProductCategory { electronics, jewelry, men_clothing, women_clothing }
+enum FSProductCategory {
+  electronics,
+  jewelry,
+  men_clothing,
+  women_clothing,
+  unknown
+}
 
 categoryEnumFromString(String value) {
   switch (value) {
@@ -12,6 +18,8 @@ categoryEnumFromString(String value) {
       return FSProductCategory.men_clothing;
     case "women's clothing":
       return FSProductCategory.women_clothing;
+    default:
+      return FSProductCategory.unknown;
   }
 }
 
@@ -25,5 +33,7 @@ stringFromProductCategory(FSProductCategory category) {
       return "men's clothing";
     case FSProductCategory.women_clothing:
       return "women's clothing";
+    default:
+      return "";
   }
 }

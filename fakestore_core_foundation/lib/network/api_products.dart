@@ -1,5 +1,6 @@
 import 'package:fakestore_core_foundation/models/fs_product.dart';
 import 'package:fakestore_core_foundation/network/api.dart';
+import 'package:fakestore_core_foundation/network/api_call.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
@@ -59,33 +60,37 @@ extension APIExtensionProducts on NetworkModule {
   }
 }
 
-class APICallProducts {
+class APICallProducts extends APICall {
   /// Get Products
-  Future<List<FSProduct>> getProducts(int limit, int offset) async {
+  Future<JSONData> getProducts(int limit, int offset) async {
     JSONData data = {"limit": limit, "offset": offset};
     Uri url = NetworkModule.shared.getProductAPI(APIProducts.getProducts, data);
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    List<FSProduct> result =
-        FSProduct.parseFromList(response.getResponse()?.data);
-    return result;
+    var decodedResponse = response.getDecodedJsonResponse();
+    List<FSProduct> result = [];
+    if (decodedResponse is List<dynamic>) {
+      result = FSProduct.parseFromList(response.getDecodedJsonResponse());
+    }
+
+    return generateNetworkResponse(result, response.getError());
   }
 
   /// Get Single product
-  Future<FSProduct> getSingleProduct(int productId) async {
+  Future<JSONData> getSingleProduct(int productId) async {
     JSONData data = {"productId": productId};
     Uri url =
         NetworkModule.shared.getProductAPI(APIProducts.getSingleProduct, data);
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
-    return result;
+    FSProduct result = FSProduct.fromJson(response.getDecodedJsonResponse());
+    return generateNetworkResponse(result, response.getError());
   }
 
   /// Add Product
-  Future<FSProduct> addProduct(FSProduct product) async {
+  Future<JSONData> addProduct(FSProduct product) async {
     Uri url = NetworkModule.shared
         .getProductAPI(APIProducts.addProduct, {"product": product});
     TFNetworkResponseModel response = await NetworkModule.shared
@@ -94,11 +99,11 @@ class APICallProducts {
             path: url.toString(),
             method: TFHTTPMethod.post,
             data: product.toJson());
-    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
-    return result;
+    FSProduct result = FSProduct.fromJson(response.getDecodedJsonResponse());
+    return generateNetworkResponse(result, response.getError());
   }
 
-  Future<FSProduct> updateProduct(FSProduct product) async {
+  Future<JSONData> updateProduct(FSProduct product) async {
     Uri url = NetworkModule.shared
         .getProductAPI(APIProducts.addProduct, {"product": product});
     TFNetworkResponseModel response = await NetworkModule.shared
@@ -107,11 +112,11 @@ class APICallProducts {
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: product.toJson());
-    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
-    return result;
+    FSProduct result = FSProduct.fromJson(response.getDecodedJsonResponse());
+    return generateNetworkResponse(result, response.getError());
   }
 
-  Future<FSProduct> deleteProduct(FSProduct product) async {
+  Future<JSONData> deleteProduct(FSProduct product) async {
     Uri url = NetworkModule.shared
         .getProductAPI(APIProducts.addProduct, {"product": product});
     TFNetworkResponseModel response = await NetworkModule.shared
@@ -120,7 +125,7 @@ class APICallProducts {
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: product.toJson());
-    FSProduct result = FSProduct.fromJson(response.getResponse()?.data);
-    return result;
+    FSProduct result = FSProduct.fromJson(response.getDecodedJsonResponse());
+    return generateNetworkResponse(result, response.getError());
   }
 }
