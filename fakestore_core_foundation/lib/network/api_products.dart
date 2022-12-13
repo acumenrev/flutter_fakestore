@@ -105,7 +105,7 @@ class APICallProducts extends APICall {
 
   Future<JSONData> updateProduct(FSProduct product) async {
     Uri url = NetworkModule.shared
-        .getProductAPI(APIProducts.addProduct, {"product": product});
+        .getProductAPI(APIProducts.updateProduct, {"product": product});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(
@@ -118,12 +118,12 @@ class APICallProducts extends APICall {
 
   Future<JSONData> deleteProduct(FSProduct product) async {
     Uri url = NetworkModule.shared
-        .getProductAPI(APIProducts.addProduct, {"product": product});
+        .getProductAPI(APIProducts.deleteProduct, {"product": product});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(
             path: url.toString(),
-            method: TFHTTPMethod.put,
+            method: TFHTTPMethod.delete,
             data: product.toJson());
     FSProduct result = FSProduct.fromJson(response.getDecodedJsonResponse());
     return generateNetworkResponse(result, response.getError());

@@ -17,9 +17,7 @@ class FSProduct extends TFModel {
     price = (json?["price"] ?? 0).toDouble();
     description = json?["description"] ?? "";
     image = json?["image"] ?? "";
-    if (json?["category"] != null) {
-      category = categoryEnumFromString(json?["category"] ?? "");
-    }
+    category = categoryEnumFromString(json?["category"] ?? "");
     if (json?["rating"] != null) {
       rating = FSProductRating.fromJson(json?["rating"]);
     }
