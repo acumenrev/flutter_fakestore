@@ -28,6 +28,18 @@ void main() {
       expect(url.toString(), expectedResult);
     });
 
+    test("get all cart with limit and offset", () {
+      Uri url = NetworkModule.shared.getCartsAPI(APICarts.getAllCarts, {
+        "limit": 10,
+        "sort": "desc",
+        "startdate": "2022-11-20",
+        "enddate": "2022-11-23"
+      });
+      String expectedResult =
+          "https://fakestoreapi.com/carts?limit=10&sort=desc&startdate=2022-11-20&enddate=2022-11-23";
+      expect(url.toString(), expectedResult);
+    });
+
     test("get user cart", () {
       Uri url =
           NetworkModule.shared.getCartsAPI(APICarts.getUserCart, {"userId": 1});
@@ -392,6 +404,82 @@ void main() {
         final inputData = FSCart.fromJson(jsonDecode(data));
         final response = await NetworkModule.shared.apiCallCarts
             .deleteProductsInCart(inputData);
+        expect(response != null, true);
+        final FSCart cart = response["data"];
+        expect(cart != null, true);
+        expect(cart.id, 0);
+        expect(cart.userId, 0);
+        expect(cart.date, "");
+        expect(cart.products.length, 0);
+        TFError err = response["error"];
+        expect(err != null, true);
+        expect(err.statusCode, 500);
+        expect(err.data != null, true);
+        JSONData errorData = err.data;
+        expect(errorData["message"], "error message");
+      });
+
+      tearDownAll(() {
+        dioAdapter.reset();
+        urlToMock = "";
+      });
+    });
+    group("add product cart", () {
+      setUp(() {
+        urlToMock = NetworkModule.shared
+            .getCartsAPI(APICarts.addProductToCart, {}).toString();
+        TFLogger.logger.d("Url To Mock: $urlToMock");
+      });
+
+      test("stub with success response", () async {
+        String mockedPath = "test/json/carts/get_single_cart.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        final inputData = FSCart.fromJson(jsonDecode(data));
+        dioAdapter.onPost(urlToMock, (server) {
+          server.reply(200, jsonDecode(data));
+        }, data: Matchers.any);
+
+        final JSONData result = await NetworkModule.shared.apiCallCarts
+            .addProductsToCart(inputData);
+
+        expect(result != null, true);
+        final FSCart cart = result["data"];
+        expect(cart != null, true);
+        expect(cart.id, 5);
+        expect(cart.userId, 3);
+        expect(cart.date, "2020-03-01T00:00:02.000Z");
+        expect(cart.products.isNotEmpty, true);
+        expect(cart.products.length, 2);
+      });
+
+      test("stub with incorrect response", () async {
+        dioAdapter.onPost(urlToMock, (server) {
+          server.reply(200, {"status": 200});
+        }, data: Matchers.any);
+        String mockedPath = "test/json/carts/get_single_cart.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        final inputData = FSCart.fromJson(jsonDecode(data));
+        final JSONData result = await NetworkModule.shared.apiCallCarts
+            .addProductsToCart(inputData);
+        expect(result != null, true);
+        final FSCart cart = result["data"];
+        expect(cart != null, true);
+        expect(cart.id, 0);
+        expect(cart.userId, 0);
+        expect(cart.date, "");
+        expect(cart.products.length, 0);
+      });
+
+      test("stub with server return error", () async {
+        dioAdapter.onPost(urlToMock, (server) {
+          final requestOptions = RequestOptions(path: urlToMock);
+          server.reply(500, {"message": "error message"});
+        }, data: Matchers.any);
+        String mockedPath = "test/json/carts/get_single_cart.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        final inputData = FSCart.fromJson(jsonDecode(data));
+        final response = await NetworkModule.shared.apiCallCarts
+            .addProductsToCart(inputData);
         expect(response != null, true);
         final FSCart cart = response["data"];
         expect(cart != null, true);

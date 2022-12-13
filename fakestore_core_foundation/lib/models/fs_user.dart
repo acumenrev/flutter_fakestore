@@ -4,18 +4,23 @@ class FSUser extends TFModel {
   late final int id;
   late final String email;
   late final String username;
-  late final FSUserName fullName;
+  FSUserName? fullName;
   late final String phone;
   late final String password;
-  late final FSUserAddress address;
+  FSUserAddress? address;
 
   FSUser.fromJson(JSONData? json) {
     id = json?["id"] ?? 0;
     email = json?["email"] ?? "";
     username = json?["username"] ?? "";
-    fullName = FSUserName.fromJson(json?["name"]);
+    if (json?["name"] != null) {
+      fullName = FSUserName.fromJson(json?["name"]);
+    }
     phone = json?["phone"] ?? "";
-    address = FSUserAddress.fromJson(json?["address"]);
+    if (json?["address"] != null) {
+      address = FSUserAddress.fromJson(json?["address"]);
+    }
+    password = json?["password"] ?? "";
   }
 
   static List<FSUser> parseFromList(List<dynamic>? listJson) {
@@ -30,6 +35,19 @@ class FSUser extends TFModel {
       list.add(temp);
     }
     return list;
+  }
+
+  @override
+  JSONData? toJson() {
+    return {
+      "id": id,
+      "email": email,
+      "username": username,
+      "phone": phone,
+      "password": password,
+      "name": fullName?.toJson(),
+      "address": address?.toJson()
+    };
   }
 }
 
@@ -53,20 +71,22 @@ class FSUserAddress extends TFModel {
   late final String street;
   late final int number;
   late final String zipcode;
-  late final FSGeoLocation geoLocation;
+  FSGeoLocation? geoLocation;
 
   FSUserAddress.fromJson(JSONData? json) {
     city = json?["city"] ?? "";
     street = json?["street"] ?? "";
     number = json?["number"] ?? 0;
     zipcode = json?["zipcode"] ?? "";
-    geoLocation = FSGeoLocation.fromJson(json?["geolocation"]);
+    if (json?["geolocation"] != null) {
+      geoLocation = FSGeoLocation.fromJson(json?["geolocation"]);
+    }
   }
 
   @override
   JSONData? toJson() {
     return {
-      "geolocation": geoLocation.toJson(),
+      "geolocation": geoLocation?.toJson(),
       "city": city,
       "street": street,
       "number": num,

@@ -1,35 +1,42 @@
 import 'package:fakestore_core_foundation/models/fs_user.dart';
+import 'package:fakestore_core_foundation/network/api_call.dart';
+import 'package:fakestore_core_foundation/network/api_cart.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
 
 import 'api.dart';
 
-enum _APIUsers { getAllUsers, getASingleUser, addUser, updateUser, deleteUser }
+enum APIUsers { getAllUsers, getASingleUser, addUser, updateUser, deleteUser }
 
 // API extension for User
 extension APIExtensionUser on NetworkModule {
-  Uri getUserAPI(_APIUsers api, JSONData data) {
+  Uri getUserAPI(APIUsers api, JSONData data) {
     switch (api) {
-      case _APIUsers.getAllUsers:
+      case APIUsers.getAllUsers:
         return _getAllUsers(data);
-      case _APIUsers.getASingleUser:
+      case APIUsers.getASingleUser:
         return _getASingleUser(data);
-      case _APIUsers.addUser:
+      case APIUsers.addUser:
         return _addUser(data);
-      case _APIUsers.updateUser:
+      case APIUsers.updateUser:
         return _updateUser(data);
-      case _APIUsers.deleteUser:
+      case APIUsers.deleteUser:
         return _deleteUser(data);
     }
   }
 
   _getAllUsers(JSONData data) {
-    int limit = data["limit"] ?? 0;
-    String sort = data["sort"];
+    QueryParams params = {};
+    if (data["limit"] != null) {
+      params["limit"] = (data["limit"] ?? 10).toString();
+    }
 
-    return buildAPI(
-        path: "/users", queryParams: {"limit": limit.toString(), "sort": sort});
+    if (data["sort"] != null) {
+      params["sort"] = data["sort"] ?? "";
+    }
+
+    return buildAPI(path: "/users", queryParams: params);
   }
 
   _getASingleUser(JSONData data) {
@@ -52,66 +59,77 @@ extension APIExtensionUser on NetworkModule {
   }
 }
 
-class APICallUsers {
+class APICallUsers extends APICall {
   /// Get All Users
-  getAllUsers(int limit, int offset) async {
+  Future<JSONData> getAllUsers(int limit, String sort) async {
     List<FSUser> list = [];
     Uri url = NetworkModule.shared
-        .getUserAPI(_APIUsers.getAllUsers, {"limit": limit, "offset": offset});
+        .getUserAPI(APIUsers.getAllUsers, {"limit": limit, "sort": sort});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    list.addAll(FSUser.parseFromList(response.getResponse()?.data));
-    return list;
+    var decodedResponse = response.getDecodedJsonResponse();
+    if (decodedResponse is List<dynamic>) {
+      list.addAll(FSUser.parseFromList(decodedResponse));
+    }
+
+    return generateNetworkResponse(list, response.getError());
   }
 
   /// Get info for a user
-  getAUser(int userId) async {
+  Future<JSONData> getAUser(int userId) async {
     FSUser? result;
     Uri url = NetworkModule.shared
-        .getUserAPI(_APIUsers.getASingleUser, {"userId": userId});
+        .getUserAPI(APIUsers.getASingleUser, {"userId": userId});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.get);
-    result = FSUser.fromJson(response.getResponse()?.data);
-    return result;
+    var decodedResponse = response.getDecodedJsonResponse();
+    result = FSUser.fromJson(decodedResponse);
+    return generateNetworkResponse(result, response.getError());
   }
 
   /// Add a user
-  addUser(JSONData data) async {
+  Future<JSONData> addUser(FSUser data) async {
     FSUser? result;
-    Uri url = NetworkModule.shared.getUserAPI(_APIUsers.getASingleUser, {});
+    Uri url = NetworkModule.shared.getUserAPI(APIUsers.addUser, {});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
-        .fetch(path: url.toString(), method: TFHTTPMethod.post, data: data);
-    result = FSUser.fromJson(response.getResponse()?.data);
-    return result;
+        .fetch(
+            path: url.toString(),
+            method: TFHTTPMethod.post,
+            data: data.toJson());
+    var decodedResponse = response.getDecodedJsonResponse();
+    result = FSUser.fromJson(decodedResponse);
+    return generateNetworkResponse(result, response.getError());
   }
 
   /// Update user
-  updateUser(FSUser user) async {
+  Future<JSONData> updateUser(FSUser user) async {
     FSUser? result;
     Uri url = NetworkModule.shared
-        .getUserAPI(_APIUsers.updateUser, {"userId": user.id});
+        .getUserAPI(APIUsers.updateUser, {"userId": user.id});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(
             path: url.toString(),
             method: TFHTTPMethod.put,
             data: user.toJson());
-    result = FSUser.fromJson(response.getResponse()?.data);
-    return result;
+    var decodedResponse = response.getDecodedJsonResponse();
+    result = FSUser.fromJson(decodedResponse);
+    return generateNetworkResponse(result, response.getError());
   }
 
   /// delete user
-  deteleUser(FSUser user) async {
+  Future<JSONData> deteleUser(FSUser user) async {
     FSUser? result;
     Uri url = NetworkModule.shared
-        .getUserAPI(_APIUsers.deleteUser, {"userId": user.id});
+        .getUserAPI(APIUsers.deleteUser, {"userId": user.id});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
         .fetch(path: url.toString(), method: TFHTTPMethod.delete);
-    result = FSUser.fromJson(response.getResponse()?.data);
-    return result;
+    var decodedResponse = response.getDecodedJsonResponse();
+    result = FSUser.fromJson(decodedResponse);
+    return generateNetworkResponse(result, response.getError());
   }
 }

@@ -40,6 +40,11 @@ flutter:
     - test/json/products/delete_product.json
     - test/json/products/get_all_products.json
     - test/json/products/get_single_product.json
+    - test/json/users/add_user.json
+    - test/json/users/delete_user.json
+    - test/json/users/get_a_user.json
+    - test/json/users/get_all_users.json
+    - test/json/users/update_user.json
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

@@ -160,7 +160,7 @@ class APICallCarts extends APICall {
     Uri url = NetworkModule.shared.getCartsAPI(APICarts.addProductToCart, {});
     TFNetworkResponseModel response = await NetworkModule.shared
         .getHTTPClient()
-        .fetch(path: url.toString(), method: TFHTTPMethod.get);
+        .fetch(path: url.toString(), method: TFHTTPMethod.post);
     FSCart result = FSCart.fromJson(response.getDecodedJsonResponse());
     return generateNetworkResponse(result, response.getError());
   }
