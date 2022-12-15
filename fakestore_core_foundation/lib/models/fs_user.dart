@@ -1,4 +1,5 @@
 import 'package:tf_framework/models/base_model.dart';
+import 'package:tf_framework/utils/tf_logger.dart';
 
 class FSUser extends TFModel {
   late final int id;

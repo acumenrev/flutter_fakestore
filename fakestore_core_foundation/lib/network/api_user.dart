@@ -4,6 +4,7 @@ import 'package:fakestore_core_foundation/network/api_cart.dart';
 import 'package:tf_framework/models/base_model.dart';
 import 'package:tf_framework/models/tf_network_response_model.dart';
 import 'package:tf_framework/network/tf_http_client.dart';
+import 'package:tf_framework/utils/tf_logger.dart';
 
 import 'api.dart';
 
@@ -121,7 +122,7 @@ class APICallUsers extends APICall {
   }
 
   /// delete user
-  Future<JSONData> deteleUser(FSUser user) async {
+  Future<JSONData> deleteUser(FSUser user) async {
     FSUser? result;
     Uri url = NetworkModule.shared
         .getUserAPI(APIUsers.deleteUser, {"userId": user.id});
