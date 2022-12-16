@@ -290,7 +290,7 @@ void main() {
       });
 
       test("stub with success response", () async {
-        TFLogger.logger.d("mockedDataPath: $mockedDataPath");
+        TFLogger.logger.d("URL to mock: $urlToMock");
         String data = await FSCoreUtils.loadJsonFile(mockedDataPath);
         dioAdapter.onPut(urlToMock, (server) {
           server.reply(200, jsonDecode(data));
@@ -303,22 +303,22 @@ void main() {
         expect(response != null, true);
         final FSUser result = response["data"];
         expect(result != null, true);
-        expect(result.id, 1);
-        // expect(result.fullName != null, true);
-        // expect(result.fullName?.firstName, "john");
-        // expect(result.fullName?.lastName, "Doe");
-        // expect(result.email, "John@gmail.com");
-        // expect(result.username, "johnd");
-        // expect(result.password, "m38rmF\$");
-        // expect(result.phone, "1-570-236-7033");
-        // expect(result.address != null, true);
-        // expect(result.address?.geoLocation != null, true);
-        // expect(result.address?.geoLocation?.latitude, "-37.3159");
-        // expect(result.address?.geoLocation?.longitude, "81.1496");
-        // expect(result.address?.city, "kilcoole");
-        // expect(result.address?.street, "7835 new road");
-        // expect(result.address?.number, 7682);
-        // expect(result.address?.zipcode, "12926-3874");
+        expect(result.id, 0);
+        expect(result.fullName != null, true);
+        expect(result.fullName?.firstName, "John");
+        expect(result.fullName?.lastName, "Doe");
+        expect(result.email, "John@gmail.com");
+        expect(result.username, "johnd");
+        expect(result.password, "m38rmF\$");
+        expect(result.phone, "1-570-236-7033");
+        expect(result.address != null, true);
+        expect(result.address?.geoLocation != null, true);
+        expect(result.address?.geoLocation?.latitude, "-37.3159");
+        expect(result.address?.geoLocation?.longitude, "81.1496");
+        expect(result.address?.city, "kilcoole");
+        expect(result.address?.street, "7835 new road");
+        expect(result.address?.number, 3);
+        expect(result.address?.zipcode, "12926-3874");
       });
 
       test("stub with incorrect response", () async {

@@ -51,5 +51,23 @@ void main() {
       expect(list.image, "");
       expect(list.rating == null, true);
     });
+    group("parse list json", () {
+      test("init with empty aray", () {
+        List<FSProduct> list = FSProduct.parseFromList(null);
+        expect(list.isEmpty, true);
+        List<FSProduct> list2 = FSProduct.parseFromList([]);
+        expect(list.isEmpty, true);
+      });
+
+      test("init with aray", () async {
+        String mockedPath = "test/json/products/get_all_products.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
+
+        List<FSProduct> list = FSProduct.parseFromList(listJson);
+        expect(list.isEmpty, false);
+        expect(list.length, 20);
+      });
+    });
   });
 }

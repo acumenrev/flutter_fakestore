@@ -90,7 +90,7 @@ class FSUserAddress extends TFModel {
       "geolocation": geoLocation?.toJson(),
       "city": city,
       "street": street,
-      "number": num,
+      "number": number,
       "zipcode": zipcode
     };
   }

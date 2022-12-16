@@ -33,5 +33,24 @@ void main() {
       expect(cart.date, "");
       expect(cart.products.length, 0);
     });
+
+    group("parse list json", () {
+      test("init with empty aray", () {
+        List<FSCart> list = FSCart.parseFromList(null);
+        expect(list.isEmpty, true);
+        List<FSCart> list2 = FSCart.parseFromList([]);
+        expect(list.isEmpty, true);
+      });
+
+      test("init with aray", () async {
+        String mockedPath = "test/json/carts/get_all_carts.json";
+        String data = await FSCoreUtils.loadJsonFile(mockedPath);
+        List<dynamic> listJson = List<dynamic>.from(jsonDecode(data));
+
+        List<FSCart> list = FSCart.parseFromList(listJson);
+        expect(list.isEmpty, false);
+        expect(list.length, 7);
+      });
+    });
   });
 }

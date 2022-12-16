@@ -117,6 +117,7 @@ class APICallUsers extends APICall {
             method: TFHTTPMethod.put,
             data: user.toJson());
     var decodedResponse = response.getDecodedJsonResponse();
+    TFLogger.logger.d("decodedResponse: $decodedResponse");
     result = FSUser.fromJson(decodedResponse);
     return generateNetworkResponse(result, response.getError());
   }

@@ -17,13 +17,7 @@ class FSCart extends TFModel {
     products = [];
     if (data?["products"] != null) {
       List<dynamic> listJsonProducts = List<dynamic>.from(data?["products"]);
-      FSCartProduct? tempCartProduct;
-
-      for (var element in listJsonProducts) {
-        tempCartProduct = null;
-        tempCartProduct = FSCartProduct.fromJson(element);
-        products.add(tempCartProduct);
-      }
+      products.addAll(FSCartProduct.parseFromList(listJsonProducts));
     }
   }
 

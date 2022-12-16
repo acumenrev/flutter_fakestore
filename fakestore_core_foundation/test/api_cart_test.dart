@@ -304,7 +304,7 @@ void main() {
         dioAdapter.onPut(urlToMock, (server) {
           server.reply(200, {"status": 200});
         }, data: Matchers.any);
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
         final JSONData result = await NetworkModule.shared.apiCallCarts
@@ -323,7 +323,7 @@ void main() {
           final requestOptions = RequestOptions(path: urlToMock);
           server.reply(500, {"message": "error message"});
         }, data: Matchers.any);
-        String mockedPath = "test/json_carts/get_single_cart.json";
+        String mockedPath = "test/json/carts/get_single_cart.json";
         String data = await FSCoreUtils.loadJsonFile(mockedPath);
         final inputData = FSCart.fromJson(jsonDecode(data));
         final response = await NetworkModule.shared.apiCallCarts
