@@ -1,20 +1,20 @@
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
-import 'package:fakestore_main_app/routes/home/home_controller.dart';
+import 'package:fakestore_core_ui/fakestore_core_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key, required this.controller});
+import 'main_controller.dart';
 
-  late HomeControllerInterface controller;
+class MainView extends StatefulWidget {
+  MainView({super.key, required this.controller});
+
+  late MainControllerInterface controller;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<MainView> createState() => _MainViewState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MainViewState extends State<MainView> {
   final _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     // return Obx(() {
@@ -63,6 +63,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _buildContent() {
+    return Container();
+  }
+
+  _buildHead() {
+    return Container(
+      height: 100,
+      child: Expanded(
+        child: Row(
+          children: [],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+      ),
+    );
+  }
+
+  _buildBottomTabbar() {
     return Container();
   }
 }

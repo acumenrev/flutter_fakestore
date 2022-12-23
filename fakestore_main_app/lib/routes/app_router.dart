@@ -1,4 +1,8 @@
+import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:fakestore_main_app/routes/home/home_view.dart';
+import 'package:fakestore_main_app/routes/main/main_controller.dart';
+import 'package:fakestore_main_app/routes/main/main_view.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -14,8 +18,14 @@ class AppRouter {
   }
 
   setupRouter() {
-    _router = GoRouter(routes: [
-      GoRoute(path: "/", builder: (context, state) => HomeScreen()),
-    ]);
+    _router = GoRouter(routes: [_getHomeRoute()]);
+  }
+
+  _getHomeRoute() {
+    return GoRoute(
+        path: "/",
+        builder: (context, state) {
+          return MainView(controller: Get.put(MainControllerImplementation()));
+        });
   }
 }
