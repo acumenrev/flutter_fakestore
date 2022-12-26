@@ -83,7 +83,38 @@ flutter:
     - family: Rubik Gemstones
       fonts:
         - asset: resources/fonts/RubikGemstones-Regular.ttf
-          style: Regular
+          weight: 400
+    - family: Roboto
+      fonts:
+        - asset: resources/fonts/roboto/Roboto-Black.ttf
+          weight: 900
+        - asset: resources/fonts/roboto/Roboto-BlackItalic.ttf
+          style: italic
+          weight: 900
+        - asset: resources/fonts/roboto/Roboto-Bold.ttf
+          weight: 700
+        - asset: resources/fonts/roboto/Roboto-BoldItalic.ttf
+          style: italic
+          weight: 700
+        - asset: resources/fonts/roboto/Roboto-Italic.ttf
+          style: italic
+        - asset: resources/fonts/roboto/Roboto-Light.ttf
+          weight: 300
+        - asset: resources/fonts/roboto/Roboto-LightItalic.ttf
+          style: italic
+          weight: 300
+        - asset: resources/fonts/roboto/Roboto-Medium.ttf
+          weight: 500
+        - asset: resources/fonts/roboto/Roboto-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: resources/fonts/roboto/Roboto-Regular.ttf
+          weight: 400
+        - asset: resources/fonts/roboto/Roboto-Thin.ttf
+          weight: 100
+        - asset: resources/fonts/roboto/Roboto-ThinItalic.ttf
+          weight: 100
+          style: italic
   # fonts:
   #   - family: Schyler
   #     fonts:
