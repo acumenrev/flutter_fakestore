@@ -1,8 +1,14 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_core_ui/fakestore_core_ui.dart';
 import 'package:fakestore_main_app/constants/font_constants.dart';
 import 'package:fakestore_main_app/managers/user_data_manager.dart';
+import 'package:fakestore_main_app/routes/home/home_controller.dart';
+import 'package:fakestore_main_app/routes/home/home_view.dart';
+import 'package:fakestore_main_app/routes/profile/profile_view.dart';
+import 'package:fakestore_main_app/routes/wishlist/wishlist_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'main_controller.dart';
 
@@ -17,59 +23,48 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final _scrollController = ScrollController();
+  final _pageViewController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
-    // return Obx(() {
-    //   return Scaffold(
-    //     body: Container(
-    //       child: Column(
-    //         children: [_buildTopCategoryBar(), _buildContent()],
-    //       ),
-    //     ),
-    //   );
-    // });
-    return Scaffold(
-      body: SafeArea(
-        left: true,
-        top: true,
-        right: true,
-        bottom: true,
-        child: Container(
-          child: Column(
-            children: [
-              _buildHead(UserDataManager.shared.numberOfItemsInCart.value),
-            ],
+    return Obx(() {
+      return Scaffold(
+        body: SafeArea(
+          left: true,
+          top: true,
+          right: true,
+          bottom: true,
+          child: Container(
+            child: Column(
+              children: [
+                _buildHead(UserDataManager.shared.numberOfItemsInCart.value),
+                _buildContent()
+              ],
+            ),
           ),
         ),
-      ),
-    );
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      );
+    });
   }
-
-  _buildTopCategoryBar() {
-    return ScrollingButtonBar(
-        children: [
-          ButtonsItem(
-              child: Container(
-                child: Text("Hello"),
-              ),
-              onTap: () {}),
-          ButtonsItem(
-              child: Container(
-                child: Text("TExt"),
-              ),
-              onTap: () {})
-        ],
-        childWidth: 200,
-        childHeight: 60,
-        foregroundColor: Colors.red,
-        scrollController: _scrollController,
-        selectedItemIndex: 0);
-  }
-
-  _buildTopButtonItems() {}
 
   _buildContent() {
-    return Container();
+    return Expanded(
+        child: PageView(
+      children: [_buildHomeView(), _buildWishlishView(), _buildProfileView()],
+      controller: _pageViewController,
+    ));
+  }
+
+  _buildHomeView() {
+    return HomeView(controller: Get.put(HomeControllerImplementation()));
+  }
+
+  _buildWishlishView() {
+    return WishlistView();
+  }
+
+  _buildProfileView() {
+    return ProfileView();
   }
 
   _buildHead(int numberOfItemsInCart) {
@@ -134,7 +129,30 @@ class _MainViewState extends State<MainView> {
     );
   }
 
-  _buildBottomTabbar() {
-    return Container();
+  _buildBottomNavigationBar() {
+    return BottomNavyBar(
+      selectedIndex: widget.controller.getSelectedTabIndex(),
+      showElevation: true, // use this to remove appBar's elevation
+      onItemSelected: (index) => setState(() {
+        widget.controller.setSelectedTabIndex(index);
+        _pageViewController.animateToPage(index,
+            duration: Duration(milliseconds: 300), curve: Curves.ease);
+      }),
+      items: [
+        BottomNavyBarItem(
+          icon: Icon(Icons.apps),
+          title: Text('Home'),
+          activeColor: Colors.red,
+        ),
+        BottomNavyBarItem(
+            icon: Icon(Icons.star),
+            title: Text('Wishlish'),
+            activeColor: Colors.purpleAccent),
+        BottomNavyBarItem(
+            icon: Icon(Icons.person),
+            title: Text('Profile'),
+            activeColor: Colors.pink),
+      ],
+    );
   }
 }

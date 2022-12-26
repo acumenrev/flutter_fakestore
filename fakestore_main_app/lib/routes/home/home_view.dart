@@ -3,16 +3,16 @@ import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key, required this.controller});
+class HomeView extends StatefulWidget {
+  HomeView({super.key, required this.controller});
 
   late HomeControllerInterface controller;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeViewState extends State<HomeView> {
   final _scrollController = ScrollController();
 
   @override
@@ -26,18 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     //     ),
     //   );
     // });
-    return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 100,
-            ),
-            _buildTopCategoryBar(),
-            _buildContent()
-          ],
-        ),
-      ),
+    return Container(
+      color: Colors.yellow,
     );
   }
 
@@ -60,9 +50,5 @@ class _HomeScreenState extends State<HomeScreen> {
         foregroundColor: Colors.red,
         scrollController: _scrollController,
         selectedItemIndex: 0);
-  }
-
-  _buildContent() {
-    return Container();
   }
 }
