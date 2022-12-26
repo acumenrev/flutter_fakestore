@@ -1,10 +1,12 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_core_ui/fakestore_core_ui.dart';
+import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/font_constants.dart';
 import 'package:fakestore_main_app/managers/user_data_manager.dart';
 import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:fakestore_main_app/routes/home/home_view.dart';
+import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
 import 'package:fakestore_main_app/routes/profile/profile_view.dart';
 import 'package:fakestore_main_app/routes/wishlist/wishlist_view.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,8 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   final _scrollController = ScrollController();
   final _pageViewController = PageController(initialPage: 0);
+  List<Widget> _listScreen = [];
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -50,9 +54,18 @@ class _MainViewState extends State<MainView> {
   _buildContent() {
     return Expanded(
         child: PageView(
-      children: [_buildHomeView(), _buildWishlishView(), _buildProfileView()],
+      children: _getListScreen(),
       controller: _pageViewController,
     ));
+  }
+
+  _getListScreen() {
+    if (_listScreen.isEmpty) {
+      _listScreen.add(_buildHomeView());
+      _listScreen.add(_buildWishlishView());
+      _listScreen.add(_buildProfileView());
+    }
+    return _listScreen;
   }
 
   _buildHomeView() {
@@ -64,7 +77,9 @@ class _MainViewState extends State<MainView> {
   }
 
   _buildProfileView() {
-    return ProfileView();
+    return ProfileView(
+      controller: Get.put(ProfileControllerImplementation()),
+    );
   }
 
   _buildHead(int numberOfItemsInCart) {
@@ -77,11 +92,12 @@ class _MainViewState extends State<MainView> {
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: Center(
               child: Text(
-                "Fashion",
+                "Fakestore",
                 style: TextStyle(
                     fontFamily: FontConstants.getFont(
                         fontName: AppFonts.Rubik_Gemstones),
-                    fontSize: 30),
+                    fontSize: 30,
+                    color: ColorConstants.colorE30404),
               ),
             ),
           ),

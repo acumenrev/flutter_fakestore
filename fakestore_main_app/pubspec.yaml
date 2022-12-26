@@ -42,6 +42,8 @@ dependencies:
     path: ../fakestore_core_ui
   font_awesome_flutter: ^10.3.0
   bottom_navy_bar: ^6.0.0
+  fakestore_core_foundation:
+    path: ../fakestore_core_foundation
 
 dev_dependencies:
   flutter_test:
