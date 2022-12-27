@@ -1,6 +1,14 @@
 {
   "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+  "log_out": "Log Out",
+  "on": "On",
+  "off": "off",
+  "profile_profile_menu_profile": "PROFILE",
+  "profile_profile_menu_profile_details_title": "Profile Details",
+  "profile_profile_menu_profile_details_desc": "View & Edit Details",
+  "profile_profile_menu_settings": "SETTINGS",
+  "profile_profile_menu_settings_push_notifications": "Push Notifications",
+  "profile_profile_menu_settings_email_notifications": "Email notifications",
+  "profile_profile_menu_settings_terms_of_use": "Terms of use",
+  "profile_profile_menu_settings_privacy_policy": "Privacy Policy"
 }

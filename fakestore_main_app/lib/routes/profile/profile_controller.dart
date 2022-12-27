@@ -6,12 +6,20 @@ abstract class ProfileControllerInterface extends BaseController {
   late Rx<FSUser?> _currentUser;
   setCurrentUser(FSUser? user);
   FSUser? getCurrentUser();
+  late Rx<bool> emailNotifications;
+  late Rx<bool> pushNotifications;
 }
 
 class ProfileControllerImplementation extends ProfileControllerInterface {
   ProfileControllerImplementation({FSUser? user}) {
     _currentUser.value = user;
   }
+
+  @override
+  Rx<bool> emailNotifications = false.obs;
+
+  @override
+  Rx<bool> pushNotifications = false.obs;
 
   @override
   Rx<FSUser?> _currentUser = (null as FSUser?).obs;
