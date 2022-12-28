@@ -8,12 +8,36 @@ abstract class ProfileControllerInterface extends BaseController {
   FSUser? getCurrentUser();
   late Rx<bool> emailNotifications;
   late Rx<bool> pushNotifications;
+  late Rx<int> numberOfOrderToPay;
+  late Rx<int> numberOfOrderToShip;
+  late Rx<int> numberOfOrderToReceive;
+  late Rx<int> numberOfOrderToCompleted;
+  late Rx<int> numberOfOrderToCancelled;
+  late Rx<int> numberOfOrderToReturnRefund;
 }
 
 class ProfileControllerImplementation extends ProfileControllerInterface {
   ProfileControllerImplementation({FSUser? user}) {
     _currentUser.value = user;
   }
+
+  @override
+  Rx<int> numberOfOrderToCancelled = 0.obs;
+
+  @override
+  Rx<int> numberOfOrderToPay = 0.obs;
+
+  @override
+  Rx<int> numberOfOrderToShip = 0.obs;
+
+  @override
+  Rx<int> numberOfOrderToReceive = 0.obs;
+
+  @override
+  Rx<int> numberOfOrderToReturnRefund = 0.obs;
+
+  @override
+  Rx<int> numberOfOrderToCompleted = 0.obs;
 
   @override
   Rx<bool> emailNotifications = false.obs;

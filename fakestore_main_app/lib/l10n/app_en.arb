@@ -10,5 +10,12 @@
   "profile_profile_menu_settings_push_notifications": "Push Notifications",
   "profile_profile_menu_settings_email_notifications": "Email notifications",
   "profile_profile_menu_settings_terms_of_use": "Terms of use",
-  "profile_profile_menu_settings_privacy_policy": "Privacy Policy"
+  "profile_profile_menu_settings_privacy_policy": "Privacy Policy",
+  "profile_profile_menu_order": "ORDERS",
+  "profile_profile_menu_order_to_pay": "To Pay",
+  "profile_profile_menu_order_to_ship": "To Ship",
+  "profile_profile_menu_order_to_receive": "To Receive",
+  "profile_profile_menu_order_complete": "Completed",
+  "profile_profile_menu_order_cancelled": "Cancelled",
+  "profile_profile_menu_order_return_refund": "Return Refund"
 }

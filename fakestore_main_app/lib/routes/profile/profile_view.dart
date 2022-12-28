@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
+import 'package:fakestore_core_ui/fakestore_core_ui.dart';
 import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
@@ -16,6 +18,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  final _orderScrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -27,7 +31,7 @@ class _ProfileViewState extends State<ProfileView> {
       return ClipRRect(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-        child: Column(
+        child: ListView(
           children: _buildMainScreen(),
         ),
       );
@@ -38,8 +42,15 @@ class _ProfileViewState extends State<ProfileView> {
     List<Widget> listWidget = [];
     listWidget.add(_buildTopInformation());
     listWidget.addAll(_buildProfileSubItems());
+    listWidget.add(_buildSeparator());
+    listWidget.addAll(_buildOrderSubItems());
+    listWidget.add(_buildSeparator());
     listWidget.addAll(_buildSettingsSubItems());
+    listWidget.add(_buildSeparator());
     listWidget.add(_buildLogOut());
+    listWidget.add(SizedBox(
+      height: 40,
+    ));
     return listWidget;
   }
 
@@ -160,7 +171,7 @@ class _ProfileViewState extends State<ProfileView> {
             padding: const EdgeInsets.only(top: 0, left: 20.0, right: 10.0),
             child: Icon(
               menuIcon,
-              color: Colors.blue,
+              color: ColorConstants.colorE30404,
             ),
           ),
           // name & desc
@@ -193,7 +204,7 @@ class _ProfileViewState extends State<ProfileView> {
                   onChanged: (value) {
                     onChanged(value);
                   },
-                  activeTrackColor: Colors.blue,
+                  activeTrackColor: ColorConstants.colorE30404,
                   activeColor: Colors.white))
         ],
       ),
@@ -216,7 +227,7 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.only(top: 0, left: 20.0, right: 10.0),
               child: Icon(
                 menuIcon,
-                color: Colors.blue,
+                color: ColorConstants.colorE30404,
               ),
             ),
             // name & desc
@@ -247,7 +258,7 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.only(right: 10.0, left: 10.0),
               child: Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.blue,
+                color: ColorConstants.colorE30404,
               ),
             )
           ],
@@ -268,19 +279,112 @@ class _ProfileViewState extends State<ProfileView> {
         menuIcon: Icons.person_outline_outlined,
         desc: AppUtils.getLocalizationContext(context)
             .profile_profile_menu_profile_details_desc));
+    return listWidget;
+  }
 
-    listWidget.add(Padding(
+  _buildSeparator() {
+    return Padding(
       padding: const EdgeInsets.only(
           left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
       child: Container(
         height: 1.0,
         color: Colors.black.withOpacity(0.3),
       ),
-    ));
+    );
+  }
+
+  _buildOrderSubItems() {
+    List<Widget> listWidget = [];
+    listWidget.add(_buildSubHeadline(
+        subHeadlineText: AppUtils.getLocalizationContext(context)
+            .profile_profile_menu_order));
+    listWidget.add(_buildOrderHorizontalItems());
     return listWidget;
   }
 
-  _buildOrderSubItems() {}
+  _buildOrderHorizontalItems() {
+    return Container(
+      height: 80,
+      child: ScrollingButtonBar(
+        childWidth: 30,
+        childHeight: 80,
+        foregroundColor: Colors.transparent,
+        scrollController: _orderScrollController,
+        selectedItemIndex: 0,
+        children: [
+          // To Pay
+          _buildHorizontalItem(
+              name: AppUtils.getLocalizationContext(context)
+                  .profile_profile_menu_order_to_pay,
+              icon: Icons.money_outlined,
+              onTap: () {},
+              numberOfOrders: 1),
+          // To Ship
+          _buildHorizontalItem(
+              name: AppUtils.getLocalizationContext(context)
+                  .profile_profile_menu_order_to_ship,
+              icon: Icons.money_outlined,
+              onTap: () {},
+              numberOfOrders: 1),
+          // To Receive
+          _buildHorizontalItem(
+              name: AppUtils.getLocalizationContext(context)
+                  .profile_profile_menu_order_to_receive,
+              icon: Icons.money_outlined,
+              onTap: () {},
+              numberOfOrders: 1),
+          // Completed
+          _buildHorizontalItem(
+              name: AppUtils.getLocalizationContext(context)
+                  .profile_profile_menu_order_complete,
+              icon: Icons.money_outlined,
+              onTap: () {},
+              numberOfOrders: 1),
+          // Cancelled
+          _buildHorizontalItem(
+              name: AppUtils.getLocalizationContext(context)
+                  .profile_profile_menu_order_cancelled,
+              icon: Icons.money_outlined,
+              onTap: () {},
+              numberOfOrders: 1),
+          // Refund Return
+          _buildHorizontalItem(
+              name: AppUtils.getLocalizationContext(context)
+                  .profile_profile_menu_order_return_refund,
+              icon: Icons.money_outlined,
+              onTap: () {},
+              numberOfOrders: 1),
+        ],
+      ),
+    );
+  }
+
+  _buildHorizontalItem(
+      {required String name,
+      required IconData icon,
+      required VoidCallback onTap,
+      required numberOfOrders}) {
+    return ButtonsItem(
+        child: Column(
+          children: [
+            // Text
+            Text(name),
+            // Icon and number of orders
+            Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(
+                    icon,
+                    size: 30,
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+        onTap: onTap);
+  }
 
   _buildSettingsSubItems() {
     List<Widget> listWidget = [];
@@ -322,13 +426,21 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   _buildLogOut() {
-    return OutlinedButton(
-        onPressed: () {},
-        child: Container(
-          width: 80,
-          height: 40,
-          child: Center(
-              child: Text(AppUtils.getLocalizationContext(context).log_out)),
-        ));
+    return Container(
+      width: 160,
+      height: 40,
+      child: Center(
+        child: OutlinedButton(
+            onPressed: () {},
+            child: Container(
+              width: 160,
+              height: 40,
+              child: Center(
+                  child: Text(AppUtils.getLocalizationContext(context)
+                      .log_out
+                      .toUpperCase())),
+            )),
+      ),
+    );
   }
 }
