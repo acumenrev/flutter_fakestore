@@ -323,35 +323,35 @@ class _ProfileViewState extends State<ProfileView> {
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_to_ship,
-              icon: Icons.money_outlined,
+              icon: Icons.delivery_dining_outlined,
               onTap: () {},
               numberOfOrders: 1),
           // To Receive
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_to_receive,
-              icon: Icons.money_outlined,
+              icon: Icons.home_outlined,
               onTap: () {},
               numberOfOrders: 1),
           // Completed
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_complete,
-              icon: Icons.money_outlined,
+              icon: Icons.check_circle_outline,
               onTap: () {},
               numberOfOrders: 1),
           // Cancelled
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_cancelled,
-              icon: Icons.money_outlined,
+              icon: Icons.cancel_outlined,
               onTap: () {},
               numberOfOrders: 1),
           // Refund Return
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_return_refund,
-              icon: Icons.money_outlined,
+              icon: Icons.backspace_outlined,
               onTap: () {},
               numberOfOrders: 1),
         ],
@@ -366,9 +366,23 @@ class _ProfileViewState extends State<ProfileView> {
       required numberOfOrders}) {
     return ButtonsItem(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             // Text
-            Text(name),
+            Container(
+              color: Colors.transparent,
+              width: 100,
+              height: 30,
+              child: Center(
+                child: Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
             // Icon and number of orders
             Stack(
               children: [
@@ -377,6 +391,7 @@ class _ProfileViewState extends State<ProfileView> {
                   child: Icon(
                     icon,
                     size: 30,
+                    color: ColorConstants.colorE30404,
                   ),
                 )
               ],

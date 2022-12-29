@@ -1,6 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_core_ui/fakestore_core_ui.dart';
+import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/font_constants.dart';
 import 'package:fakestore_main_app/managers/user_data_manager.dart';
@@ -156,18 +157,23 @@ class _MainViewState extends State<MainView> {
       }),
       items: [
         BottomNavyBarItem(
-          icon: Icon(Icons.apps),
-          title: Text('Home'),
-          activeColor: Colors.red,
-        ),
+            icon: Icon(Icons.apps),
+            title: Text(AppUtils.getLocalizationContext(context)
+                .main_view_nav_bar_home),
+            activeColor: ColorConstants.colorE30404,
+            inactiveColor: Colors.black),
         BottomNavyBarItem(
             icon: Icon(Icons.star),
-            title: Text('Wishlish'),
-            activeColor: Colors.purpleAccent),
+            title: Text(AppUtils.getLocalizationContext(context)
+                .main_view_nav_bar_wishlist),
+            activeColor: ColorConstants.colorE30404,
+            inactiveColor: Colors.black),
         BottomNavyBarItem(
             icon: Icon(Icons.person),
-            title: Text('Profile'),
-            activeColor: Colors.pink),
+            title: Text(AppUtils.getLocalizationContext(context)
+                .main_view_nav_bar_profile),
+            activeColor: ColorConstants.colorE30404,
+            inactiveColor: Colors.black),
       ],
     );
   }
