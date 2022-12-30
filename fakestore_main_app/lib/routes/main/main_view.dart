@@ -97,7 +97,7 @@ class _MainViewState extends State<MainView> {
                 "Fakestore",
                 style: TextStyle(
                     fontFamily: FontConstants.getFont(
-                        fontName: AppFonts.Rubik_Gemstones),
+                        fontName: AppFonts.rubikGemstones),
                     fontSize: 30,
                     color: ColorConstants.colorE30404),
               ),
@@ -118,7 +118,7 @@ class _MainViewState extends State<MainView> {
                   child: Stack(
                     children: [
                       // icon
-                      Center(child: Icon(Icons.shopping_cart)),
+                      const Center(child: Icon(Icons.shopping_cart)),
                       // number
                       Positioned(
                         child: Container(
@@ -127,9 +127,10 @@ class _MainViewState extends State<MainView> {
                           child: Center(
                               child: Text(
                             numberOfItemsInCart.toString(),
-                            style: TextStyle(fontSize: 10, color: Colors.white),
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.white),
                           )),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               shape: BoxShape.circle, color: Colors.red),
                         ),
                         right: 0,
@@ -154,23 +155,23 @@ class _MainViewState extends State<MainView> {
       onItemSelected: (index) => setState(() {
         widget.controller.setSelectedTabIndex(index);
         _pageViewController.animateToPage(index,
-            duration: Duration(milliseconds: 300), curve: Curves.ease);
+            duration: const Duration(milliseconds: 300), curve: Curves.ease);
       }),
       items: [
         BottomNavyBarItem(
-            icon: Icon(Icons.apps),
+            icon: const Icon(Icons.apps),
             title: Text(AppUtils.getLocalizationContext(context)
                 .main_view_nav_bar_home),
             activeColor: ColorConstants.colorE30404,
             inactiveColor: Colors.black),
         BottomNavyBarItem(
-            icon: Icon(Icons.star),
+            icon: const Icon(Icons.star),
             title: Text(AppUtils.getLocalizationContext(context)
                 .main_view_nav_bar_wishlist),
             activeColor: ColorConstants.colorE30404,
             inactiveColor: Colors.black),
         BottomNavyBarItem(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person),
             title: Text(AppUtils.getLocalizationContext(context)
                 .main_view_nav_bar_profile),
             activeColor: ColorConstants.colorE30404,

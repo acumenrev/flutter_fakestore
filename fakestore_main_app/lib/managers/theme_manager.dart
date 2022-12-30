@@ -7,7 +7,7 @@ class ThemeManager {
 
   ThemeManager._() {
     _currentSelectedThemeData =
-        ThemeData(fontFamily: FontConstants.getFont(fontName: AppFonts.Roboto));
+        ThemeData(fontFamily: FontConstants.getFont(fontName: AppFonts.roboto));
   }
 
   getCurrentTheme() {

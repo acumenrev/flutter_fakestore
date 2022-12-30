@@ -36,12 +36,12 @@ class _HomeViewState extends State<HomeView> {
         children: [
           ButtonsItem(
               child: Container(
-                child: Text("Hello"),
+                child: const Text("Hello"),
               ),
               onTap: () {}),
           ButtonsItem(
               child: Container(
-                child: Text("TExt"),
+                child: const Text("TExt"),
               ),
               onTap: () {})
         ],

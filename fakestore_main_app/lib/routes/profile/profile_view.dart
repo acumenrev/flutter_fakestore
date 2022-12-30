@@ -48,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
     listWidget.addAll(_buildSettingsSubItems());
     listWidget.add(_buildSeparator());
     listWidget.add(_buildLogOut());
-    listWidget.add(SizedBox(
+    listWidget.add(const SizedBox(
       height: 40,
     ));
     return listWidget;
@@ -60,7 +60,7 @@ class _ProfileViewState extends State<ProfileView> {
       height: 150,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -72,7 +72,7 @@ class _ProfileViewState extends State<ProfileView> {
               _buildUserInfo()
             ],
           )),
-          SizedBox(
+          const SizedBox(
             height: 20,
           )
         ],
@@ -84,7 +84,7 @@ class _ProfileViewState extends State<ProfileView> {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(14.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(14.0)),
         child: Container(
           child: CachedNetworkImage(
             width: 100,
@@ -111,7 +111,7 @@ class _ProfileViewState extends State<ProfileView> {
             // name
             Text(
               widget.controller.getCurrentUser()?.getFullname() ?? "",
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
                   color: Colors.white),
@@ -121,7 +121,7 @@ class _ProfileViewState extends State<ProfileView> {
             // email
             Text(
               widget.controller.getCurrentUser()?.email ?? "",
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,
                 fontSize: 16,
@@ -183,7 +183,8 @@ class _ProfileViewState extends State<ProfileView> {
                 // name
                 Text(
                   name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 // desc
                 desc.isNotEmpty
@@ -239,7 +240,8 @@ class _ProfileViewState extends State<ProfileView> {
                   // name
                   Text(
                     name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   // desc
                   desc.isNotEmpty
@@ -376,7 +378,7 @@ class _ProfileViewState extends State<ProfileView> {
               child: Center(
                 child: Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,

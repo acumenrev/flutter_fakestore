@@ -1,26 +1,26 @@
-enum AppFonts { Roboto, Rubik_Gemstones }
+enum AppFonts { roboto, rubikGemstones }
 
 enum AppFontStyle {
-  Regular,
-  Thin,
-  Thin_Italic,
-  Medium_Italic,
-  Medium,
-  Light_Italic,
-  Light,
-  Italic,
-  Bold_Italic,
-  Bold,
-  Black_Italic,
-  Black
+  regular,
+  thin,
+  thinItalic,
+  mediumItalic,
+  medium,
+  lightItalic,
+  light,
+  italic,
+  boldItalic,
+  bold,
+  blackItalic,
+  black
 }
 
 class FontConstants {
   static String getFont({required AppFonts fontName}) {
     switch (fontName) {
-      case AppFonts.Roboto:
+      case AppFonts.roboto:
         return "Roboto";
-      case AppFonts.Rubik_Gemstones:
+      case AppFonts.rubikGemstones:
         return "Rubik Gemstones";
     }
   }

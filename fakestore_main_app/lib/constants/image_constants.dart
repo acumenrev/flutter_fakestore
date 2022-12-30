@@ -1,4 +1,4 @@
 class ImageConstants {
-  static final String avatarPlaceholder =
+  static const String avatarPlaceholder =
       "resources/images/img_avatar_placeholder.png";
 }

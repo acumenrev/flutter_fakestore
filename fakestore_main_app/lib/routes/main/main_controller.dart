@@ -11,8 +11,9 @@ abstract class MainControllerInterface extends BaseController {
 }
 
 class MainControllerImplementation extends MainControllerInterface {
-  @override
-  Rx<MainViewTabIndex> currentSelectedIndex = MainViewTabIndex.home.obs;
+  MainControllerImplementation() {
+    currentSelectedIndex = MainViewTabIndex.home.obs;
+  }
 
   @override
   setSelectedTabIndex(int index) {

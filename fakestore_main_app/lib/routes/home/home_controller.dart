@@ -10,14 +10,13 @@ abstract class HomeControllerInterface extends BaseController {
 }
 
 class HomeControllerImplementation extends HomeControllerInterface {
-  @override
-  Rx<Color?> mainColor = (null as Color?).obs;
-
   HomeControllerImplementation() {
     debugPrint("init home view model");
     Timer.periodic(const Duration(seconds: 1), (timer) {
       changeColor();
     });
+
+    mainColor = (null as Color?).obs;
   }
 
   changeColor() {
