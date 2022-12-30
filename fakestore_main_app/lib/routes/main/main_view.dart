@@ -79,7 +79,8 @@ class _MainViewState extends State<MainView> {
 
   _buildProfileView() {
     return ProfileView(
-      controller: Get.put(ProfileControllerImplementation()),
+      controller: Get.put(ProfileControllerImplementation(
+          user: UserDataManager.shared.currentUser)),
     );
   }
 

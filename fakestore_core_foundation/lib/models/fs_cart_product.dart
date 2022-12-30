@@ -18,7 +18,7 @@ class FSCartProduct extends TFModel {
     for (var element in listJson) {
       temp = null;
       temp = FSCartProduct.fromJson(element);
-      list.add(temp!);
+      list.add(temp);
     }
     return list;
   }

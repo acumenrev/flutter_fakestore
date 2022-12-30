@@ -29,7 +29,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Obx(() {
       return ClipRRect(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
             topRight: Radius.circular(20), topLeft: Radius.circular(20)),
         child: ListView(
           children: _buildMainScreen(),
@@ -110,7 +110,7 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             // name
             Text(
-              "Test User adas ds2ssss",
+              widget.controller.getCurrentUser()?.getFullname() ?? "",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -120,7 +120,7 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             // email
             Text(
-              "sssg@email.com",
+              widget.controller.getCurrentUser()?.email ?? "",
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 color: Colors.white,

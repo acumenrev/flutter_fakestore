@@ -38,6 +38,15 @@ class FSUser extends TFModel {
     return list;
   }
 
+  String getFullname() {
+    if (fullName == null) {
+      return "";
+    }
+    String lastName = fullName?.lastName ?? "";
+    String firstName = fullName?.firstName ?? "";
+    return "$firstName $lastName";
+  }
+
   @override
   JSONData? toJson() {
     return {

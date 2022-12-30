@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 class UserDataManager {
   static final UserDataManager shared = UserDataManager._();
+  Rx<int> numberOfItemsInCart = 12.obs;
+  Rx<FSUser?> currentUser = (null as FSUser?).obs;
 
   // private constructor
   UserDataManager._() {
@@ -30,7 +32,4 @@ class UserDataManager {
     FSUser user = FSUser.fromJson(sampleJson);
     currentUser.value = user;
   }
-
-  Rx<int> numberOfItemsInCart = 12.obs;
-  Rx<FSUser?> currentUser = (null as FSUser?).obs;
 }

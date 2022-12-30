@@ -30,7 +30,7 @@ class FSCart extends TFModel {
     for (var element in listJson) {
       temp = null;
       temp = FSCart.fromJson(element);
-      list.add(temp!);
+      list.add(temp);
     }
     return list;
   }
