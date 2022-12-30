@@ -4,9 +4,11 @@ import 'package:fakestore_core_ui/fakestore_core_ui.dart';
 import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileView extends StatefulWidget {
   ProfileView({super.key, required this.controller});
@@ -275,7 +277,9 @@ class _ProfileViewState extends State<ProfileView> {
         subHeadlineText: AppUtils.getLocalizationContext(context)
             .profile_profile_menu_profile));
     listWidget.add(_buildNavigationMenuItem(
-        onTap: () {},
+        onTap: () {
+          AppRouter.shared.getProfileRoutes().openProfileDetail(context);
+        },
         name: AppUtils.getLocalizationContext(context)
             .profile_profile_menu_profile_details_title,
         menuIcon: Icons.person_outline_outlined,
