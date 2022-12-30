@@ -12,7 +12,7 @@ class ProfileRoutes implements BaseRoutes {
 
   ProfileRoutes() {
     routes = GoRoute(
-        path: "/profile",
+        path: "profile",
         builder: (ctx, state) {
           return Container();
         },
@@ -21,7 +21,7 @@ class ProfileRoutes implements BaseRoutes {
 
   _getProfileDetail() {
     return GoRoute(
-        path: "/detail",
+        path: "detail",
         builder: (ctx, state) {
           return ProfileDetailView(
               controller: Get.put(ProfileDetailImplementation()));
