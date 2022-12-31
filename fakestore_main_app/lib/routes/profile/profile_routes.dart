@@ -29,6 +29,6 @@ class ProfileRoutes implements BaseRoutes {
   }
 
   openProfileDetail(BuildContext ctx) {
-    ctx.go("/profile/detail");
+    ctx.push("/profile/detail");
   }
 }

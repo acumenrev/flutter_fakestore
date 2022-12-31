@@ -47,6 +47,7 @@ dependencies:
     path: ../fakestore_core_foundation
   cached_network_image: ^3.2.3
   intl: ^0.17.0
+  fluro: ^2.0.4
 
 dev_dependencies:
   flutter_test:
