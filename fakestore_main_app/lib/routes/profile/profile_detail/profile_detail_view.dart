@@ -44,21 +44,51 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
     return Padding(
       padding: const EdgeInsets.only(top: 30, bottom: 30),
       child: Container(
-        height: 100,
+        height: 180,
+        color: Colors.transparent,
         child: Center(
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(14.0)),
+          child: Container(
+            width: 180,
+            height: 180,
+            color: Colors.transparent,
             child: Stack(
               children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        Image.asset(ImageConstants.avatarPlaceholder),
-                    imageUrl:
-                        "https://images.unsplash.com/photo-1561045439-ce8ec5bc42f8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9",
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: CachedNetworkImage(
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Image.asset(ImageConstants.avatarPlaceholder),
+                      imageUrl:
+                          "https://images.unsplash.com/photo-1561045439-ce8ec5bc42f8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9",
+                    ),
+                  ),
+                ),
+                Positioned(
+                  right: 0.0,
+                  bottom: 0.0,
+                  child: GestureDetector(
+                    onTap: () {
+                      _editAvatarHandler();
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.blue),
+                      child: Center(
+                        child: Icon(
+                          Icons.edit_outlined,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -68,6 +98,11 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
       ),
     );
   }
+
+  _editAvatarHandler() {
+    debugPrint("_editAvatarHandler");
+  }
+
   // email
 
   // password
