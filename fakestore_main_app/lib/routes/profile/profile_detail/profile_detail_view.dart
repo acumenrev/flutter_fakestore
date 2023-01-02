@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fakestore_main_app/app_utils.dart';
+import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_controller.dart';
 import 'package:fakestore_main_app/ui/app_ios_navigation_bar.dart';
@@ -16,11 +18,23 @@ class ProfileDetailView extends StatefulWidget {
 }
 
 class _ProfileDetailViewState extends State<ProfileDetailView> {
+  TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerName = TextEditingController();
+  TextEditingController _controllerPassword = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controllerEmail.text = "sdsd";
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: FSIOSNavigationBar.create(
-          middleText: 'Text',
+          middleText: AppUtils.getLocalizationContext(context)
+              .profile_profile_menu_profile_details_title,
           backButtonPressed: () {
             context.pop();
           }),
@@ -36,6 +50,9 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
   _buildMainUI() {
     List<Widget> listWidget = [];
     listWidget.add(_buildImageCover());
+    listWidget.add(_buildNameField());
+    listWidget.add(_buildEmailField());
+    listWidget.add(_buildPasswordField());
     return listWidget;
   }
 
@@ -81,7 +98,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.0),
                           color: Colors.blue),
-                      child: Center(
+                      child: const Center(
                         child: Icon(
                           Icons.edit_outlined,
                           color: Colors.white,
@@ -103,8 +120,131 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
     debugPrint("_editAvatarHandler");
   }
 
+  _buildDataField(
+      {required IconData icon,
+      required String title,
+      required String value,
+      bool isPassword = false,
+      bool isEditable = false,
+      String trailingButtonText = "",
+      VoidCallback? onTap = null,
+      TextEditingController? textEditController}) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
+      child: Container(
+        height: 60.0,
+        child: Row(
+          children: [
+            // icon
+            Container(
+              width: 60,
+              child: Center(
+                child: Icon(
+                  icon,
+                  size: 20,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+              child: Container(
+                width: 1.0,
+                color: Colors.black12,
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // title
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, left: 10.0),
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w200,
+                        fontSize: 14.0,
+                      ),
+                    ),
+                  ),
+                  // value
+                  Padding(
+                    padding: const EdgeInsets.only(left: 5.0, top: 0.0),
+                    child: CupertinoTextField(
+                      controller: textEditController,
+                      keyboardType: TextInputType.text,
+                      enabled: isEditable,
+                      obscureText: isPassword,
+                      style: const TextStyle(fontSize: 16),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.transparent)),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            trailingButtonText.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: GestureDetector(
+                      onTap: onTap,
+                      child: Text(
+                        trailingButtonText,
+                        style: const TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  )
+                : Container()
+            // trailing button
+          ],
+        ),
+        decoration: BoxDecoration(
+          color: ColorConstants.colorF7F7F7,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+      ),
+    );
+  }
+
   // email
+  _buildEmailField() {
+    return _buildDataField(
+        icon: Icons.email_outlined,
+        title: AppUtils.getLocalizationContext(context).profile_detail_email,
+        value: "",
+        isEditable: false,
+        isPassword: false,
+        textEditController: _controllerEmail);
+  }
 
-  // password
+  // name
+  _buildNameField() {
+    return _buildDataField(
+        icon: Icons.person_outline_outlined,
+        title: AppUtils.getLocalizationContext(context).profile_detail_name,
+        value: "",
+        isEditable: true,
+        isPassword: false,
+        textEditController: _controllerName);
+  }
 
+  // Password field
+  _buildPasswordField() {
+    return _buildDataField(
+        icon: Icons.key_outlined,
+        title: AppUtils.getLocalizationContext(context).profile_detail_name,
+        value: "",
+        isEditable: false,
+        isPassword: true,
+        textEditController: _controllerPassword,
+        trailingButtonText: AppUtils.getLocalizationContext(context)
+            .profile_detail_change_password,
+        onTap: () {
+          debugPrint("_buildPasswordField");
+        });
+  }
 }

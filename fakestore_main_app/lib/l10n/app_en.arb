@@ -20,5 +20,9 @@
   "profile_profile_menu_order_to_receive": "To Receive",
   "profile_profile_menu_order_complete": "Completed",
   "profile_profile_menu_order_cancelled": "Cancelled",
-  "profile_profile_menu_order_return_refund": "Return Refund"
+  "profile_profile_menu_order_return_refund": "Return Refund",
+  "profile_detail_name": "Name",
+  "profile_detail_email": "Email",
+  "profile_detail_password": "Password",
+  "profile_detail_change_password": "Change"
 }
