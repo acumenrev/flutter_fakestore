@@ -18,9 +18,9 @@ class ProfileDetailView extends StatefulWidget {
 }
 
 class _ProfileDetailViewState extends State<ProfileDetailView> {
-  TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerName = TextEditingController();
-  TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
 
   @override
   void initState() {
@@ -86,24 +86,28 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                   ),
                 ),
                 Positioned(
-                  right: 0.0,
-                  bottom: 0.0,
-                  child: GestureDetector(
-                    onTap: () {
-                      _editAvatarHandler();
-                    },
+                  right: -15.0,
+                  bottom: -15.0,
+                  child: CupertinoButton(
+                    onPressed: _editAvatarHandler,
+                    pressedOpacity: 0.8,
                     child: Container(
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.0),
-                          color: Colors.blue),
-                      child: const Center(
-                        child: Icon(
-                          Icons.edit_outlined,
-                          color: Colors.white,
-                          size: 20,
-                        ),
+                          color: Colors.blue,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: Offset(1, 1), // Shadow position
+                            )
+                          ]),
+                      child: const Icon(
+                        Icons.edit_outlined,
+                        color: Colors.white,
+                        size: 20,
                       ),
                     ),
                   ),
@@ -118,6 +122,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
 
   _editAvatarHandler() {
     debugPrint("_editAvatarHandler");
+    _showAvatarActionSheet();
   }
 
   _buildDataField(
@@ -163,9 +168,9 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                     child: Text(
                       title,
                       style: const TextStyle(
-                        fontWeight: FontWeight.w200,
-                        fontSize: 14.0,
-                      ),
+                          fontWeight: FontWeight.w200,
+                          fontSize: 14.0,
+                          decoration: TextDecoration.none),
                     ),
                   ),
                   // value
@@ -187,14 +192,15 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
             trailingButtonText.isNotEmpty
                 ? Padding(
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: GestureDetector(
-                      onTap: onTap,
+                    child: CupertinoButton(
+                      onPressed: onTap,
                       child: Text(
                         trailingButtonText,
                         style: const TextStyle(
                             color: Colors.blue,
                             fontSize: 16,
-                            fontWeight: FontWeight.w600),
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.none),
                       ),
                     ),
                   )
@@ -203,9 +209,9 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
           ],
         ),
         decoration: BoxDecoration(
-          color: ColorConstants.colorF7F7F7,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
+            color: ColorConstants.colorF7F7F7,
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(color: Colors.black12)),
       ),
     );
   }
@@ -236,7 +242,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
   _buildPasswordField() {
     return _buildDataField(
         icon: Icons.key_outlined,
-        title: AppUtils.getLocalizationContext(context).profile_detail_name,
+        title: AppUtils.getLocalizationContext(context).profile_detail_password,
         value: "",
         isEditable: false,
         isPassword: true,
@@ -246,5 +252,30 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
         onTap: () {
           debugPrint("_buildPasswordField");
         });
+  }
+
+  _showAvatarActionSheet() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                    onPressed: () {/*...*/},
+                    child: Text(AppUtils.getLocalizationContext(context)
+                        .profile_detail_view_avatar)),
+                CupertinoActionSheetAction(
+                    onPressed: () {/*...*/},
+                    child: Text(AppUtils.getLocalizationContext(context)
+                        .profile_detail_change_avatar)),
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                onPressed: () => _close(context),
+                child: const Text('Close'),
+              ),
+            ));
+  }
+
+  void _close(BuildContext ctx) {
+    Navigator.of(ctx).pop();
   }
 }

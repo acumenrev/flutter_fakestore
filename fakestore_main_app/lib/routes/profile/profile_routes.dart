@@ -4,7 +4,6 @@ import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router/src/route.dart';
 
 class ProfileRoutes implements BaseRoutes {
   @override

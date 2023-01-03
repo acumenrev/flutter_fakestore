@@ -24,5 +24,7 @@
   "profile_detail_name": "Name",
   "profile_detail_email": "Email",
   "profile_detail_password": "Password",
-  "profile_detail_change_password": "Change"
+  "profile_detail_change_password": "Change",
+  "profile_detail_change_avatar": "Change Profile Picture",
+  "profile_detail_view_avatar": "View Profile Picture"
 }
