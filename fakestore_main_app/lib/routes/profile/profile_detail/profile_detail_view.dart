@@ -260,22 +260,26 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
         builder: (_) => CupertinoActionSheet(
               actions: [
                 CupertinoActionSheetAction(
-                    onPressed: () {/*...*/},
+                    onPressed: () {
+                      _closeActionSheet(context);
+                    },
                     child: Text(AppUtils.getLocalizationContext(context)
                         .profile_detail_view_avatar)),
                 CupertinoActionSheetAction(
-                    onPressed: () {/*...*/},
+                    onPressed: () {
+                      _closeActionSheet(context);
+                    },
                     child: Text(AppUtils.getLocalizationContext(context)
                         .profile_detail_change_avatar)),
               ],
               cancelButton: CupertinoActionSheetAction(
-                onPressed: () => _close(context),
-                child: const Text('Close'),
+                onPressed: () => _closeActionSheet(context),
+                child: Text(AppUtils.getLocalizationContext(context).close),
               ),
             ));
   }
 
-  void _close(BuildContext ctx) {
+  void _closeActionSheet(BuildContext ctx) {
     Navigator.of(ctx).pop();
   }
 }
