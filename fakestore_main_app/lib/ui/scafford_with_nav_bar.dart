@@ -27,20 +27,20 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
 
   static const List<MyCustomBottomNavBarItem> tabs = [
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.home),
-      activeIcon: Icon(Icons.home),
+      icon: Icon(Icons.apps_outlined),
+      activeIcon: Icon(Icons.apps),
       label: 'HOME',
       initialLocation: '/',
     ),
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.explore_outlined),
-      activeIcon: Icon(Icons.explore),
+      icon: Icon(Icons.star_outline),
+      activeIcon: Icon(Icons.star),
       label: 'DISCOVER',
       initialLocation: '/discover',
     ),
     MyCustomBottomNavBarItem(
-      icon: Icon(Icons.storefront_outlined),
-      activeIcon: Icon(Icons.storefront),
+      icon: Icon(Icons.person_outline),
+      activeIcon: Icon(Icons.person),
       label: 'SHOP',
       initialLocation: '/shop',
     ),
