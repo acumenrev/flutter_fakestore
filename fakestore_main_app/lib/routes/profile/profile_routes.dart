@@ -1,4 +1,6 @@
 import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_controller.dart';
+import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_controller.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +27,7 @@ class ProfileRoutes implements BaseRoutes {
         result = "/profile/detail";
         break;
       case ProfileRoutesLocation.changePassword:
-        result = "/profile/change-password";
+        result = "/profile/detail/change-password";
         break;
     }
     return result;
@@ -40,7 +42,7 @@ class ProfileRoutes implements BaseRoutes {
                 user: UserDataManager.shared.currentUser)),
           );
         },
-        routes: [_getProfileDetail()]);
+        routes: [_getProfileDetail(), _getChangePassword()]);
   }
 
   _getProfileDetail() {
@@ -53,7 +55,20 @@ class ProfileRoutes implements BaseRoutes {
         });
   }
 
+  _getChangePassword() {
+    return GoRoute(
+        path: "detail/change-password",
+        builder: (ctx, state) {
+          return ChangePasswordView(
+              controller: Get.put(ChangePasswordControllerImplementation()));
+        });
+  }
+
   openProfileDetail(BuildContext ctx) {
     ctx.push(getPageLocation(ProfileRoutesLocation.profileDetail));
+  }
+
+  openChangePassword(BuildContext ctx) {
+    ctx.push(getPageLocation(ProfileRoutesLocation.changePassword));
   }
 }

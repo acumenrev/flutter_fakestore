@@ -27,5 +27,17 @@
   "profile_detail_password": "Password",
   "profile_detail_change_password": "Change",
   "profile_detail_change_avatar": "Change Profile Picture",
-  "profile_detail_view_avatar": "View Profile Picture"
+  "profile_detail_view_avatar": "View Profile Picture",
+  "change_password_title": "Change Password",
+  "change_password_current_password": "Current Password",
+  "change_password_new_password": "New Password",
+  "change_password_verify_new_password": "Verify New Password",
+  "change_password_password_must_have": "Password must have:",
+  "password_validation_rule_character_count": "%1 characters at minimum",
+  "password_validation_rule_special_letter_count": "%1 special %2",
+  "password_validation_rule_lower_letter_character_count": "%1 lowercase letter (a->z)",
+  "password_validation_rule_lower_number_count": "%1 number (0-9)",
+  "password_validation_rule_upper_letter_character_count": "%1 uppercase letter (a->z)",
+  "letter": "letter",
+  "letters": "letters"
 }
