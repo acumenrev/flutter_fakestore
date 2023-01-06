@@ -1,10 +1,13 @@
+import 'package:fakestore_main_app/app_utils.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/profile/profile_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class MyCustomBottomNavBarItem extends BottomNavigationBarItem {
-  final String initialLocation;
+  String initialLocation;
 
-  const MyCustomBottomNavBarItem(
+  MyCustomBottomNavBarItem(
       {required this.initialLocation,
       required Widget icon,
       String? label,
@@ -25,32 +28,7 @@ class ScaffoldWithNavBar extends StatefulWidget {
 class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
   int _currentIndex = 0;
 
-  static const List<MyCustomBottomNavBarItem> tabs = [
-    MyCustomBottomNavBarItem(
-      icon: Icon(Icons.apps_outlined),
-      activeIcon: Icon(Icons.apps),
-      label: 'HOME',
-      initialLocation: '/',
-    ),
-    MyCustomBottomNavBarItem(
-      icon: Icon(Icons.star_outline),
-      activeIcon: Icon(Icons.star),
-      label: 'DISCOVER',
-      initialLocation: '/discover',
-    ),
-    MyCustomBottomNavBarItem(
-      icon: Icon(Icons.person_outline),
-      activeIcon: Icon(Icons.person),
-      label: 'SHOP',
-      initialLocation: '/shop',
-    ),
-    MyCustomBottomNavBarItem(
-      icon: Icon(Icons.account_circle_outlined),
-      activeIcon: Icon(Icons.account_circle),
-      label: 'MY',
-      initialLocation: '/login',
-    ),
-  ];
+  List<MyCustomBottomNavBarItem> tabs = [];
 
   @override
   Widget build(BuildContext context) {
@@ -75,9 +53,42 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
                 : widget.location == '/shop'
                     ? 2
                     : 3,
-        items: tabs,
+        items: getTabs(),
       ),
     );
+  }
+
+  List<MyCustomBottomNavBarItem> getTabs() {
+    if (tabs.isEmpty) {
+      // init
+      tabs = [
+        MyCustomBottomNavBarItem(
+          icon: Icon(Icons.apps_outlined),
+          activeIcon: Icon(Icons.apps),
+          label:
+              AppUtils.getLocalizationContext(context).main_view_nav_bar_home,
+          initialLocation: '/',
+        ),
+        MyCustomBottomNavBarItem(
+          icon: Icon(Icons.star_outline),
+          activeIcon: Icon(Icons.star),
+          label: AppUtils.getLocalizationContext(context)
+              .main_view_nav_bar_wishlist,
+          initialLocation: '/discover',
+        ),
+        MyCustomBottomNavBarItem(
+          icon: Icon(Icons.person_outline),
+          activeIcon: Icon(Icons.person),
+          label: AppUtils.getLocalizationContext(context)
+              .main_view_nav_bar_profile,
+          initialLocation: AppRouter.shared
+              .getProfileRoutes()
+              .getPageLocation(ProfileRoutesLocation.profile),
+        ),
+      ];
+    }
+
+    return tabs;
   }
 
   void _goOtherTab(BuildContext context, int index) {

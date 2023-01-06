@@ -70,7 +70,9 @@ class AppRouter {
               ),
               GoRoute(
                   parentNavigatorKey: _shellNavigatorKey,
-                  path: '/shop',
+                  path: AppRouter.shared
+                      .getProfileRoutes()
+                      .getPageLocation(ProfileRoutesLocation.profile),
                   pageBuilder: (context, state) {
                     return const NoTransitionPage(
                       child: Scaffold(
