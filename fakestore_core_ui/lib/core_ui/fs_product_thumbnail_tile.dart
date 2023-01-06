@@ -37,25 +37,25 @@ class FSProductThumbnailTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
             // Thumbnail
             _buildThumbnail(context, productImage, isFavorite),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
             // Title & Price
             _buildTitleAndPrice(title, price),
-            SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
             // Rating
             _buildRating(rating),
             // Desc
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
             _buildDesc(productDesc),
-            SizedBox(height: 10.0)
+            const SizedBox(height: 10.0)
           ],
         ),
       ),
@@ -68,7 +68,7 @@ class FSProductThumbnailTile extends StatelessWidget {
     debugPrint('width: $width \t height: $height');
     return Row(
       children: [
-        SizedBox(
+        const SizedBox(
           width: 20.0,
         ),
         Expanded(
@@ -87,7 +87,7 @@ class FSProductThumbnailTile extends StatelessWidget {
                     return CircularProgressIndicator(
                         value: downloadProgress.progress);
                   },
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
                 Container(
                   color: Colors.black.withOpacity(0.2),
@@ -116,7 +116,7 @@ class FSProductThumbnailTile extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 20.0,
         )
       ],
@@ -129,14 +129,14 @@ class FSProductThumbnailTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             width: 20.0,
           ),
           // Title
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.black,
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
@@ -150,10 +150,10 @@ class FSProductThumbnailTile extends StatelessWidget {
           Text(
             _formatCurrency(price),
             textAlign: TextAlign.right,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.green, fontSize: 18, fontWeight: FontWeight.w700),
           ),
-          SizedBox(
+          const SizedBox(
             width: 20.0,
           )
         ],
@@ -175,7 +175,7 @@ class FSProductThumbnailTile extends StatelessWidget {
 
     return RatingBarIndicator(
       rating: totalRating,
-      itemBuilder: (context, index) => Icon(
+      itemBuilder: (context, index) => const Icon(
         Icons.star,
         color: Colors.amber,
       ),
@@ -188,7 +188,7 @@ class FSProductThumbnailTile extends StatelessWidget {
   _buildDesc(String desc) {
     return Row(
       children: [
-        SizedBox(
+        const SizedBox(
           width: 20.0,
         ),
         Expanded(
@@ -199,7 +199,7 @@ class FSProductThumbnailTile extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 20.0,
         ),
       ],

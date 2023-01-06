@@ -1,4 +1,3 @@
-import 'package:fakestore_main_app/constants/font_constants.dart';
 import 'package:fakestore_main_app/managers/theme_manager.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [Locale('en', '')],
+      supportedLocales: [const Locale('en', '')],
     );
   }
 }

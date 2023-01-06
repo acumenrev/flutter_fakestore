@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
-import 'package:fakestore_core_ui/fakestore_core_ui.dart';
 import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
     listWidget.addAll(_buildSettingsSubItems());
     listWidget.add(_buildSeparator());
     listWidget.add(_buildLogOut());
-    listWidget.add(SizedBox(
+    listWidget.add(const SizedBox(
       height: 40,
     ));
     return listWidget;
@@ -60,7 +60,7 @@ class _ProfileViewState extends State<ProfileView> {
       height: 150,
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -72,7 +72,7 @@ class _ProfileViewState extends State<ProfileView> {
               _buildUserInfo()
             ],
           )),
-          SizedBox(
+          const SizedBox(
             height: 20,
           )
         ],
@@ -84,17 +84,15 @@ class _ProfileViewState extends State<ProfileView> {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(14.0)),
-        child: Container(
-          child: CachedNetworkImage(
-            width: 100,
-            height: 100,
-            fit: BoxFit.cover,
-            placeholder: (context, url) =>
-                Image.asset(ImageConstants.avatarPlaceholder),
-            imageUrl:
-                "https://images.unsplash.com/photo-1561045439-ce8ec5bc42f8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9",
-          ),
+        borderRadius: const BorderRadius.all(Radius.circular(14.0)),
+        child: CachedNetworkImage(
+          width: 100,
+          height: 100,
+          fit: BoxFit.cover,
+          placeholder: (context, url) =>
+              Image.asset(ImageConstants.avatarPlaceholder),
+          imageUrl:
+              "https://images.unsplash.com/photo-1561045439-ce8ec5bc42f8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9",
         ),
       ),
     );
@@ -103,34 +101,30 @@ class _ProfileViewState extends State<ProfileView> {
   _buildUserInfo() {
     return Padding(
       padding: const EdgeInsets.only(left: 25.0, right: 20),
-      child: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // name
-            Text(
-              widget.controller.getCurrentUser()?.getFullname() ?? "",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.white),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // name
+          Text(
+            widget.controller.getCurrentUser()?.getFullname() ?? "",
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          // email
+          Text(
+            widget.controller.getCurrentUser()?.email ?? "",
+            style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+              fontSize: 16,
             ),
-            // email
-            Text(
-              widget.controller.getCurrentUser()?.email ?? "",
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-                fontSize: 16,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
-        ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
       ),
     );
   }
@@ -183,7 +177,8 @@ class _ProfileViewState extends State<ProfileView> {
                 // name
                 Text(
                   name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
                 ),
                 // desc
                 desc.isNotEmpty
@@ -239,7 +234,8 @@ class _ProfileViewState extends State<ProfileView> {
                   // name
                   Text(
                     name,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   // desc
                   desc.isNotEmpty
@@ -273,7 +269,9 @@ class _ProfileViewState extends State<ProfileView> {
         subHeadlineText: AppUtils.getLocalizationContext(context)
             .profile_profile_menu_profile));
     listWidget.add(_buildNavigationMenuItem(
-        onTap: () {},
+        onTap: () {
+          AppRouter.shared.getProfileRoutes().openProfileDetail(context);
+        },
         name: AppUtils.getLocalizationContext(context)
             .profile_profile_menu_profile_details_title,
         menuIcon: Icons.person_outline_outlined,
@@ -376,7 +374,7 @@ class _ProfileViewState extends State<ProfileView> {
               child: Center(
                 child: Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                   ),
                   textAlign: TextAlign.center,

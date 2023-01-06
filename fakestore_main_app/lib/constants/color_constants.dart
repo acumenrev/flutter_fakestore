@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ColorConstants {
@@ -7,6 +6,5 @@ class ColorConstants {
   }
 
   static Color colorE30404 = colorFromHex('#E30404');
-
-
+  static Color colorF7F7F7 = colorFromHex('#F7F7F7');
 }

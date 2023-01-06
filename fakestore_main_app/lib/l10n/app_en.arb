@@ -2,7 +2,8 @@
   "helloWorld": "Hello World!",
   "log_out": "Log Out",
   "on": "On",
-  "off": "off",
+  "off": "Off",
+  "close": "Close",
   "main_view_nav_bar_home": "Home",
   "main_view_nav_bar_wishlist": "Wishlist",
   "main_view_nav_bar_profile": "Profile",
@@ -20,5 +21,11 @@
   "profile_profile_menu_order_to_receive": "To Receive",
   "profile_profile_menu_order_complete": "Completed",
   "profile_profile_menu_order_cancelled": "Cancelled",
-  "profile_profile_menu_order_return_refund": "Return Refund"
+  "profile_profile_menu_order_return_refund": "Return Refund",
+  "profile_detail_name": "Name",
+  "profile_detail_email": "Email",
+  "profile_detail_password": "Password",
+  "profile_detail_change_password": "Change",
+  "profile_detail_change_avatar": "Change Profile Picture",
+  "profile_detail_view_avatar": "View Profile Picture"
 }

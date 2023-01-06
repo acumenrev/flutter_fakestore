@@ -47,6 +47,8 @@ dependencies:
     path: ../fakestore_core_foundation
   cached_network_image: ^3.2.3
   intl: ^0.17.0
+  transition: ^2.0.2
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:
