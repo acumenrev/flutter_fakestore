@@ -19,7 +19,7 @@ class ProfileRoutes implements BaseRoutes {
     String result = "";
     switch (location) {
       case ProfileRoutesLocation.profile:
-        result = "/profile";
+        result = "profile";
         break;
       case ProfileRoutesLocation.profileDetail:
         result = "/profile/detail";
@@ -33,7 +33,7 @@ class ProfileRoutes implements BaseRoutes {
 
   ProfileRoutes() {
     routes = GoRoute(
-        path: "profile",
+        path: getPageLocation(ProfileRoutesLocation.profile),
         builder: (ctx, state) {
           return ProfileView(
             controller: Get.put(ProfileControllerImplementation(
@@ -48,11 +48,12 @@ class ProfileRoutes implements BaseRoutes {
         path: "detail",
         builder: (ctx, state) {
           return ProfileDetailView(
-              controller: Get.put(ProfileDetailImplementation()));
+              controller: Get.put(ProfileDetailImplementation(
+                  user: UserDataManager.shared.currentUser.value)));
         });
   }
 
   openProfileDetail(BuildContext ctx) {
-    ctx.push("/profile/detail");
+    ctx.push(getPageLocation(ProfileRoutesLocation.profileDetail));
   }
 }

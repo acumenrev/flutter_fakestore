@@ -31,7 +31,10 @@ class AppRouter {
 
   setupRouter() {
     _profileRoutes = ProfileRoutes();
-    // _router = GoRouter(routes: [_setupMainRoutes()]);
+    _router = GoRouter(routes: [_setupMainRoutes()]);
+  }
+
+  _setupRouterWithShellRoutes() {
     _router = GoRouter(
         initialLocation: "/",
         navigatorKey: _rootNavigatorKey,

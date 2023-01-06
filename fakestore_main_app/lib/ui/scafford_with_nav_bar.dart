@@ -1,8 +1,12 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:fakestore_main_app/app_utils.dart';
+import 'package:fakestore_main_app/constants/font_constants.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/profile/profile_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
+import '../constants/color_constants.dart';
 
 class MyCustomBottomNavBarItem extends BottomNavigationBarItem {
   String initialLocation;
@@ -32,29 +36,43 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    const labelStyle = TextStyle(fontFamily: 'Roboto');
+    TextStyle labelStyle =
+        TextStyle(fontFamily: FontConstants.getFont(fontName: AppFonts.roboto));
     return Scaffold(
       body: SafeArea(child: widget.child),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedLabelStyle: labelStyle,
-        unselectedLabelStyle: labelStyle,
-        selectedItemColor: const Color(0xFF434343),
-        selectedFontSize: 12,
-        unselectedItemColor: const Color(0xFF838383),
-        showUnselectedLabels: true,
-        type: BottomNavigationBarType.fixed,
-        onTap: (int index) {
-          _goOtherTab(context, index);
-        },
-        currentIndex: widget.location == '/'
-            ? 0
-            : widget.location == '/discover'
-                ? 1
-                : widget.location == '/shop'
-                    ? 2
-                    : 3,
-        items: getTabs(),
-      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  _buildBottomNavigationBar() {
+    return BottomNavyBar(
+      selectedIndex: 0,
+      showElevation: true, // use this to remove appBar's elevation
+      onItemSelected: (index) => setState(() {
+        // widget.controller.setSelectedTabIndex(index);
+        // _pageViewController.animateToPage(index,
+        //     duration: const Duration(milliseconds: 300), curve: Curves.ease);
+      }),
+      items: [
+        BottomNavyBarItem(
+            icon: const Icon(Icons.apps),
+            title: Text(AppUtils.getLocalizationContext(context)
+                .main_view_nav_bar_home),
+            activeColor: ColorConstants.colorE30404,
+            inactiveColor: Colors.black),
+        BottomNavyBarItem(
+            icon: const Icon(Icons.star),
+            title: Text(AppUtils.getLocalizationContext(context)
+                .main_view_nav_bar_wishlist),
+            activeColor: ColorConstants.colorE30404,
+            inactiveColor: Colors.black),
+        BottomNavyBarItem(
+            icon: const Icon(Icons.person),
+            title: Text(AppUtils.getLocalizationContext(context)
+                .main_view_nav_bar_profile),
+            activeColor: ColorConstants.colorE30404,
+            inactiveColor: Colors.black),
+      ],
     );
   }
 

@@ -26,7 +26,6 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final _scrollController = ScrollController();
-  final _pageViewController = PageController(initialPage: 0);
   List<Widget> _listScreen = [];
 
   @override
@@ -54,13 +53,10 @@ class _MainViewState extends State<MainView> {
 
   _buildContent() {
     return Expanded(
-        child: PageView(
-      children: _getListScreen(),
-      controller: _pageViewController,
-    ));
+        child: _getListScreen()[widget.controller.getSelectedTabIndex()]);
   }
 
-  _getListScreen() {
+  List<Widget> _getListScreen() {
     if (_listScreen.isEmpty) {
       _listScreen.add(_buildHomeView());
       _listScreen.add(_buildWishlishView());
@@ -154,8 +150,6 @@ class _MainViewState extends State<MainView> {
       showElevation: true, // use this to remove appBar's elevation
       onItemSelected: (index) => setState(() {
         widget.controller.setSelectedTabIndex(index);
-        _pageViewController.animateToPage(index,
-            duration: const Duration(milliseconds: 300), curve: Curves.ease);
       }),
       items: [
         BottomNavyBarItem(

@@ -6,6 +6,7 @@ import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_
 import 'package:fakestore_main_app/ui/app_ios_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileDetailView extends StatefulWidget {
@@ -18,15 +19,10 @@ class ProfileDetailView extends StatefulWidget {
 }
 
 class _ProfileDetailViewState extends State<ProfileDetailView> {
-  final TextEditingController _controllerEmail = TextEditingController();
-  final TextEditingController _controllerName = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controllerEmail.text = "sdsd";
   }
 
   @override
@@ -224,7 +220,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
         value: "",
         isEditable: false,
         isPassword: false,
-        textEditController: _controllerEmail);
+        textEditController: widget.controller.controllerEmail.value);
   }
 
   // name
@@ -235,7 +231,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
         value: "",
         isEditable: true,
         isPassword: false,
-        textEditController: _controllerName);
+        textEditController: widget.controller.controllerName.value);
   }
 
   // Password field
@@ -246,7 +242,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
         value: "",
         isEditable: false,
         isPassword: true,
-        textEditController: _controllerPassword,
+        textEditController: widget.controller.controllerPassword.value,
         trailingButtonText: AppUtils.getLocalizationContext(context)
             .profile_detail_change_password,
         onTap: () {
