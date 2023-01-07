@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 class DotEnvConstants {
-  DotEnvConstants._() {}
+  DotEnvConstants._();
 
   static const PWD_VALIDATION_RULE_MINIMUM_CHARACTER_COUNT =
       "PWD_VALIDATION_RULE_MINIMUM_CHARACTER_COUNT";

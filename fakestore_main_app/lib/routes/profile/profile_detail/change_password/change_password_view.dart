@@ -3,6 +3,7 @@ import 'package:fakestore_main_app/extensions/string_extension.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -34,18 +35,20 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: FSIOSNavigationBar.create(
-          middleText:
-              AppUtils.getLocalizationContext(context).change_password_title,
-          backButtonPressed: () {
-            context.pop();
-          }),
-      child: Container(
-        color: Colors.white,
-        child: _buildListView(),
-      ),
-    );
+    return Obx(() {
+      return CupertinoPageScaffold(
+        navigationBar: FSIOSNavigationBar.create(
+            middleText:
+                AppUtils.getLocalizationContext(context).change_password_title,
+            backButtonPressed: () {
+              context.pop();
+            }),
+        child: Container(
+          color: Colors.white,
+          child: _buildListView(),
+        ),
+      );
+    });
   }
 
   _buildListView() {
@@ -57,16 +60,18 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
             .change_password_current_password));
     // new password
     listWidgets.add(_buildTextField(
-        textEditController: _controllerCurrentPwd,
+        textEditController: _controllerNewPwd,
         title: AppUtils.getLocalizationContext(context)
             .change_password_new_password));
     // verify password
     listWidgets.add(_buildTextField(
-        textEditController: _controllerCurrentPwd,
+        textEditController: _controllerVerifyNewPwd,
         title: AppUtils.getLocalizationContext(context)
             .change_password_verify_new_password));
     // password validator
     listWidgets.add(_buildPasswordValidator());
+    // build save button
+    listWidgets.add(_buildSaveButton());
     return ListView(
       children: listWidgets,
     );
@@ -132,15 +137,70 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   }
 
   _buildValidationItem({required String text, required isValid}) {
-    return Container(
-      child: Row(
-        children: [
-          // check mark icon
-
-          // text
-        ],
+    return Expanded(
+      child: Container(
+        child: Row(
+          children: [
+            // check mark icon
+            SizedBox(
+              width: 30.0,
+            ),
+            Icon(
+              isValid ? Icons.check_circle : Icons.close_rounded,
+              size: 14,
+              color: isValid ? Colors.lightGreen : ColorConstants.colorE30404,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            // text
+            Flexible(
+              child: Text(
+                text,
+                textAlign: TextAlign.start,
+                maxLines: 2,
+                overflow: TextOverflow.visible,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w300,
+                  decoration: TextDecoration.none,
+                  color: Colors.black.withOpacity(0.6),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  _buildSaveButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+      child: Container(
+        child: CupertinoButton(
+          onPressed: _handleSaveButton(),
+          color: ColorConstants.colorE30404,
+          disabledColor: ColorConstants.colorF8F8F8,
+          child: Text(
+            "SAVE",
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: widget.controller.isAllRulesQualified.value
+                    ? Colors.white
+                    : Colors.black12),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _handleSaveButton() {
+    if (widget.controller.isAllRulesQualified.value) {
+      return {};
+    }
+    return null;
   }
 
   _buildPasswordValidator() {
@@ -169,23 +229,15 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 // character minimum count
-                Text(
-                  _getMinimumCharacterCount(),
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                      decoration: TextDecoration.none,
-                      color: Colors.black.withOpacity(0.6)),
-                ),
+                _buildValidationItem(
+                    text: _getMinimumCharacterCount(),
+                    isValid:
+                        widget.controller.passwordRules.value.minimumCharacter),
                 // special letter
-                Text(
-                  _getSpecialLetterCount(),
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                      decoration: TextDecoration.none,
-                      color: Colors.black.withOpacity(0.6)),
-                )
+                _buildValidationItem(
+                    text: _getSpecialLetterCount(),
+                    isValid: widget
+                        .controller.passwordRules.value.specialLetterCount)
               ],
             ),
           ),
@@ -197,47 +249,39 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // character minimum count
-                Text(
-                  _getUpprcaseLetter(),
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                      decoration: TextDecoration.none,
-                      color: Colors.black.withOpacity(0.6)),
-                ),
-                // special letter
-                Text(
-                  _getNumberCount(),
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                      decoration: TextDecoration.none,
-                      color: Colors.black.withOpacity(0.6)),
-                )
+                // uppercase letter
+                _buildValidationItem(
+                    text: _getUpprcaseLetter(),
+                    isValid:
+                        widget.controller.passwordRules.value.uppercaseLetter),
+                // number count
+                _buildValidationItem(
+                    text: _getNumberCount(),
+                    isValid: widget.controller.passwordRules.value.numberCount),
               ],
             ),
           ),
           SizedBox(
             height: 10.0,
           ),
+
+          // 3rd row
           Container(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                // character minimum count
-                Text(
-                  _getLowercaseLetter(),
-                  style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w300,
-                      decoration: TextDecoration.none,
-                      color: Colors.black.withOpacity(0.6)),
-                )
+                // lowercase letter
+                _buildValidationItem(
+                    text: _getLowercaseLetter(),
+                    isValid:
+                        widget.controller.passwordRules.value.lowercaseLetter),
+                // verify password match
+                _buildValidationItem(
+                    text: _getPasswordMatch(),
+                    isValid: widget
+                        .controller.passwordRules.value.verifyPasswordMatch)
               ],
             ),
-          )
-          // 3rd row
+          ),
         ],
       ),
     );
@@ -280,5 +324,10 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
     return AppUtils.getLocalizationContext(context)
         .password_validation_rule_lower_number_count
         .format([dotenv.get(DotEnvConstants.PWD_VALIDATION_RULE_NUMBER_COUNT)]);
+  }
+
+  String _getPasswordMatch() {
+    return AppUtils.getLocalizationContext(context)
+        .password_validation_rule_verify_password_match;
   }
 }
