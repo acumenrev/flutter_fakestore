@@ -40,5 +40,6 @@
   "password_validation_rule_upper_letter_character_count": "%1 uppercase letter (a->z)",
   "password_validation_rule_verify_password_match": "Verify Password Match",
   "letter": "letter",
-  "letters": "letters"
+  "letters": "letters",
+  "save": "Save"
 }

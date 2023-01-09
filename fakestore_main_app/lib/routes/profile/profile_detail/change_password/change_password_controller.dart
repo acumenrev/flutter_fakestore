@@ -27,6 +27,9 @@ abstract class ChangePasswordControllerInterface extends BaseController {
   late Rx<String> verifyNewPassword;
   late Rx<PasswordRules> passwordRules;
   late Rx<bool> isAllRulesQualified;
+
+  updateNewPasswordAndVerify(
+      {required String newPwd, required String verifyPwd}) {}
 }
 
 class ChangePasswordControllerImplementation

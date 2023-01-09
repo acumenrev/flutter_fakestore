@@ -179,11 +179,15 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
       padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
       child: Container(
         child: CupertinoButton(
-          onPressed: _handleSaveButton(),
+          onPressed: widget.controller.isAllRulesQualified.value == true
+              ? () {
+                  _handleSaveButton();
+                }
+              : null,
           color: ColorConstants.colorE30404,
           disabledColor: ColorConstants.colorF8F8F8,
           child: Text(
-            "SAVE",
+            AppUtils.getLocalizationContext(context).save.toUpperCase(),
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -197,10 +201,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   }
 
   _handleSaveButton() {
-    if (widget.controller.isAllRulesQualified.value) {
-      return {};
-    }
-    return null;
+    widget.controller.isAllRulesQualified.toggle();
   }
 
   _buildPasswordValidator() {
