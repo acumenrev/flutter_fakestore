@@ -21,13 +21,6 @@ class ChangePasswordView extends StatefulWidget {
 }
 
 class _ChangePasswordViewState extends State<ChangePasswordView> {
-  final TextEditingController _controllerCurrentPwd =
-      TextEditingController(text: "");
-  final TextEditingController _controllerNewPwd =
-      TextEditingController(text: "");
-  final TextEditingController _controllerVerifyNewPwd =
-      TextEditingController(text: "");
-
   @override
   void initState() {
     super.initState();
@@ -55,17 +48,17 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
     List<Widget> listWidgets = [];
     // current password
     listWidgets.add(_buildTextField(
-        textEditController: _controllerCurrentPwd,
+        textEditController: widget.controller.currentPassword.value,
         title: AppUtils.getLocalizationContext(context)
             .change_password_current_password));
     // new password
     listWidgets.add(_buildTextField(
-        textEditController: _controllerNewPwd,
+        textEditController: widget.controller.newPassword.value,
         title: AppUtils.getLocalizationContext(context)
             .change_password_new_password));
     // verify password
     listWidgets.add(_buildTextField(
-        textEditController: _controllerVerifyNewPwd,
+        textEditController: widget.controller.verifyNewPassword.value,
         title: AppUtils.getLocalizationContext(context)
             .change_password_verify_new_password));
     // password validator

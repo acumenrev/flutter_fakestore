@@ -1,6 +1,6 @@
+import 'package:async/async.dart';
 import 'package:fakestore_main_app/base/base_controller.dart';
-import 'package:fakestore_main_app/constants/dotenv_constants.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class PasswordRules {
@@ -19,14 +19,28 @@ class PasswordRules {
     numberCount = false;
     verifyPasswordMatch = false;
   }
+
+  void validateInputs(
+      {required String currentPwd,
+      required String newPwd,
+      required String verifyPwd}) {}
+
+  bool isValid() {
+    return (minimumCharacter &&
+        specialLetterCount &&
+        uppercaseLetter &&
+        lowercaseLetter &&
+        numberCount &&
+        verifyPasswordMatch);
+  }
 }
 
 abstract class ChangePasswordControllerInterface extends BaseController {
-  late Rx<String> currentPassword;
-  late Rx<String> newPassword;
-  late Rx<String> verifyNewPassword;
+  late Rx<TextEditingController> currentPassword;
+  late Rx<TextEditingController> newPassword;
+  late Rx<TextEditingController> verifyNewPassword;
   late Rx<PasswordRules> passwordRules;
-  late Rx<bool> isAllRulesQualified;
+  late RxBool isAllRulesQualified;
 
   updateNewPasswordAndVerify(
       {required String newPwd, required String verifyPwd}) {}
@@ -35,10 +49,20 @@ abstract class ChangePasswordControllerInterface extends BaseController {
 class ChangePasswordControllerImplementation
     extends ChangePasswordControllerInterface {
   ChangePasswordControllerImplementation() {
-    currentPassword = "".obs;
-    newPassword = "".obs;
-    verifyNewPassword = "".obs;
+    currentPassword = TextEditingController(text: "").obs;
+    newPassword = TextEditingController(text: "").obs;
+    verifyNewPassword = TextEditingController(text: "").obs;
     passwordRules = PasswordRules().obs;
-    isAllRulesQualified = false.obs;
+    isAllRulesQualified = RxBool(false);
+    _setupObservers();
+  }
+
+  _setupObservers() {
+    passwordRules.listen((value) {
+      isAllRulesQualified.value = value.isValid();
+    });
+
+    final sgUserInput = StreamGroup.merge(
+        [currentPassword.stream, verifyNewPassword.stream, newPassword.stream]);
   }
 }
