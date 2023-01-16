@@ -27,6 +27,12 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   }
 
   @override
+  void dispose() {
+    widget.controller.destroy();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
       return CupertinoPageScaffold(
@@ -48,17 +54,17 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
     List<Widget> listWidgets = [];
     // current password
     listWidgets.add(_buildTextField(
-        textEditController: widget.controller.currentPassword.value,
+        textEditController: widget.controller.tecCurrentPassword,
         title: AppUtils.getLocalizationContext(context)
             .change_password_current_password));
     // new password
     listWidgets.add(_buildTextField(
-        textEditController: widget.controller.newPassword.value,
+        textEditController: widget.controller.tecNewPassword,
         title: AppUtils.getLocalizationContext(context)
             .change_password_new_password));
     // verify password
     listWidgets.add(_buildTextField(
-        textEditController: widget.controller.verifyNewPassword.value,
+        textEditController: widget.controller.tecVerifyNewPassword,
         title: AppUtils.getLocalizationContext(context)
             .change_password_verify_new_password));
     // password validator

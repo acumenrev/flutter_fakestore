@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:async/async.dart';
 import 'package:fakestore_main_app/base/base_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,33 +38,61 @@ class PasswordRules {
 }
 
 abstract class ChangePasswordControllerInterface extends BaseController {
-  late Rx<TextEditingController> currentPassword;
-  late Rx<TextEditingController> newPassword;
-  late Rx<TextEditingController> verifyNewPassword;
+  late TextEditingController tecCurrentPassword;
+  late TextEditingController tecNewPassword;
+  late TextEditingController tecVerifyNewPassword;
+  late StreamController<String> scCurrentPwd;
+  late StreamController<String> scNewPwd;
+  late StreamController<String> scVerifyPwd;
   late Rx<PasswordRules> passwordRules;
   late RxBool isAllRulesQualified;
 
   updateNewPasswordAndVerify(
       {required String newPwd, required String verifyPwd}) {}
+
+  destroy() {}
 }
 
 class ChangePasswordControllerImplementation
     extends ChangePasswordControllerInterface {
   ChangePasswordControllerImplementation() {
-    currentPassword = TextEditingController(text: "").obs;
-    newPassword = TextEditingController(text: "").obs;
-    verifyNewPassword = TextEditingController(text: "").obs;
+    tecCurrentPassword = TextEditingController(text: "");
+    tecNewPassword = TextEditingController(text: "");
+    tecVerifyNewPassword = TextEditingController(text: "");
     passwordRules = PasswordRules().obs;
     isAllRulesQualified = RxBool(false);
     _setupObservers();
+    _setupStreams();
+  }
+
+  @override
+  destroy() {
+    scVerifyPwd.close();
+    scCurrentPwd.close();
+    scNewPwd.close();
+    tecCurrentPassword.dispose();
+    tecNewPassword.dispose();
+    tecVerifyNewPassword.dispose();
   }
 
   _setupObservers() {
     passwordRules.listen((value) {
       isAllRulesQualified.value = value.isValid();
     });
+  }
 
-    final sgUserInput = StreamGroup.merge(
-        [currentPassword.stream, verifyNewPassword.stream, newPassword.stream]);
+  _setupStreams() {
+    scCurrentPwd = StreamController<String>.broadcast();
+    scNewPwd = StreamController<String>.broadcast();
+    scVerifyPwd = StreamController<String>.broadcast();
+    tecCurrentPassword.addListener(() {
+      scCurrentPwd.sink.add(tecCurrentPassword.text.trim());
+    });
+    tecNewPassword.addListener(() {
+      scNewPwd.sink.add(tecCurrentPassword.text.trim());
+    });
+    tecVerifyNewPassword.addListener(() {
+      scVerifyPwd.sink.add(tecCurrentPassword.text.trim());
+    });
   }
 }
