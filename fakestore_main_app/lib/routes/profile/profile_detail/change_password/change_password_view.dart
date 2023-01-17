@@ -3,6 +3,7 @@ import 'package:fakestore_main_app/extensions/string_extension.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sprintf/sprintf.dart';
@@ -24,6 +25,16 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   @override
   void initState() {
     super.initState();
+    widget.controller.saveSuccess = () {
+      debugPrint("save success is called");
+      _showToast(context);
+    };
+  }
+
+  void _showToast(BuildContext context) {
+    AppUtils.showSuccessToast(
+        AppUtils.getLocalizationContext(context).change_password_save_success);
+    context.pop();
   }
 
   @override
@@ -42,31 +53,60 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
             backButtonPressed: () {
               context.pop();
             }),
-        child: Container(
-          color: Colors.white,
-          child: _buildListView(),
+        child: Stack(
+          children: _buildMainStackViewChildren(),
         ),
       );
     });
+  }
+
+  List<Widget> _buildMainStackViewChildren() {
+    List<Widget> list = [];
+    list.add(Container(
+      color: Colors.white,
+      child: _buildListView(),
+    ));
+    if (widget.controller.isLoading.isTrue) {
+      list.add(Container(
+        child: Stack(
+          children: [
+            // black background
+            Container(
+              color: Colors.black.withOpacity(0.3),
+            ),
+            // circular progress indicator
+            Center(
+              child: const CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+      ));
+    }
+
+    return list;
   }
 
   _buildListView() {
     List<Widget> listWidgets = [];
     // current password
     listWidgets.add(_buildTextField(
-        textEditController: widget.controller.tecCurrentPassword,
         title: AppUtils.getLocalizationContext(context)
-            .change_password_current_password));
+            .change_password_current_password,
+        changedHandler: widget.controller.currentPwdChanged));
+
     // new password
     listWidgets.add(_buildTextField(
-        textEditController: widget.controller.tecNewPassword,
         title: AppUtils.getLocalizationContext(context)
-            .change_password_new_password));
+            .change_password_new_password,
+        changedHandler: widget.controller.newPwdChanged));
     // verify password
     listWidgets.add(_buildTextField(
-        textEditController: widget.controller.tecVerifyNewPassword,
         title: AppUtils.getLocalizationContext(context)
-            .change_password_verify_new_password));
+            .change_password_verify_new_password,
+        changedHandler: widget.controller.verifyPwdChanged));
+
     // password validator
     listWidgets.add(_buildPasswordValidator());
     // build save button
@@ -77,8 +117,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   }
 
   _buildTextField(
-      {required TextEditingController textEditController,
-      required String title}) {
+      {required String title, required ValueChanged<String> changedHandler}) {
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
       child: Container(
@@ -111,14 +150,11 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                   // value
                   Padding(
                     padding: const EdgeInsets.only(left: 5.0, top: 0.0),
-                    child: CupertinoTextField(
-                      controller: textEditController,
-                      keyboardType: TextInputType.text,
-                      enabled: true,
+                    child: CupertinoTextFormFieldRow(
+                      onChanged: changedHandler,
                       obscureText: true,
-                      style: const TextStyle(fontSize: 16),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.transparent)),
+                      padding: const EdgeInsets.only(
+                          left: 0.0, right: 0.0, top: 0.0, bottom: 0.0),
                     ),
                   )
                 ],
@@ -178,11 +214,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
       padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
       child: Container(
         child: CupertinoButton(
-          onPressed: widget.controller.isAllRulesQualified.value == true
-              ? () {
-                  _handleSaveButton();
-                }
-              : null,
+          onPressed: widget.controller.submitFunc.value,
           color: ColorConstants.colorE30404,
           disabledColor: ColorConstants.colorF8F8F8,
           child: Text(
@@ -190,7 +222,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: widget.controller.isAllRulesQualified.value
+                color: widget.controller.submitFunc.value != null
                     ? Colors.white
                     : Colors.black12),
           ),
@@ -232,12 +264,12 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                 _buildValidationItem(
                     text: _getMinimumCharacterCount(),
                     isValid:
-                        widget.controller.passwordRules.value.minimumCharacter),
+                        widget.controller.passwordRules.minimumCharacter.value),
                 // special letter
                 _buildValidationItem(
                     text: _getSpecialLetterCount(),
                     isValid: widget
-                        .controller.passwordRules.value.specialLetterCount)
+                        .controller.passwordRules.specialLetterCount.value)
               ],
             ),
           ),
@@ -253,11 +285,11 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                 _buildValidationItem(
                     text: _getUpprcaseLetter(),
                     isValid:
-                        widget.controller.passwordRules.value.uppercaseLetter),
+                        widget.controller.passwordRules.uppercaseLetter.value),
                 // number count
                 _buildValidationItem(
                     text: _getNumberCount(),
-                    isValid: widget.controller.passwordRules.value.numberCount),
+                    isValid: widget.controller.passwordRules.numberCount.value),
               ],
             ),
           ),
@@ -273,12 +305,12 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                 _buildValidationItem(
                     text: _getLowercaseLetter(),
                     isValid:
-                        widget.controller.passwordRules.value.lowercaseLetter),
+                        widget.controller.passwordRules.lowercaseLetter.value),
                 // verify password match
                 _buildValidationItem(
                     text: _getPasswordMatch(),
                     isValid: widget
-                        .controller.passwordRules.value.verifyPasswordMatch)
+                        .controller.passwordRules.verifyPasswordMatch.value)
               ],
             ),
           ),

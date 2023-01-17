@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:convert';
 import 'package:fakestore_core_foundation/models/fs_category.dart';
 import 'package:fakestore_core_foundation/models/fs_product.dart';

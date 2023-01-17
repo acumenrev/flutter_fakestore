@@ -52,6 +52,8 @@ dependencies:
   sprintf: ^7.0.0
   flutter_dotenv: ^5.0.2
   async: ^2.9.0
+  rxdart: ^0.27.7
+  fluttertoast: ^8.1.2
 
 dev_dependencies:
   flutter_test:
