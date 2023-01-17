@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:fakestore_core_foundation/models/fs_cart_product.dart';
 import 'package:fakestore_core_foundation/others/fs_core_utils.dart';
 import 'package:flutter_test/flutter_test.dart';

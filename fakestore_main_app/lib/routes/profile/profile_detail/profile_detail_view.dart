@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_controller.dart';
 import 'package:fakestore_main_app/ui/app_ios_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
@@ -172,14 +173,18 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
                   // value
                   Padding(
                     padding: const EdgeInsets.only(left: 5.0, top: 0.0),
-                    child: CupertinoTextField(
-                      controller: textEditController,
-                      keyboardType: TextInputType.text,
-                      enabled: isEditable,
-                      obscureText: isPassword,
-                      style: const TextStyle(fontSize: 16),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.transparent)),
+                    child: Stack(
+                      children: [
+                        CupertinoTextField(
+                          controller: textEditController,
+                          keyboardType: TextInputType.text,
+                          enabled: isEditable,
+                          obscureText: isPassword,
+                          style: const TextStyle(fontSize: 16),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.transparent)),
+                        ),
+                      ],
                     ),
                   )
                 ],
@@ -205,7 +210,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
           ],
         ),
         decoration: BoxDecoration(
-            color: ColorConstants.colorF7F7F7,
+            color: ColorConstants.colorF8F8F8,
             borderRadius: BorderRadius.circular(12.0),
             border: Border.all(color: Colors.black12)),
       ),
@@ -246,7 +251,7 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
         trailingButtonText: AppUtils.getLocalizationContext(context)
             .profile_detail_change_password,
         onTap: () {
-          debugPrint("_buildPasswordField");
+          AppRouter.shared.getProfileRoutes().openChangePassword(context);
         });
   }
 
