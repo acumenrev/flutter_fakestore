@@ -60,7 +60,7 @@ class ProfileRoutes implements BaseRoutes {
         path: "detail/change-password",
         builder: (ctx, state) {
           return ChangePasswordView(
-              controller: Get.put(ChangePasswordControllerImplementation()));
+              controller: ChangePasswordControllerImplementation());
         });
   }
 
