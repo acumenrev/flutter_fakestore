@@ -68,11 +68,7 @@ abstract class ChangePasswordControllerInterface extends BaseController {
 
 class ChangePasswordControllerImplementation
     extends ChangePasswordControllerInterface {
-  ChangePasswordControllerImplementation();
-
-  @override
-  void onInit() {
-    super.onInit();
+  ChangePasswordControllerImplementation() {
     passwordRules = PasswordRules();
     isAllRulesQualified = RxBool(false);
     submitFunc = Rxn<Function()>(null);
