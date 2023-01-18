@@ -4,6 +4,7 @@ import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
 import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -315,42 +316,54 @@ class _ProfileViewState extends State<ProfileView> {
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_to_pay,
               icon: Icons.money_outlined,
-              onTap: () {},
+              onTap: () {
+                _openOrdersPage(ProfileOrdersTab.toPay);
+              },
               numberOfOrders: 1),
           // To Ship
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_to_ship,
               icon: Icons.delivery_dining_outlined,
-              onTap: () {},
+              onTap: () {
+                _openOrdersPage(ProfileOrdersTab.toShip);
+              },
               numberOfOrders: 1),
           // To Receive
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_to_receive,
               icon: Icons.home_outlined,
-              onTap: () {},
+              onTap: () {
+                _openOrdersPage(ProfileOrdersTab.toReceive);
+              },
               numberOfOrders: 1),
           // Completed
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_complete,
               icon: Icons.check_circle_outline,
-              onTap: () {},
+              onTap: () {
+                _openOrdersPage(ProfileOrdersTab.completed);
+              },
               numberOfOrders: 1),
           // Cancelled
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_cancelled,
               icon: Icons.cancel_outlined,
-              onTap: () {},
+              onTap: () {
+                _openOrdersPage(ProfileOrdersTab.cancelled);
+              },
               numberOfOrders: 1),
           // Refund Return
           _buildHorizontalItem(
               name: AppUtils.getLocalizationContext(context)
                   .profile_profile_menu_order_return_refund,
               icon: Icons.backspace_outlined,
-              onTap: () {},
+              onTap: () {
+                _openOrdersPage(ProfileOrdersTab.returnOrRefund);
+              },
               numberOfOrders: 1),
         ],
       ),
@@ -455,5 +468,9 @@ class _ProfileViewState extends State<ProfileView> {
             )),
       ),
     );
+  }
+
+  _openOrdersPage(ProfileOrdersTab tab) {
+    AppRouter.shared.getProfileRoutes().openOrders(context, tab);
   }
 }
