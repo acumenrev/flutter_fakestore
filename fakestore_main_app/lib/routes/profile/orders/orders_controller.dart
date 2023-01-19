@@ -12,6 +12,7 @@ enum ProfileOrdersTab {
 
 abstract class ProfileOrdersControllerInterface extends BaseController {
   late Rx<ProfileOrdersTab> currentSelectedTab;
+  late RxInt unreadMessages;
 }
 
 class ProfileOrdersControllerImplementation
@@ -19,5 +20,6 @@ class ProfileOrdersControllerImplementation
   ProfileOrdersControllerImplementation(
       {ProfileOrdersTab selectedTab = ProfileOrdersTab.toPay}) {
     currentSelectedTab = selectedTab.obs;
+    unreadMessages = RxInt(12);
   }
 }

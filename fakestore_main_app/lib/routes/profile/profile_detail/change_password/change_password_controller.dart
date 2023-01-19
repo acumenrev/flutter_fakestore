@@ -75,7 +75,6 @@ class ChangePasswordControllerImplementation
     currentPwd = RxString("");
     newPwd = RxString("");
     verifyPwd = RxString("");
-    isLoading = RxBool(false);
     _setupObservers();
   }
 

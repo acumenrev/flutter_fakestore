@@ -302,71 +302,26 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   _buildOrderHorizontalItems() {
+    List<ButtonsItem> items = [];
+    for (var element in ProfileOrdersTab.values) {
+      items.add(_buildHorizontalItem(
+          name: AppUtils.getProfileOrderString(context, element),
+          icon: AppUtils.getProfileOrderTabIcon(element),
+          onTap: () {
+            _openOrdersPage(element);
+          },
+          numberOfOrders: 1));
+    }
+
     return Container(
       height: 80,
       child: ScrollingButtonBar(
-        childWidth: 30,
-        childHeight: 80,
-        foregroundColor: Colors.transparent,
-        scrollController: _orderScrollController,
-        selectedItemIndex: 0,
-        children: [
-          // To Pay
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_to_pay,
-              icon: Icons.money_outlined,
-              onTap: () {
-                _openOrdersPage(ProfileOrdersTab.toPay);
-              },
-              numberOfOrders: 1),
-          // To Ship
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_to_ship,
-              icon: Icons.delivery_dining_outlined,
-              onTap: () {
-                _openOrdersPage(ProfileOrdersTab.toShip);
-              },
-              numberOfOrders: 1),
-          // To Receive
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_to_receive,
-              icon: Icons.home_outlined,
-              onTap: () {
-                _openOrdersPage(ProfileOrdersTab.toReceive);
-              },
-              numberOfOrders: 1),
-          // Completed
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_complete,
-              icon: Icons.check_circle_outline,
-              onTap: () {
-                _openOrdersPage(ProfileOrdersTab.completed);
-              },
-              numberOfOrders: 1),
-          // Cancelled
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_cancelled,
-              icon: Icons.cancel_outlined,
-              onTap: () {
-                _openOrdersPage(ProfileOrdersTab.cancelled);
-              },
-              numberOfOrders: 1),
-          // Refund Return
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_return_refund,
-              icon: Icons.backspace_outlined,
-              onTap: () {
-                _openOrdersPage(ProfileOrdersTab.returnOrRefund);
-              },
-              numberOfOrders: 1),
-        ],
-      ),
+          childWidth: 30,
+          childHeight: 80,
+          foregroundColor: Colors.transparent,
+          scrollController: _orderScrollController,
+          selectedItemIndex: 0,
+          children: items),
     );
   }
 

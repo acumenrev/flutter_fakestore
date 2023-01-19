@@ -5,7 +5,8 @@ class FSIOSNavigationBar {
   static CupertinoNavigationBar create(
       {required String middleText,
       required VoidCallback backButtonPressed,
-      String backButtonText = ""}) {
+      String backButtonText = "",
+      Widget? trailing = null}) {
     return CupertinoNavigationBar(
       middle: Text(
         middleText,
@@ -14,6 +15,7 @@ class FSIOSNavigationBar {
             color: ColorConstants.colorE30404,
             fontSize: 20),
       ),
+      trailing: trailing,
       leading: CupertinoNavigationBarBackButton(
         onPressed: () {
           backButtonPressed();
