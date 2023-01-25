@@ -1,4 +1,5 @@
-import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
+import 'dart:async';
+
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +18,17 @@ class ProfileOrders extends StatelessWidget {
   ScrollController _scrollController = ScrollController();
   late BuildContext ctx;
   late ProfileOrdersControllerInterface controller;
+  static const double _padding = 8.0;
+
+  _checkFirstLaunch(BuildContext ctx) {
+    Future.delayed(const Duration(milliseconds: 100), () {
+      _scrollViewJumpToItem(controller.currentSelectedTab.value.index, ctx);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    _checkFirstLaunch(context);
     return CupertinoPageScaffold(
       navigationBar: FSIOSNavigationBar.create(
           middleText: AppUtils.getLocalizationContext(context).orders,
@@ -144,32 +153,59 @@ class ProfileOrders extends StatelessWidget {
     );
   }
 
+  _scrollViewJumpToItem(int index, BuildContext ctx) {
+    final width =
+        _scrollController.position.maxScrollExtent + (ctx.size?.width ?? 0);
+    final value =
+        (index / ProfileOrdersTab.values.length) * width - _padding * 2;
+    final valueSpace = value + _padding;
+    final newValue = valueSpace > _scrollController.position.maxScrollExtent
+        ? _scrollController.position.maxScrollExtent
+        : valueSpace;
+    _scrollController.animateTo(newValue,
+        duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  }
+
   _buildHorizontalItems(BuildContext ctx, ProfileOrdersTab currentSelectedTab) {
     Widget? temp;
     String buttonText = "";
     List<Widget> listWidget = [];
     for (var element in ProfileOrdersTab.values) {
-      temp = Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-        child: Container(
-          height: 40,
-          child: Column(
-            children: [
-              Text(
-                AppUtils.getProfileOrderString(ctx, element),
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                    decoration: TextDecoration.none),
-                maxLines: 1,
-              ),
-              // underline
-              Container(
-                height: 1,
-                color: Colors.red,
-              )
-            ],
+      temp = CupertinoButton(
+        onPressed: () {
+          controller.currentSelectedTab.value = element;
+          _scrollViewJumpToItem(element.index, ctx);
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(left: _padding, right: _padding),
+          child: Container(
+            height: 60,
+            child: Column(
+              children: [
+                Text(
+                  AppUtils.getProfileOrderString(ctx, element),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: currentSelectedTab == element
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      decoration: TextDecoration.none),
+                  maxLines: 1,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                // underline
+                Container(
+                  height: 1,
+                  width: 50,
+                  color: currentSelectedTab == element
+                      ? Colors.red
+                      : Colors.transparent,
+                )
+              ],
+            ),
           ),
         ),
       );
@@ -183,6 +219,7 @@ class ProfileOrders extends StatelessWidget {
         height: 60,
         color: Colors.transparent,
         child: SingleChildScrollView(
+            controller: _scrollController,
             scrollDirection: Axis.horizontal,
             child: Obx(() {
               return Row(

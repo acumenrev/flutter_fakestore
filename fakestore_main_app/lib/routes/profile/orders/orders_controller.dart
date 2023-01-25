@@ -20,6 +20,6 @@ class ProfileOrdersControllerImplementation
   ProfileOrdersControllerImplementation(
       {ProfileOrdersTab selectedTab = ProfileOrdersTab.toPay}) {
     currentSelectedTab = selectedTab.obs;
-    unreadMessages = RxInt(12);
+    unreadMessages = RxInt(14);
   }
 }
