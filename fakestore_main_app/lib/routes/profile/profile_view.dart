@@ -195,13 +195,13 @@ class _ProfileViewState extends State<ProfileView> {
           // Arrow icon
           Padding(
               padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-              child: Switch(
+              child: Switch.adaptive(
                   value: isSwitched,
                   onChanged: (value) {
                     onChanged(value);
                   },
                   activeTrackColor: ColorConstants.colorE30404,
-                  activeColor: Colors.white))
+                  activeColor: ColorConstants.colorE30404))
         ],
       ),
     );
@@ -413,13 +413,17 @@ class _ProfileViewState extends State<ProfileView> {
       child: Center(
         child: OutlinedButton(
             onPressed: () {},
+            style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                side: BorderSide(color: ColorConstants.colorE30404)),
             child: Container(
               width: 160,
               height: 40,
               child: Center(
-                  child: Text(AppUtils.getLocalizationContext(context)
-                      .log_out
-                      .toUpperCase())),
+                  child: Text(
+                AppUtils.getLocalizationContext(context).log_out.toUpperCase(),
+                style: TextStyle(color: ColorConstants.colorE30404),
+              )),
             )),
       ),
     );
