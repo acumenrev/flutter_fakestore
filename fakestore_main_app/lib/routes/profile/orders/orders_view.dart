@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
+import 'package:fakestore_main_app/routes/profile/orders/order_tile.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +140,7 @@ class ProfileOrders extends StatelessWidget {
   }
 
   _buildContent(BuildContext ctx) {
-    List<Widget> listWidget = [];
+    List<Widget> listWidget = [OrderTile(), OrderTile()];
     return Container(
       child: Column(
         children: [
@@ -156,8 +158,7 @@ class ProfileOrders extends StatelessWidget {
   _scrollViewJumpToItem(int index, BuildContext ctx) {
     final width =
         _scrollController.position.maxScrollExtent + (ctx.size?.width ?? 0);
-    final value =
-        (index / ProfileOrdersTab.values.length) * width - _padding * 2;
+    final value = (index / OrderStatus.values.length) * width - _padding * 2;
     final valueSpace = value + _padding;
     final newValue = valueSpace > _scrollController.position.maxScrollExtent
         ? _scrollController.position.maxScrollExtent
@@ -166,11 +167,11 @@ class ProfileOrders extends StatelessWidget {
         duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
-  _buildHorizontalItems(BuildContext ctx, ProfileOrdersTab currentSelectedTab) {
+  _buildHorizontalItems(BuildContext ctx, OrderStatus currentSelectedTab) {
     Widget? temp;
     String buttonText = "";
     List<Widget> listWidget = [];
-    for (var element in ProfileOrdersTab.values) {
+    for (var element in OrderStatus.values) {
       temp = CupertinoButton(
         onPressed: () {
           controller.currentSelectedTab.value = element;
@@ -179,22 +180,21 @@ class ProfileOrders extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: _padding, right: _padding),
           child: Container(
-            height: 60,
+            height: 40,
             child: Column(
               children: [
-                Text(
-                  AppUtils.getProfileOrderString(ctx, element),
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black,
-                      fontWeight: currentSelectedTab == element
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                      decoration: TextDecoration.none),
-                  maxLines: 1,
-                ),
-                SizedBox(
-                  height: 5,
+                Expanded(
+                  child: Text(
+                    AppUtils.getProfileOrderString(ctx, element),
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black,
+                        fontWeight: currentSelectedTab == element
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                        decoration: TextDecoration.none),
+                    maxLines: 1,
+                  ),
                 ),
                 // underline
                 Container(
@@ -216,16 +216,26 @@ class ProfileOrders extends StatelessWidget {
 
   _buildScrollingMenu(BuildContext ctx) {
     return Container(
-        height: 60,
+        height: 50,
         color: Colors.transparent,
-        child: SingleChildScrollView(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            child: Obx(() {
-              return Row(
-                children: _buildHorizontalItems(
-                    ctx, controller.currentSelectedTab.value),
-              );
-            })));
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                  controller: _scrollController,
+                  scrollDirection: Axis.horizontal,
+                  child: Obx(() {
+                    return Row(
+                      children: _buildHorizontalItems(
+                          ctx, controller.currentSelectedTab.value),
+                    );
+                  })),
+            ),
+            Container(
+              height: 1,
+              color: Colors.black12,
+            )
+          ],
+        ));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
@@ -303,7 +304,7 @@ class _ProfileViewState extends State<ProfileView> {
 
   _buildOrderHorizontalItems() {
     List<ButtonsItem> items = [];
-    for (var element in ProfileOrdersTab.values) {
+    for (var element in OrderStatus.values) {
       items.add(_buildHorizontalItem(
           name: AppUtils.getProfileOrderString(context, element),
           icon: AppUtils.getProfileOrderTabIcon(element),
@@ -429,7 +430,7 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  _openOrdersPage(ProfileOrdersTab tab) {
+  _openOrdersPage(OrderStatus tab) {
     AppRouter.shared.getProfileRoutes().openOrders(context, tab);
   }
 }

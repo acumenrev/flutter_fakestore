@@ -1,3 +1,4 @@
+import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_view.dart';
@@ -73,10 +74,10 @@ class ProfileRoutes implements BaseRoutes {
     return GoRoute(
         path: "orders",
         builder: (ctx, state) {
-          ProfileOrdersTab tab = ProfileOrdersTab.toPay;
+          OrderStatus tab = OrderStatus.toPay;
           if (state.extra != null) {
             Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
-            tab = extra["tab"] as ProfileOrdersTab;
+            tab = extra["tab"] as OrderStatus;
           }
 
           return ProfileOrders(
@@ -93,7 +94,7 @@ class ProfileRoutes implements BaseRoutes {
     ctx.push(getPageLocation(ProfileRoutesLocation.changePassword));
   }
 
-  openOrders(BuildContext ctx, ProfileOrdersTab tab) {
+  openOrders(BuildContext ctx, OrderStatus tab) {
     ctx.push(getPageLocation(ProfileRoutesLocation.orders),
         extra: {"tab": tab});
   }
