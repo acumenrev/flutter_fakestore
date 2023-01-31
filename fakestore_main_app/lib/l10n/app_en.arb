@@ -42,5 +42,6 @@
   "password_validation_rule_verify_password_match": "Verify Password Match",
   "letter": "letter",
   "letters": "letters",
-  "save": "Save"
+  "save": "Save",
+  "orders": "Orders"
 }

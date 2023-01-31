@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/image_constants.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
 import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -194,13 +196,13 @@ class _ProfileViewState extends State<ProfileView> {
           // Arrow icon
           Padding(
               padding: const EdgeInsets.only(right: 10.0, left: 10.0),
-              child: Switch(
+              child: Switch.adaptive(
                   value: isSwitched,
                   onChanged: (value) {
                     onChanged(value);
                   },
                   activeTrackColor: ColorConstants.colorE30404,
-                  activeColor: Colors.white))
+                  activeColor: ColorConstants.colorE30404))
         ],
       ),
     );
@@ -301,59 +303,26 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   _buildOrderHorizontalItems() {
+    List<ButtonsItem> items = [];
+    for (var element in OrderStatus.values) {
+      items.add(_buildHorizontalItem(
+          name: AppUtils.getProfileOrderString(context, element),
+          icon: AppUtils.getProfileOrderTabIcon(element),
+          onTap: () {
+            _openOrdersPage(element);
+          },
+          numberOfOrders: 1));
+    }
+
     return Container(
       height: 80,
       child: ScrollingButtonBar(
-        childWidth: 30,
-        childHeight: 80,
-        foregroundColor: Colors.transparent,
-        scrollController: _orderScrollController,
-        selectedItemIndex: 0,
-        children: [
-          // To Pay
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_to_pay,
-              icon: Icons.money_outlined,
-              onTap: () {},
-              numberOfOrders: 1),
-          // To Ship
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_to_ship,
-              icon: Icons.delivery_dining_outlined,
-              onTap: () {},
-              numberOfOrders: 1),
-          // To Receive
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_to_receive,
-              icon: Icons.home_outlined,
-              onTap: () {},
-              numberOfOrders: 1),
-          // Completed
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_complete,
-              icon: Icons.check_circle_outline,
-              onTap: () {},
-              numberOfOrders: 1),
-          // Cancelled
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_cancelled,
-              icon: Icons.cancel_outlined,
-              onTap: () {},
-              numberOfOrders: 1),
-          // Refund Return
-          _buildHorizontalItem(
-              name: AppUtils.getLocalizationContext(context)
-                  .profile_profile_menu_order_return_refund,
-              icon: Icons.backspace_outlined,
-              onTap: () {},
-              numberOfOrders: 1),
-        ],
-      ),
+          childWidth: 30,
+          childHeight: 80,
+          foregroundColor: Colors.transparent,
+          scrollController: _orderScrollController,
+          selectedItemIndex: 0,
+          children: items),
     );
   }
 
@@ -445,15 +414,23 @@ class _ProfileViewState extends State<ProfileView> {
       child: Center(
         child: OutlinedButton(
             onPressed: () {},
+            style: OutlinedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                side: BorderSide(color: ColorConstants.colorE30404)),
             child: Container(
               width: 160,
               height: 40,
               child: Center(
-                  child: Text(AppUtils.getLocalizationContext(context)
-                      .log_out
-                      .toUpperCase())),
+                  child: Text(
+                AppUtils.getLocalizationContext(context).log_out.toUpperCase(),
+                style: TextStyle(color: ColorConstants.colorE30404),
+              )),
             )),
       ),
     );
+  }
+
+  _openOrdersPage(OrderStatus tab) {
+    AppRouter.shared.getProfileRoutes().openOrders(context, tab);
   }
 }

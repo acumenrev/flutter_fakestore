@@ -1,4 +1,7 @@
+import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
+import 'package:fakestore_main_app/routes/profile/orders/orders_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_controller.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/profile_detail_controller.dart';
@@ -11,7 +14,7 @@ import '../../managers/user_data_manager.dart';
 import 'profile_controller.dart';
 import 'profile_view.dart';
 
-enum ProfileRoutesLocation { profile, profileDetail, changePassword }
+enum ProfileRoutesLocation { profile, profileDetail, changePassword, orders }
 
 class ProfileRoutes implements BaseRoutes {
   @override
@@ -29,6 +32,9 @@ class ProfileRoutes implements BaseRoutes {
       case ProfileRoutesLocation.changePassword:
         result = "/profile/detail/change-password";
         break;
+      case ProfileRoutesLocation.orders:
+        result = "/profile/orders";
+        break;
     }
     return result;
   }
@@ -42,7 +48,7 @@ class ProfileRoutes implements BaseRoutes {
                 user: UserDataManager.shared.currentUser)),
           );
         },
-        routes: [_getProfileDetail(), _getChangePassword()]);
+        routes: [_getProfileDetail(), _getChangePassword(), _getOrders()]);
   }
 
   _getProfileDetail() {
@@ -64,11 +70,32 @@ class ProfileRoutes implements BaseRoutes {
         });
   }
 
+  _getOrders() {
+    return GoRoute(
+        path: "orders",
+        builder: (ctx, state) {
+          OrderStatus tab = OrderStatus.toPay;
+          if (state.extra != null) {
+            Map<String, dynamic> extra = state.extra as Map<String, dynamic>;
+            tab = extra["tab"] as OrderStatus;
+          }
+
+          return ProfileOrders(
+              controller:
+                  ProfileOrdersControllerImplementation(selectedTab: tab));
+        });
+  }
+
   openProfileDetail(BuildContext ctx) {
     ctx.push(getPageLocation(ProfileRoutesLocation.profileDetail));
   }
 
   openChangePassword(BuildContext ctx) {
     ctx.push(getPageLocation(ProfileRoutesLocation.changePassword));
+  }
+
+  openOrders(BuildContext ctx, OrderStatus tab) {
+    ctx.push(getPageLocation(ProfileRoutesLocation.orders),
+        extra: {"tab": tab});
   }
 }
