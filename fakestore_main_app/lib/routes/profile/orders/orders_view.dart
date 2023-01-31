@@ -4,6 +4,7 @@ import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/routes/profile/orders/order_tile.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
+import 'package:fakestore_main_app/routes/profile/orders/orders_search_bar_delegate.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,7 +35,7 @@ class ProfileOrders extends StatelessWidget {
     return CupertinoPageScaffold(
       navigationBar: FSIOSNavigationBar.create(
           middleText: AppUtils.getLocalizationContext(context).orders,
-          trailing: _navBarTrailingWidget(),
+          trailing: _navBarTrailingWidget(context),
           backButtonPressed: () {
             context.pop();
           }),
@@ -46,7 +47,7 @@ class ProfileOrders extends StatelessWidget {
     );
   }
 
-  Widget _navBarTrailingWidget() {
+  Widget _navBarTrailingWidget(BuildContext context) {
     return Container(
         width: 90,
         color: Colors.transparent,
@@ -59,7 +60,9 @@ class ProfileOrders extends StatelessWidget {
                   width: 40,
                   child: CupertinoButton(
                       padding: EdgeInsets.only(top: 0),
-                      onPressed: _searchTap,
+                      onPressed: () {
+                        _searchTap(context);
+                      },
                       child: Icon(
                         CupertinoIcons.search,
                         color: ColorConstants.colorE30404,
@@ -106,8 +109,12 @@ class ProfileOrders extends StatelessWidget {
         ));
   }
 
-  void _searchTap() {
+  void _searchTap(BuildContext context) {
     debugPrint("_searchTap");
+    showSearch(
+        context: context,
+        // delegate to customize the search bar
+        delegate: OrdersSearchDelegate());
   }
 
   void _unreadMessagesTap() {
@@ -140,14 +147,16 @@ class ProfileOrders extends StatelessWidget {
   }
 
   _buildContent(BuildContext ctx) {
-    List<Widget> listWidget = [OrderTile(), OrderTile()];
+    List<Widget> listWidget = [OrderTile(), OrderTile(), OrderTile()];
     return Container(
       child: Column(
         children: [
           _buildScrollingMenu(ctx),
           Expanded(
-            child: ListView(
-              children: listWidget,
+            child: Scrollbar(
+              child: ListView(
+                children: listWidget,
+              ),
             ),
           ),
         ],
