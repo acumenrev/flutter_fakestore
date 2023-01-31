@@ -5,6 +5,7 @@ import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/constants/font_constants.dart';
 import 'package:fakestore_main_app/managers/user_data_manager.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:fakestore_main_app/routes/home/home_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
@@ -110,6 +111,7 @@ class _MainViewState extends State<MainView> {
                 child: InkWell(
                   onTap: () {
                     // tap handler
+                    _openUserCarts();
                   },
                   child: Stack(
                     children: [
@@ -142,6 +144,10 @@ class _MainViewState extends State<MainView> {
         crossAxisAlignment: CrossAxisAlignment.start,
       ),
     );
+  }
+
+  _openUserCarts() {
+    AppRouter.shared.getProfileRoutes().openCarts(context);
   }
 
   _buildBottomNavigationBar() {
