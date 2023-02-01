@@ -8,6 +8,7 @@ abstract class CartsControllerInterface extends BaseController {
   late RxList<FSCart> carts;
   late Rx<UserCartsTabs> currentSelectedTab;
   late RxInt unreadMessages;
+  late RxBool isEdit;
 }
 
 class CartsControllerImplementation extends CartsControllerInterface {
@@ -15,5 +16,6 @@ class CartsControllerImplementation extends CartsControllerInterface {
     carts = RxList<FSCart>([]);
     unreadMessages = 12.obs;
     currentSelectedTab = UserCartsTabs.all.obs;
+    isEdit = RxBool(false);
   }
 }

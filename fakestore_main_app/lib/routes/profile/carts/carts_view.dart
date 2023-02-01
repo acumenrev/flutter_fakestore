@@ -42,15 +42,26 @@ class CartsView extends StatelessWidget {
               children: [
                 // search icon
                 Container(
-                  width: 40,
-                  child: CupertinoButton(
+                    width: 40,
+                    child: CupertinoButton(
                       padding: EdgeInsets.only(top: 0),
-                      onPressed: () {},
-                      child: Icon(
-                        CupertinoIcons.search,
-                        color: ColorConstants.colorE30404,
-                      )),
-                ),
+                      onPressed: () {
+                        controller.isEdit.toggle();
+                      },
+                      child: Obx(() {
+                        return Text(
+                          controller.isEdit.isTrue
+                              ? AppUtils.getLocalizationContext(context)
+                                  .user_carts_done
+                              : AppUtils.getLocalizationContext(context)
+                                  .user_carts_edit,
+                          style: TextStyle(
+                              fontSize: 16.0,
+                              fontStyle: FontStyle.normal,
+                              color: ColorConstants.colorE30404),
+                        );
+                      }),
+                    )),
                 SizedBox(
                   width: 10,
                 ),
@@ -146,15 +157,13 @@ class CartsView extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: SingleChildScrollView(
-                  controller: _scrollController,
+              child: Obx(() {
+                return ListView(
                   scrollDirection: Axis.horizontal,
-                  child: Obx(() {
-                    return Row(
-                      children: _buildHorizontalItems(
-                          ctx, controller.currentSelectedTab.value),
-                    );
-                  })),
+                  children: _buildHorizontalItems(
+                      ctx, controller.currentSelectedTab.value),
+                );
+              }),
             ),
             Container(
               height: 1,
@@ -171,22 +180,21 @@ class CartsView extends StatelessWidget {
     List<Widget> listWidget = [];
     for (var element in UserCartsTabs.values) {
       temp = CupertinoButton(
+        padding: const EdgeInsets.all(0.0),
         onPressed: () {
           controller.currentSelectedTab.value = element;
           // _scrollViewJumpToItem(element.index, ctx);
         },
-        child: Padding(
-          padding: const EdgeInsets.only(left: 0, right: 0),
-          child: Container(
-            height: 40,
-            width: tabWidth,
-            child: Column(
-              children: [
-                Expanded(
+        child: Container(
+          width: tabWidth,
+          child: Column(
+            children: [
+              Expanded(
+                child: Center(
                   child: Text(
                     _getTabContent(ctx, element),
                     style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 16,
                         color: Colors.black,
                         fontWeight: currentSelectedTab == element
                             ? FontWeight.bold
@@ -195,16 +203,15 @@ class CartsView extends StatelessWidget {
                     maxLines: 1,
                   ),
                 ),
-                // underline
-                Container(
-                  height: 1,
-                  width: 50,
-                  color: currentSelectedTab == element
-                      ? Colors.red
-                      : Colors.transparent,
-                )
-              ],
-            ),
+              ),
+              // underline
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                height: 3,
+                width: currentSelectedTab == element ? tabWidth : 0,
+                color: ColorConstants.colorE30404,
+              )
+            ],
           ),
         ),
       );
