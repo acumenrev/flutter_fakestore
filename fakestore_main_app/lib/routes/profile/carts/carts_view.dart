@@ -1,3 +1,4 @@
+import 'package:fakestore_main_app/routes/profile/carts/cart_item_view.dart';
 import 'package:fakestore_main_app/routes/profile/carts/carts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -133,7 +134,7 @@ class CartsView extends StatelessWidget {
   }
 
   _buildContent(BuildContext ctx) {
-    List<Widget> listWidget = [];
+    List<Widget> listWidget = [CartItemView()];
     return Container(
       child: Column(
         children: [
