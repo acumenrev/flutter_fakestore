@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -98,7 +99,6 @@ class CartItemView extends StatelessWidget {
                 ],
               ),
               onPressed: () {}),
-
           Expanded(
             child: Container(),
           ),
@@ -150,7 +150,24 @@ class CartSubItemView extends StatelessWidget {
     return Row(
       children: [
         // check box
-
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: CupertinoButton(
+            child: Icon(
+              Icons.check_box_outlined,
+              size: 24,
+              color: ColorConstants.colorE30404,
+            ),
+            onPressed: () {},
+            padding: const EdgeInsets.all(0.0),
+          ),
+        ),
+        // Product Images
+        CachedNetworkImage(
+            height: 100,
+            width: 100,
+            imageUrl:
+                "https://quod.org.uk/wp-content/uploads/2020/05/cropped-iq5jqMnb_400x400.jpg")
         // info
       ],
     );
