@@ -166,9 +166,34 @@ class CartSubItemView extends StatelessWidget {
         CachedNetworkImage(
             height: 100,
             width: 100,
-            imageUrl:
-                "https://quod.org.uk/wp-content/uploads/2020/05/cropped-iq5jqMnb_400x400.jpg")
+            imageUrl: "https://quod.org"
+                ".uk/wp-content/uploads/2020/05/cropped-iq5jqMnb_400x400.jpg"),
         // info
+        _buildProductInfo(context)
+      ],
+    );
+  }
+
+  Widget _buildProductInfo(BuildContext context) {
+    return Column(
+      children: [
+        // title
+        Text(
+          "Product title",
+          style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              decoration: TextDecoration.none,
+              color: Colors.black),
+        ),
+        // dropdown box
+        CupertinoButton(child: Container(), onPressed: () {}),
+
+        // promotion
+
+        // price tag
+
+        // quantity
       ],
     );
   }
