@@ -21,15 +21,17 @@ class CartItemView extends StatelessWidget {
     list.add(_buildBrandSection(context));
     list.add(_buildLineSeperator());
     list.add(_buildProductsInfo(context));
-    list.add(_buildAddDealFromShop(context));
-    list.add(_buildPromotionInfo(context));
+    list.add(_buildAddPromotion(context));
+    list.add(_buildLineSeperator());
+    list.add(_buildPromotionDeals(context));
+    list.add(_buildLineSeperator(height: 20));
     return list;
   }
 
-  _buildLineSeperator() {
+  _buildLineSeperator({double height = 1}) {
     return Container(
       color: Colors.black12,
-      height: 1,
+      height: height,
     );
   }
 
@@ -133,12 +135,81 @@ class CartItemView extends StatelessWidget {
     );
   }
 
-  _buildAddDealFromShop(BuildContext context) {
-    return Container();
+  Widget _buildAddPromotion(BuildContext context) {
+    return Container(
+      height: 50.0,
+      child: CupertinoButton(
+        padding: const EdgeInsets.all(0.0),
+        onPressed: () {},
+        child: Row(
+          children: [
+            SizedBox(
+              width: 10.0,
+            ),
+            // icon
+            Icon(
+              Icons.ac_unit,
+              size: 14.0,
+              color: ColorConstants.colorE30404,
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Expanded(
+              child: Text(
+                "Deals",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black.withOpacity(0.5),
+                    decoration: TextDecoration.none),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Icon(
+                Icons.arrow_forward_ios,
+                size: 14.0,
+                color: Colors.black.withOpacity(0.5),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
-  _buildPromotionInfo(BuildContext context) {
-    return Container();
+  Widget _buildPromotionDeals(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 10.0,
+        ),
+        Icon(
+          Icons.delivery_dining,
+          size: 20.0,
+          color: Colors.black45,
+        ),
+        SizedBox(
+          width: 10.0,
+        ),
+        Expanded(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 10.0, bottom: 10.0, right: 10.0),
+            child: Text(
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
+              style: TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.black,
+                  decoration: TextDecoration.none,
+                  fontWeight: FontWeight.normal),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
 
@@ -147,53 +218,172 @@ class CartSubItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        // check box
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: CupertinoButton(
-            child: Icon(
-              Icons.check_box_outlined,
-              size: 24,
-              color: ColorConstants.colorE30404,
+        Row(
+          children: [
+            // check box
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: CupertinoButton(
+                child: Icon(
+                  Icons.check_box_outlined,
+                  size: 24,
+                  color: ColorConstants.colorE30404,
+                ),
+                onPressed: () {},
+                padding: const EdgeInsets.all(0.0),
+              ),
             ),
-            onPressed: () {},
-            padding: const EdgeInsets.all(0.0),
-          ),
+            // Product Images
+            CachedNetworkImage(
+                height: 100,
+                width: 100,
+                imageUrl:
+                    "https://quod.org.uk/wp-content/uploads/2020/05/cropped-iq5jqMnb_400x400.jpg"),
+            // info
+            _buildProductInfo(context)
+          ],
         ),
-        // Product Images
-        CachedNetworkImage(
-            height: 100,
-            width: 100,
-            imageUrl: "https://quod.org"
-                ".uk/wp-content/uploads/2020/05/cropped-iq5jqMnb_400x400.jpg"),
-        // info
-        _buildProductInfo(context)
+        SizedBox(
+          height: 15.0,
+        ),
+        Container(
+          height: 1.0,
+          color: Colors.black12,
+        ),
       ],
     );
   }
 
   Widget _buildProductInfo(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        // title
-        Text(
-          "Product title",
-          style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none,
-              color: Colors.black),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // title
+            Text(
+              "Title",
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  decoration: TextDecoration.none,
+                  fontSize: 14.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal),
+            ),
+            // combobox
+            CupertinoButton(
+                padding: const EdgeInsets.all(.0),
+                child: Container(
+                  color: Colors.black12,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Category: Black",
+                          style: TextStyle(
+                              decoration: TextDecoration.none,
+                              color: Colors.black,
+                              fontSize: 11.0),
+                        ),
+                        // arrow down
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 20.0,
+                          color: Colors.black,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                onPressed: () {}),
+            // promotion
+            SizedBox(
+              height: 8.0,
+            ),
+            // deal
+            Row(
+              children: [
+                // real price
+                Text(
+                  "600.000d",
+                  style: TextStyle(
+                    color: Colors.black38,
+                    decoration: TextDecoration.lineThrough,
+                    decorationStyle: TextDecorationStyle.wavy,
+                    decorationColor: Colors.red,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 12.0,
+                  ),
+                ),
+                SizedBox(
+                  width: 5.0,
+                ),
+                // discounted price
+                Text(
+                  "300.000d",
+                  style: TextStyle(
+                    color: ColorConstants.colorE30404,
+                    decoration: TextDecoration.none,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12.0,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            // quantity plus
+            Container(
+              height: 30.0,
+              width: 120.0,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 1.0, color: Colors.black12)),
+              child: Row(
+                children: [
+                  CupertinoButton(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Icon(
+                        Icons.remove,
+                        size: 14.0,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {}),
+                  Container(
+                    width: 1.0,
+                    color: Colors.black12,
+                  ),
+                  Expanded(
+                      child: Text(
+                    "123",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        color: Colors.black,
+                        decoration: TextDecoration.none,
+                        fontWeight: FontWeight.normal),
+                  )),
+                  Container(
+                    width: 1.0,
+                    color: Colors.black12,
+                  ),
+                  CupertinoButton(
+                      padding: const EdgeInsets.all(0.0),
+                      child: Icon(
+                        Icons.add,
+                        size: 14.0,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {}),
+                ],
+              ),
+            )
+          ],
         ),
-        // dropdown box
-        CupertinoButton(child: Container(), onPressed: () {}),
-
-        // promotion
-
-        // price tag
-
-        // quantity
       ],
     );
   }

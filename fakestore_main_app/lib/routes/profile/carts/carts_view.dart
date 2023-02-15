@@ -134,7 +134,7 @@ class CartsView extends StatelessWidget {
   }
 
   _buildContent(BuildContext ctx) {
-    List<Widget> listWidget = [CartItemView()];
+    List<Widget> listWidget = [CartItemView(), CartItemView()];
     return Container(
       child: Column(
         children: [
