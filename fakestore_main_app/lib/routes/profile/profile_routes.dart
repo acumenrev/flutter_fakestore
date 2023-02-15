@@ -1,5 +1,7 @@
 import 'package:fakestore_core_foundation/models/fs_order.dart';
 import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/profile/carts/carts_controller.dart';
+import 'package:fakestore_main_app/routes/profile/carts/carts_view.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_controller.dart';
 import 'package:fakestore_main_app/routes/profile/orders/orders_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_detail/change_password/change_password_controller.dart';
@@ -14,7 +16,13 @@ import '../../managers/user_data_manager.dart';
 import 'profile_controller.dart';
 import 'profile_view.dart';
 
-enum ProfileRoutesLocation { profile, profileDetail, changePassword, orders }
+enum ProfileRoutesLocation {
+  profile,
+  profileDetail,
+  changePassword,
+  orders,
+  carts
+}
 
 class ProfileRoutes implements BaseRoutes {
   @override
@@ -35,6 +43,9 @@ class ProfileRoutes implements BaseRoutes {
       case ProfileRoutesLocation.orders:
         result = "/profile/orders";
         break;
+      case ProfileRoutesLocation.carts:
+        result = "/profile/carts";
+        break;
     }
     return result;
   }
@@ -48,7 +59,12 @@ class ProfileRoutes implements BaseRoutes {
                 user: UserDataManager.shared.currentUser)),
           );
         },
-        routes: [_getProfileDetail(), _getChangePassword(), _getOrders()]);
+        routes: [
+          _getProfileDetail(),
+          _getChangePassword(),
+          _getOrders(),
+          _getCarts()
+        ]);
   }
 
   _getProfileDetail() {
@@ -86,6 +102,14 @@ class ProfileRoutes implements BaseRoutes {
         });
   }
 
+  _getCarts() {
+    return GoRoute(
+        path: "carts",
+        builder: (ctx, state) {
+          return CartsView(controller: CartsControllerImplementation());
+        });
+  }
+
   openProfileDetail(BuildContext ctx) {
     ctx.push(getPageLocation(ProfileRoutesLocation.profileDetail));
   }
@@ -97,5 +121,9 @@ class ProfileRoutes implements BaseRoutes {
   openOrders(BuildContext ctx, OrderStatus tab) {
     ctx.push(getPageLocation(ProfileRoutesLocation.orders),
         extra: {"tab": tab});
+  }
+
+  openCarts(BuildContext ctx) {
+    ctx.push(getPageLocation(ProfileRoutesLocation.carts));
   }
 }

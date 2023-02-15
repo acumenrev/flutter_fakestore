@@ -43,5 +43,11 @@
   "letter": "letter",
   "letters": "letters",
   "save": "Save",
-  "orders": "Orders"
+  "orders": "Orders",
+  "user_carts": "Your Carts",
+  "user_carts_edit": "Edit",
+  "user_carts_done": "Done",
+  "user_carts_all": "All",
+  "user_carts_discount": "Discount",
+  "user_carts_buy_again": "Buy Again"
 }

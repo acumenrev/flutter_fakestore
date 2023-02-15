@@ -134,7 +134,6 @@ class _ProfileDetailViewState extends State<ProfileDetailView> {
     return Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 15.0),
       child: Container(
-        height: 60.0,
         child: Row(
           children: [
             // icon
