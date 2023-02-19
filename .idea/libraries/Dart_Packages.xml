@@ -396,6 +396,13 @@
             </list>
           </value>
         </entry>
+        <entry key="loadmore_listview">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/loadmore_listview-1.0.6/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="logger">
           <value>
             <list>
@@ -807,6 +814,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/json_annotation-4.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/json_serializable-4.1.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/lints-2.0.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/loadmore_listview-1.0.6/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/logger-1.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/logging-1.1.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/matcher-0.12.13/lib" />

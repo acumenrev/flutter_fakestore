@@ -45,7 +45,13 @@ class HomeControllerImplementation extends HomeControllerInterface {
     final result = await NetworkModule.shared.apiCallProducts
         .getProducts(listLimit, currentOffset);
     final List<FSProduct> list = result["data"];
-    products.value = list;
+    if (currentOffset > 0) {
+      // load more
+      products.value.addAll(list);
+    } else {
+      // refresh
+      products.value = list;
+    }
     canGetMore = list.length >= listLimit;
 
     isLoading.value = false;
@@ -82,5 +88,7 @@ class HomeControllerImplementation extends HomeControllerInterface {
     }
     currentOffset += listLimit;
     await getProducts();
+    // fake to hide load more
+    canGetMore = false;
   }
 }
