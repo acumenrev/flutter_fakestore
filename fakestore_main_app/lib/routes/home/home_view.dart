@@ -1,4 +1,5 @@
 import 'package:fakestore_core_foundation/models/fs_category.dart';
+import 'package:fakestore_core_foundation/models/fs_product.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:fakestore_main_app/routes/home/home_controller.dart';
@@ -7,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../app_utils.dart';
+import 'fs_product_thumbnail_tile.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({super.key, required this.controller});
   late HomeControllerInterface controller;
   ScrollController _scrollController = ScrollController();
+  final Map<String, AnimationController> animations = {};
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,44 +30,75 @@ class HomeView extends StatelessWidget {
   List<Widget> _buildMainStackViewChildren(BuildContext ctx) {
     List<Widget> list = [];
     list.add(_buildContent(ctx));
-    if (controller.isLoading.isTrue) {
-      list.add(Container(
-        child: Stack(
-          children: [
-            // black background
-            Container(
-              color: Colors.black.withOpacity(0.3),
-            ),
-            // circular progress indicator
-            Center(
-              child: const CircularProgressIndicator(
-                color: Colors.white,
+    list.add(Obx(() {
+      return controller.isLoading.isTrue
+          ? Container(
+              child: Stack(
+                children: [
+                  // black background
+                  Container(
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                  // circular progress indicator
+                  Center(
+                    child: const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )
+                ],
               ),
             )
-          ],
-        ),
-      ));
-    }
+          : SizedBox(height: 0, width: 0);
+    }));
 
     return list;
   }
 
   _buildContent(BuildContext ctx) {
     List<Widget> listWidget = [];
+    FSProduct? element = null;
     return Container(
       child: Column(
         children: [
           _buildScrollingMenu(ctx),
           Expanded(
             child: Scrollbar(
-              child: ListView(
-                children: listWidget,
+                child: RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: GetBuilder<HomeControllerInterface>(
+                builder: (_dx) => ListView.builder(
+                  itemCount: controller.products.value.length,
+                  itemBuilder: (context, index) {
+                    element = controller.products.value[index];
+                    return _filterProduct(element!);
+                  },
+                ),
               ),
-            ),
+            )),
           ),
         ],
       ),
     );
+  }
+
+  Widget _filterProduct(FSProduct element) {
+    bool canReturn = true;
+
+    if (controller.selectedCategories.isNotEmpty) {
+      if (element.category != null &&
+          !controller.selectedCategories.value.contains(element.category)) {
+        canReturn = false;
+      }
+    }
+    if (!canReturn) {
+      return SizedBox(height: 0, width: 0);
+    }
+
+    return FSProductThumbnailTile(
+        productImage: element!.image,
+        title: element!.title,
+        price: element!.price,
+        productDesc: element!.description);
   }
 
   _buildScrollingMenu(BuildContext ctx) {
@@ -98,52 +132,59 @@ class HomeView extends StatelessWidget {
       width: 15.0,
     ));
     for (var element in FSProductCategory.values) {
-      temp = CupertinoButton(
-        padding: const EdgeInsets.all(0.0),
-        onPressed: () {
-          controller.addOrRemoveCategory(element);
-        },
-        child: Container(
-          width: tabWidth,
-          decoration: BoxDecoration(
-              color: controller.selectedCategories.contains(element)
-                  ? ColorConstants.colorE30404
-                  : Colors.white,
-              borderRadius: BorderRadius.circular(30.0),
-              border: Border.all(
-                  color: controller.selectedCategories.contains(element)
-                      ? Colors.white
-                      : Colors.black)),
-          child: Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    _getTabContent(ctx, element),
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: controller.selectedCategories.contains(element)
-                            ? Colors.white
-                            : Colors.black,
-                        fontWeight:
-                            controller.selectedCategories.contains(element)
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                        decoration: TextDecoration.none),
-                    maxLines: 1,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      );
+      temp = _horizontalButton(ctx, tabWidth, element, () {
+        controller.addOrRemoveCategory(element);
+      });
       listWidget.add(temp!);
       listWidget.add(SizedBox(
         width: 15.0,
       ));
     }
     return listWidget;
+  }
+
+  Widget _horizontalButton(BuildContext ctx, double tabWidth,
+      FSProductCategory element, VoidCallback onTap) {
+    return CupertinoButton(
+      padding: const EdgeInsets.all(0.0),
+      onPressed: () {
+        onTap();
+      },
+      child: Container(
+        width: tabWidth,
+        decoration: BoxDecoration(
+            color: controller.selectedCategories.contains(element)
+                ? ColorConstants.colorE30404
+                : Colors.white,
+            borderRadius: BorderRadius.circular(30.0),
+            border: Border.all(
+                color: controller.selectedCategories.contains(element)
+                    ? Colors.white
+                    : Colors.black)),
+        child: Column(
+          children: [
+            Expanded(
+              child: Center(
+                child: Text(
+                  _getTabContent(ctx, element),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: controller.selectedCategories.contains(element)
+                          ? Colors.white
+                          : Colors.black,
+                      fontWeight:
+                          controller.selectedCategories.contains(element)
+                              ? FontWeight.bold
+                              : FontWeight.normal,
+                      decoration: TextDecoration.none),
+                  maxLines: 1,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   String _getTabContent(BuildContext context, FSProductCategory category) {
@@ -162,5 +203,9 @@ class HomeView extends StatelessWidget {
       case FSProductCategory.unknown:
         return AppUtils.getLocalizationContext(context).home_category_unknown;
     }
+  }
+
+  Future<void> _onRefresh() async {
+    await controller.getProducts();
   }
 }

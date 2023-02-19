@@ -3,7 +3,6 @@ library fakestore_core_ui;
 export 'core_ui/fs_filled_button.dart' show FSFilledButton;
 export 'core_ui/fs_outline_button.dart' show FSOutlineButton;
 export 'core_ui/fs_scrolling_button_bar.dart' show ScrollingButtonBar;
-export 'core_ui/fs_product_thumbnail_tile.dart' show FSProductThumbnailTile;
 
 /// A Calculator.
 class Calculator {
