@@ -49,5 +49,10 @@
   "user_carts_done": "Done",
   "user_carts_all": "All",
   "user_carts_discount": "Discount",
-  "user_carts_buy_again": "Buy Again"
+  "user_carts_buy_again": "Buy Again",
+  "home_category_electronics": "Electronics",
+  "home_category_jewelry": "Jewelry",
+  "home_category_men_clothing": "Men Clothing",
+  "home_category_women_clothing": "Women Clothing",
+  "home_category_unknown": "Unknown"
 }

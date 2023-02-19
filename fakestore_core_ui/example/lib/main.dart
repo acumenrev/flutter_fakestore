@@ -82,23 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[createProductTile()],
+            children: <Widget>[],
           ),
         ) // This trailing comma makes auto-formatting nicer for build methods.
         );
-  }
-
-  FSProductThumbnailTile createProductTile() {
-    return FSProductThumbnailTile(
-      productImage:
-          'https://images.unsplash.com/photo-1669989482567-1590b25adbdd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80',
-      title: "Lorem Ipsum is simply dummy text of the printing and typesetting "
-          "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
-      price: 34.23,
-      productDesc:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate',
-      isFavorite: true,
-      rating: 3.5,
-    );
   }
 }

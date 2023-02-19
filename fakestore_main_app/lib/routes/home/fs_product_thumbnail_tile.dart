@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,7 +15,6 @@ class FSProductThumbnailTile extends StatelessWidget {
   late bool isFavorite;
   late double rating;
   VoidCallback? onTap;
-
   FSProductThumbnailTile(
       {required this.productImage,
       required this.title,
@@ -27,45 +27,43 @@ class FSProductThumbnailTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: InkWell(
-        onTap: () {
-          if (onTap != null) {
-            onTap!();
-          }
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 10.0,
-            ),
-            // Thumbnail
-            _buildThumbnail(context, productImage, isFavorite),
-            const SizedBox(
-              height: 10.0,
-            ),
-            // Title & Price
-            _buildTitleAndPrice(title, price),
-            const SizedBox(height: 5.0),
-            // Rating
-            _buildRating(rating),
-            // Desc
-            const SizedBox(
-              height: 10.0,
-            ),
-            _buildDesc(productDesc),
-            const SizedBox(height: 10.0)
-          ],
-        ),
+    Widget result = InkWell(
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+        }
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 10.0,
+          ),
+          // Thumbnail
+          _buildThumbnail(context, productImage, isFavorite),
+          const SizedBox(
+            height: 10.0,
+          ),
+          // Title & Price
+          _buildTitleAndPrice(title, price),
+          const SizedBox(height: 5.0),
+          // Rating
+          _buildRating(rating),
+          // Desc
+          const SizedBox(
+            height: 10.0,
+          ),
+          _buildDesc(productDesc),
+          const SizedBox(height: 10.0)
+        ],
       ),
     );
+    return result;
   }
 
   _buildThumbnail(BuildContext ctx, String networkUrl, bool isLiked) {
     double width = MediaQuery.of(ctx).size.width;
     double height = width / _kTILE_RATIO_WIDTH_HEIGHT - 40;
-    debugPrint('width: $width \t height: $height');
     return Row(
       children: [
         const SizedBox(
