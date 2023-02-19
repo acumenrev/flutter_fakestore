@@ -10,11 +10,34 @@ import 'package:get/get.dart';
 import '../../app_utils.dart';
 import 'fs_product_thumbnail_tile.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   HomeView({super.key, required this.controller});
   late HomeControllerInterface controller;
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   ScrollController _scrollController = ScrollController();
-  final Map<String, AnimationController> animations = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _setupObservers();
+  }
+
+  _setupObservers() {
+    widget.controller.selectedCategories.stream.listen((event) {
+      widget.controller.isLoading.value = true;
+      Future.delayed(const Duration(milliseconds: 300)).then((value) {
+        setState(() {
+          widget.controller.isLoading.value = false;
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +54,7 @@ class HomeView extends StatelessWidget {
     List<Widget> list = [];
     list.add(_buildContent(ctx));
     list.add(Obx(() {
-      return controller.isLoading.isTrue
+      return widget.controller.isLoading.isTrue
           ? Container(
               child: Stack(
                 children: [
@@ -65,15 +88,15 @@ class HomeView extends StatelessWidget {
             child: Scrollbar(
                 child: RefreshIndicator(
               onRefresh: _onRefresh,
-              child: GetBuilder<HomeControllerInterface>(
-                builder: (_dx) => ListView.builder(
-                  itemCount: controller.products.value.length,
+              child: Obx(() {
+                return ListView.builder(
+                  itemCount: widget.controller.products.value.length,
                   itemBuilder: (context, index) {
-                    element = controller.products.value[index];
+                    element = widget.controller.products.value[index];
                     return _filterProduct(element!);
                   },
-                ),
-              ),
+                );
+              }),
             )),
           ),
         ],
@@ -84,9 +107,10 @@ class HomeView extends StatelessWidget {
   Widget _filterProduct(FSProduct element) {
     bool canReturn = true;
 
-    if (controller.selectedCategories.isNotEmpty) {
+    if (widget.controller.selectedCategories.isNotEmpty) {
       if (element.category != null &&
-          !controller.selectedCategories.value.contains(element.category)) {
+          !widget.controller.selectedCategories.value
+              .contains(element.category)) {
         canReturn = false;
       }
     }
@@ -133,7 +157,7 @@ class HomeView extends StatelessWidget {
     ));
     for (var element in FSProductCategory.values) {
       temp = _horizontalButton(ctx, tabWidth, element, () {
-        controller.addOrRemoveCategory(element);
+        widget.controller.addOrRemoveCategory(element);
       });
       listWidget.add(temp!);
       listWidget.add(SizedBox(
@@ -153,12 +177,12 @@ class HomeView extends StatelessWidget {
       child: Container(
         width: tabWidth,
         decoration: BoxDecoration(
-            color: controller.selectedCategories.contains(element)
+            color: widget.controller.selectedCategories.contains(element)
                 ? ColorConstants.colorE30404
                 : Colors.white,
             borderRadius: BorderRadius.circular(30.0),
             border: Border.all(
-                color: controller.selectedCategories.contains(element)
+                color: widget.controller.selectedCategories.contains(element)
                     ? Colors.white
                     : Colors.black)),
         child: Column(
@@ -169,11 +193,12 @@ class HomeView extends StatelessWidget {
                   _getTabContent(ctx, element),
                   style: TextStyle(
                       fontSize: 16,
-                      color: controller.selectedCategories.contains(element)
-                          ? Colors.white
-                          : Colors.black,
+                      color:
+                          widget.controller.selectedCategories.contains(element)
+                              ? Colors.white
+                              : Colors.black,
                       fontWeight:
-                          controller.selectedCategories.contains(element)
+                          widget.controller.selectedCategories.contains(element)
                               ? FontWeight.bold
                               : FontWeight.normal,
                       decoration: TextDecoration.none),
@@ -206,6 +231,6 @@ class HomeView extends StatelessWidget {
   }
 
   Future<void> _onRefresh() async {
-    await controller.getProducts();
+    await widget.controller.getProducts();
   }
 }
