@@ -119,10 +119,19 @@ class _HomeViewState extends State<HomeView> {
     }
 
     return FSProductThumbnailTile(
-        productImage: element!.image,
-        title: element!.title,
-        price: element!.price,
-        productDesc: element!.description);
+      productImage: element!.image,
+      title: element!.title,
+      price: element!.price,
+      productDesc: element!.description,
+      onTap: () {},
+      isFavorite: element.isFavorite,
+      rating: element.rating?.rate ?? 0,
+      likeHandler: () {
+        // add to wish list
+        setState(() {});
+        widget.controller.addOrRemoveItemInWishlist(element);
+      },
+    );
   }
 
   _buildScrollingMenu(BuildContext ctx) {

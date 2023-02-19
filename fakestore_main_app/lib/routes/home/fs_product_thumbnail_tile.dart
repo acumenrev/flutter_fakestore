@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,6 +16,7 @@ class FSProductThumbnailTile extends StatelessWidget {
   late bool isFavorite;
   late double rating;
   VoidCallback? onTap;
+  VoidCallback? likeHandler;
   FSProductThumbnailTile(
       {required this.productImage,
       required this.title,
@@ -22,7 +24,8 @@ class FSProductThumbnailTile extends StatelessWidget {
       required this.productDesc,
       this.isFavorite = false,
       this.rating = 0.0,
-      this.onTap});
+      this.onTap,
+      this.likeHandler});
   double _kTILE_RATIO_WIDTH_HEIGHT = 308 / 223;
 
   @override
@@ -54,7 +57,7 @@ class FSProductThumbnailTile extends StatelessWidget {
             height: 10.0,
           ),
           _buildDesc(productDesc),
-          const SizedBox(height: 10.0)
+          const SizedBox(height: 20.0)
         ],
       ),
     );
@@ -96,16 +99,24 @@ class FSProductThumbnailTile extends StatelessWidget {
                 Positioned.fill(
                     child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    child: Center(
-                      child: FaIcon(
-                        isLiked
-                            ? FontAwesomeIcons.solidHeart
-                            : FontAwesomeIcons.heart,
-                        size: 30,
-                        color: Colors.white,
+                  child: CupertinoButton(
+                    onPressed: () {
+                      if (this.likeHandler != null) {
+                        this.likeHandler!();
+                      }
+                    },
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      child: Center(
+                        child: FaIcon(
+                          isLiked
+                              ? FontAwesomeIcons.solidHeart
+                              : FontAwesomeIcons.heart,
+                          size: 30,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -171,15 +182,33 @@ class FSProductThumbnailTile extends StatelessWidget {
   _buildRating(double totalRating) {
     int maxRating = 5;
 
-    return RatingBarIndicator(
-      rating: totalRating,
-      itemBuilder: (context, index) => const Icon(
-        Icons.star,
-        color: Colors.amber,
-      ),
-      itemCount: maxRating,
-      itemSize: 50.0,
-      direction: Axis.horizontal,
+    return Row(
+      children: [
+        SizedBox(
+          width: 15,
+        ),
+        RatingBarIndicator(
+          rating: totalRating,
+          itemBuilder: (context, index) => const Icon(
+            Icons.star,
+            color: Colors.amber,
+          ),
+          itemCount: maxRating,
+          itemSize: 30.0,
+          direction: Axis.horizontal,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Text(
+          '( ${totalRating.toString()} )',
+          style: TextStyle(
+              color: ColorConstants.colorE30404,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              decoration: TextDecoration.none),
+        )
+      ],
     );
   }
 

@@ -10,7 +10,7 @@ class FSProduct extends TFModel {
   late final String image;
   FSProductRating? rating = null;
   FSProductCategory? category;
-
+  bool isFavorite = false;
   FSProduct.fromJson(JSONData? json) {
     id = json?["id"] ?? 0;
     title = json?["title"] ?? "";
