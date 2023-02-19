@@ -54,6 +54,12 @@ dependencies:
   async: ^2.9.0
   rxdart: ^0.27.7
   fluttertoast: ^8.1.2
+  tf_framework:
+    git:
+      url: 'git@github.com:acumenrev/tf_framework.git'
+      path: 'tf_framework'
+      ref: 'develop'
+  loadmore_listview: ^1.0.6
 
 dev_dependencies:
   flutter_test:

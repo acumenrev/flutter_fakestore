@@ -5,6 +5,7 @@ import 'package:fakestore_core_foundation/models/fs_category.dart';
 import 'package:fakestore_core_foundation/models/fs_product.dart';
 import 'package:fakestore_core_foundation/network/api.dart';
 import 'package:fakestore_main_app/base/base_controller.dart';
+import 'package:fakestore_main_app/routes/wishlist/wishlist_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,12 @@ abstract class HomeControllerInterface extends BaseController {
   late RxList<FSProductCategory> selectedCategories;
   void addOrRemoveCategory(FSProductCategory category);
   Future<void> getProducts();
+  void addOrRemoveItemInWishlist(FSProduct product);
+  Future<void> getMore();
+  late int currentOffset;
+  late final int listLimit;
+  Future<void> refreshData();
+  late bool canGetMore;
 }
 
 class HomeControllerImplementation extends HomeControllerInterface {
@@ -21,6 +28,9 @@ class HomeControllerImplementation extends HomeControllerInterface {
 
     selectedCategories = RxList.empty(growable: true);
     isLoading.value = true;
+    currentOffset = 0;
+    listLimit = 20;
+    canGetMore = true;
     getProducts();
   }
 
@@ -32,10 +42,18 @@ class HomeControllerImplementation extends HomeControllerInterface {
 
   @override
   Future<void> getProducts() async {
-    final result =
-        await NetworkModule.shared.apiCallProducts.getProducts(20, 0);
+    final result = await NetworkModule.shared.apiCallProducts
+        .getProducts(listLimit, currentOffset);
     final List<FSProduct> list = result["data"];
-    products.value = list;
+    if (currentOffset > 0) {
+      // load more
+      products.value.addAll(list);
+    } else {
+      // refresh
+      products.value = list;
+    }
+    canGetMore = list.length >= listLimit;
+
     isLoading.value = false;
   }
 
@@ -48,5 +66,29 @@ class HomeControllerImplementation extends HomeControllerInterface {
       // add
       selectedCategories.add(category);
     }
+  }
+
+  @override
+  void addOrRemoveItemInWishlist(FSProduct product) {
+    product.isFavorite = !product.isFavorite;
+    WishlistControllerInterface wlistController = Get.find();
+    wlistController.addOrRemoveWishlistItem(product);
+  }
+
+  @override
+  Future<void> refreshData() async {
+    currentOffset = 0;
+    await getProducts();
+  }
+
+  @override
+  Future<void> getMore() async {
+    if (!canGetMore) {
+      return;
+    }
+    currentOffset += listLimit;
+    await getProducts();
+    // fake to hide load more
+    canGetMore = false;
   }
 }

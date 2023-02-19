@@ -10,6 +10,7 @@ import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:fakestore_main_app/routes/home/home_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_controller.dart';
 import 'package:fakestore_main_app/routes/profile/profile_view.dart';
+import 'package:fakestore_main_app/routes/wishlist/wishlist_controller.dart';
 import 'package:fakestore_main_app/routes/wishlist/wishlist_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -71,7 +72,9 @@ class _MainViewState extends State<MainView> {
   }
 
   _buildWishlishView() {
-    return WishlistView();
+    return WishlistView(
+      controller: Get.put(WishlistControllerImplementation()),
+    );
   }
 
   _buildProfileView() {

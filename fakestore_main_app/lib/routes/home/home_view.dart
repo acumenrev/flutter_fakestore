@@ -6,6 +6,7 @@ import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loadmore_listview/loadmore_listview.dart';
 
 import '../../app_utils.dart';
 import 'fs_product_thumbnail_tile.dart';
@@ -85,22 +86,47 @@ class _HomeViewState extends State<HomeView> {
         children: [
           _buildScrollingMenu(ctx),
           Expanded(
-            child: Scrollbar(
-                child: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: Obx(() {
-                return ListView.builder(
-                  itemCount: widget.controller.products.value.length,
-                  itemBuilder: (context, index) {
-                    element = widget.controller.products.value[index];
-                    return _filterProduct(element!);
-                  },
-                );
-              }),
-            )),
+            child: Obx(() {
+              return Scrollbar(
+                child: _buildListProducts(),
+                controller: _scrollController,
+              );
+            }),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildListProducts() {
+    FSProduct? element = null;
+    return LoadMoreListView.builder(
+      //is there more data to load
+      hasMoreItem: widget.controller.canGetMore,
+      //Trigger the bottom loadMore callback
+      onLoadMore: () async {
+        //wait for your api to fetch more items
+        await widget.controller.getMore();
+      },
+      //pull down refresh callback
+      onRefresh: () async {
+        //wait for your api to update the list
+        await widget.controller.refreshData();
+      },
+      controller: _scrollController,
+      //you can set your loadMore Animation
+      loadMoreWidget: Container(
+        margin: const EdgeInsets.all(20.0),
+        alignment: Alignment.center,
+        child: const CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
+        ),
+      ),
+      itemCount: widget.controller.products.value.length,
+      itemBuilder: (context, index) {
+        element = widget.controller.products.value[index];
+        return _filterProduct(element!);
+      },
     );
   }
 
@@ -119,10 +145,19 @@ class _HomeViewState extends State<HomeView> {
     }
 
     return FSProductThumbnailTile(
-        productImage: element!.image,
-        title: element!.title,
-        price: element!.price,
-        productDesc: element!.description);
+      productImage: element!.image,
+      title: element!.title,
+      price: element!.price,
+      productDesc: element!.description,
+      onTap: () {},
+      isFavorite: element.isFavorite,
+      rating: element.rating?.rate ?? 0,
+      likeHandler: () {
+        // add to wish list
+        setState(() {});
+        widget.controller.addOrRemoveItemInWishlist(element);
+      },
+    );
   }
 
   _buildScrollingMenu(BuildContext ctx) {
@@ -228,9 +263,5 @@ class _HomeViewState extends State<HomeView> {
       case FSProductCategory.unknown:
         return AppUtils.getLocalizationContext(context).home_category_unknown;
     }
-  }
-
-  Future<void> _onRefresh() async {
-    await widget.controller.getProducts();
   }
 }
