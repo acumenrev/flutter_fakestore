@@ -14,7 +14,7 @@ abstract class HomeControllerInterface extends BaseController {
   late RxList<FSProductCategory> selectedCategories;
   void addOrRemoveCategory(FSProductCategory category);
   Future<void> getProducts();
-  void addOrRemoveItemInWishlist(FSProduct product);
+  void addOrRemoveItemInWishlist(FSProduct product, int index);
   Future<void> getMore();
   late int currentOffset;
   late final int listLimit;
@@ -69,10 +69,12 @@ class HomeControllerImplementation extends HomeControllerInterface {
   }
 
   @override
-  void addOrRemoveItemInWishlist(FSProduct product) {
+  void addOrRemoveItemInWishlist(FSProduct product, int index) {
     product.isFavorite = !product.isFavorite;
+    FSProduct newProduct = FSProduct.fromJson(product.toJson());
+    this.products[index] = newProduct;
     WishlistControllerInterface wlistController = Get.find();
-    wlistController.addOrRemoveWishlistItem(product);
+    wlistController.addOrRemoveWishlistItem(newProduct);
   }
 
   @override

@@ -99,7 +99,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildListProducts() {
-    FSProduct? element = null;
     return LoadMoreListView.builder(
       //is there more data to load
       hasMoreItem: widget.controller.canGetMore,
@@ -124,15 +123,17 @@ class _HomeViewState extends State<HomeView> {
       ),
       itemCount: widget.controller.products.value.length,
       itemBuilder: (context, index) {
-        element = widget.controller.products.value[index];
-        return _filterProduct(element!);
+        return _buildProductUIWithIndex(index);
       },
     );
   }
 
-  Widget _filterProduct(FSProduct element) {
+  Widget _buildProductUIWithIndex(int index) {
+    if (widget.controller.products.length <= index) {
+      return const SizedBox.expand();
+    }
     bool canReturn = true;
-
+    FSProduct element = widget.controller.products.value[index];
     if (widget.controller.selectedCategories.isNotEmpty) {
       if (element.category != null &&
           !widget.controller.selectedCategories.value
@@ -154,8 +155,7 @@ class _HomeViewState extends State<HomeView> {
       rating: element.rating?.rate ?? 0,
       likeHandler: () {
         // add to wish list
-        setState(() {});
-        widget.controller.addOrRemoveItemInWishlist(element);
+        widget.controller.addOrRemoveItemInWishlist(element, index);
       },
     );
   }

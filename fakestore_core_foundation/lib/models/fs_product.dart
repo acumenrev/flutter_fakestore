@@ -21,6 +21,7 @@ class FSProduct extends TFModel {
     if (json?["rating"] != null) {
       rating = FSProductRating.fromJson(json?["rating"]);
     }
+    isFavorite = json?["isFavorite"] ?? false;
   }
 
   @override
@@ -31,6 +32,7 @@ class FSProduct extends TFModel {
       "price": price,
       "description": description,
       "image": image,
+      "isFavorite": isFavorite,
       "rating": rating?.toJson(),
       "category":
           stringFromProductCategory(category ?? FSProductCategory.unknown)
