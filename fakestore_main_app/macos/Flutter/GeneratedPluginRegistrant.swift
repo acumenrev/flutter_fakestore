@@ -7,7 +7,7 @@ import Foundation
 
 import connectivity_plus
 import loadmore_listview
-import path_provider_foundation
+import path_provider_macos
 import sqflite
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
