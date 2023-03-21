@@ -1,3 +1,4 @@
+import 'package:fakestore_main_app/routes/home/home_routes.dart';
 import 'package:fakestore_main_app/routes/main/main_controller.dart';
 import 'package:fakestore_main_app/routes/main/main_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_routes.dart';
@@ -16,6 +17,7 @@ class AppRouter {
   static AppRouter shared = AppRouter._();
   late GoRouter _router;
   late ProfileRoutes _profileRoutes;
+  late HomeRoutes _homeRoutes;
 
   GoRouter getRouter() {
     return _router;
@@ -25,18 +27,24 @@ class AppRouter {
     return _profileRoutes;
   }
 
+  HomeRoutes getHomeRoutes() {
+    return _homeRoutes;
+  }
+
   AppRouter._() {
     setupRouter();
   }
 
   setupRouter() {
     _profileRoutes = ProfileRoutes();
+    _homeRoutes = HomeRoutes();
     _router = GoRouter(routes: [_setupMainRoutes()]);
   }
 
   _setupRouterWithShellRoutes() {
     _router = GoRouter(
         initialLocation: "/",
+        debugLogDiagnostics: true,
         navigatorKey: _rootNavigatorKey,
         routes: [
           ShellRoute(
@@ -109,6 +117,6 @@ extension MainRoutes on AppRouter {
         builder: (context, state) {
           return MainView(controller: Get.put(MainControllerImplementation()));
         },
-        routes: [_profileRoutes.routes]);
+        routes: [_profileRoutes.routes, _homeRoutes.routes]);
   }
 }

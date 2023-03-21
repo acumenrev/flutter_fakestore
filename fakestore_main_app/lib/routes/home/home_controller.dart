@@ -38,6 +38,7 @@ class HomeControllerImplementation extends HomeControllerInterface {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    debugPrint("onInit again");
   }
 
   @override

@@ -1,5 +1,7 @@
+import 'package:fakestore_core_foundation/models/fs_product.dart';
 import 'package:fakestore_main_app/routes/home/product_detail/product_detail_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,10 +20,10 @@ class HomeRoutes implements BaseRoutes {
     String result = "";
     switch (location) {
       case HomeRoutesLocation.home:
-        // TODO: Handle this case.
+        result = "home";
         break;
       case HomeRoutesLocation.productDetail:
-        // TODO: Handle this case.
+        result = "/home/detail";
         break;
     }
     return result;
@@ -39,9 +41,32 @@ class HomeRoutes implements BaseRoutes {
   GoRoute _getProductDetail() {
     return GoRoute(
         path: "detail",
-        builder: (ctx, state) {
-          return ProductDetailView(
-              controller: ProductDetailControllerImplementation());
+        pageBuilder: (context, state) {
+          FSProduct product = state.extra as FSProduct;
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: ProductDetailView(
+              controller:
+                  ProductDetailControllerImplementation(product: product),
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              // Change the opacity of the screen using a Curve based on the the animation's
+              const begin = Offset(0.0, 1.0);
+              const end = Offset.zero;
+              final tween = Tween(begin: begin, end: end);
+              final offsetAnimation = animation.drive(tween);
+              return SlideTransition(
+                position: offsetAnimation,
+                child: child,
+              );
+            },
+          );
         });
+  }
+
+  /// Open Product Detail with Product object
+  openProductDetail(BuildContext ctx, FSProduct product) {
+    ctx.push(getPageLocation(HomeRoutesLocation.productDetail), extra: product);
   }
 }

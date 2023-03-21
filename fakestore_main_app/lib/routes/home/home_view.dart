@@ -2,6 +2,7 @@ import 'package:fakestore_core_foundation/models/fs_category.dart';
 import 'package:fakestore_core_foundation/models/fs_product.dart';
 import 'package:fakestore_core_ui/core_ui/fs_scrolling_button_bar.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
 import 'package:fakestore_main_app/routes/home/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,9 +33,7 @@ class _HomeViewState extends State<HomeView> {
     widget.controller.selectedCategories.stream.listen((event) {
       widget.controller.isLoading.value = true;
       Future.delayed(const Duration(milliseconds: 300)).then((value) {
-        setState(() {
-          widget.controller.isLoading.value = false;
-        });
+        widget.controller.isLoading.value = false;
       });
     });
   }
@@ -88,7 +87,7 @@ class _HomeViewState extends State<HomeView> {
           Expanded(
             child: Obx(() {
               return Scrollbar(
-                child: _buildListProducts(),
+                child: _buildListProducts(ctx),
                 controller: _scrollController,
               );
             }),
@@ -98,7 +97,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _buildListProducts() {
+  Widget _buildListProducts(BuildContext ctx) {
     return LoadMoreListView.builder(
       //is there more data to load
       hasMoreItem: widget.controller.canGetMore,
@@ -123,12 +122,12 @@ class _HomeViewState extends State<HomeView> {
       ),
       itemCount: widget.controller.products.value.length,
       itemBuilder: (context, index) {
-        return _buildProductUIWithIndex(index);
+        return _buildProductUIWithIndex(index, ctx);
       },
     );
   }
 
-  Widget _buildProductUIWithIndex(int index) {
+  Widget _buildProductUIWithIndex(int index, BuildContext ctx) {
     if (widget.controller.products.length <= index) {
       return const SizedBox.expand();
     }
@@ -150,7 +149,9 @@ class _HomeViewState extends State<HomeView> {
       title: element!.title,
       price: element!.price,
       productDesc: element!.description,
-      onTap: () {},
+      onTap: () {
+        _openProductDetail(element, ctx);
+      },
       isFavorite: element.isFavorite,
       rating: element.rating?.rate ?? 0,
       likeHandler: () {
@@ -263,5 +264,10 @@ class _HomeViewState extends State<HomeView> {
       case FSProductCategory.unknown:
         return AppUtils.getLocalizationContext(context).home_category_unknown;
     }
+  }
+
+  /// Open Product Detail
+  _openProductDetail(FSProduct product, BuildContext ctx) {
+    AppRouter.shared.getHomeRoutes().openProductDetail(ctx, product);
   }
 }
