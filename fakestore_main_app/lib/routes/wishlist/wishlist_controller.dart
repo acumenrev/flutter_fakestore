@@ -32,11 +32,18 @@ class WishlistControllerImplementation extends WishlistControllerInterface {
   }
 
   @override
-  void addOrRemoveWishlistItem(FSProduct element) {
-    if (wishlistItems.contains(element)) {
-      wishlistItems.remove(element);
+  void addOrRemoveWishlistItem(FSProduct product) {
+    int index = wishlistItems.indexWhere((element) {
+      if (product.id == element.id) {
+        return true;
+      }
+      return false;
+    });
+
+    if (index >= 0) {
+      wishlistItems.removeAt(index);
     } else {
-      wishlistItems.add(element);
+      wishlistItems.add(product);
     }
   }
 }

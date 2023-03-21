@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 Map<String, String> appEnv = dotenv.env;
 
@@ -105,5 +106,14 @@ class AppUtils {
       case OrderStatus.returnOrRefund:
         return Icons.backspace_outlined;
     }
+  }
+
+  static String formatCurrency(double value) {
+    final currencyFormatter = NumberFormat.currency(
+        locale: 'en-us',
+        customPattern: '\u00a4#,###',
+        symbol: '\$',
+        decimalDigits: 2);
+    return currencyFormatter.format(value);
   }
 }

@@ -1,5 +1,10 @@
 import 'package:fakestore_core_foundation/models/fs_product.dart';
+import 'package:fakestore_main_app/app_utils.dart';
+import 'package:fakestore_main_app/constants/color_constants.dart';
+import 'package:fakestore_main_app/routes/app_router.dart';
+import 'package:fakestore_main_app/routes/main/main_controller.dart';
 import 'package:fakestore_main_app/routes/wishlist/wishlist_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -72,11 +77,14 @@ class _WishlistViewState extends State<WishlistView> {
                 child: RefreshIndicator(
               onRefresh: _onRefresh,
               child: Obx(() {
+                if (widget.controller.wishlistItems.isEmpty) {
+                  return _buildEmptyPlaceholder(ctx);
+                }
                 return ListView.builder(
                   itemCount: widget.controller.wishlistItems.value.length,
                   itemBuilder: (context, index) {
                     element = widget.controller.wishlistItems.value[index];
-                    return _buildItem(element!);
+                    return _buildItem(element!, context);
                   },
                 );
               }),
@@ -87,7 +95,51 @@ class _WishlistViewState extends State<WishlistView> {
     );
   }
 
-  Widget _buildItem(FSProduct element) {
+  Widget _buildEmptyPlaceholder(BuildContext ctx) {
+    return Container(
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // text
+              Text(AppUtils.getLocalizationContext(ctx).wishlist_empty_list),
+              // button to open discover
+              CupertinoButton(
+                  child: Container(
+                    child: Text(
+                      AppUtils.getLocalizationContext(ctx).wishlist_discover,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18),
+                    ),
+                    padding: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+                    decoration: BoxDecoration(
+                        color: ColorConstants.colorE30404,
+                        borderRadius: BorderRadius.circular(16.0)),
+                  ),
+                  onPressed: () {
+                    _navigateToDiscover();
+                  })
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // navigate to discover
+  _navigateToDiscover() {
+    MainControllerInterface mainController =
+        Get.find<MainControllerInterface>();
+    mainController.setSelectedTabIndex(0);
+  }
+
+  Widget _buildItem(FSProduct element, BuildContext context) {
     return FSProductThumbnailTile(
       productImage: element!.image,
       title: element!.title,
@@ -99,7 +151,9 @@ class _WishlistViewState extends State<WishlistView> {
         element.isFavorite = !element.isFavorite;
         widget.controller.addOrRemoveWishlistItem(element);
       },
-      onTap: () {},
+      onTap: () {
+        AppRouter.shared.getHomeRoutes().openProductDetail(context, element);
+      },
     );
   }
 }

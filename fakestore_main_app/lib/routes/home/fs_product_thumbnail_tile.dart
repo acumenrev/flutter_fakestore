@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fakestore_main_app/app_utils.dart';
 import 'package:fakestore_main_app/constants/color_constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -157,7 +158,7 @@ class FSProductThumbnailTile extends StatelessWidget {
 
           // Price
           Text(
-            _formatCurrency(price),
+            AppUtils.formatCurrency(price),
             textAlign: TextAlign.right,
             style: const TextStyle(
                 color: Colors.green, fontSize: 18, fontWeight: FontWeight.w700),
@@ -168,15 +169,6 @@ class FSProductThumbnailTile extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  _formatCurrency(double value) {
-    final currencyFormatter = NumberFormat.currency(
-        locale: 'en-us',
-        customPattern: '\u00a4#,###',
-        symbol: '\$',
-        decimalDigits: 2);
-    return currencyFormatter.format(value);
   }
 
   _buildRating(double totalRating) {
