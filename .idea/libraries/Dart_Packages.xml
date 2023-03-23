@@ -276,8 +276,8 @@
         <entry key="ffi">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/ffi-2.0.1/lib" />
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/ffi-1.2.1/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/ffi-2.0.1/lib" />
             </list>
           </value>
         </entry>
@@ -306,8 +306,8 @@
         <entry key="flutter">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.7.3/packages/flutter/lib" />
               <option value="$USER_HOME$/fvm/versions/3.7.7/packages/flutter/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.7.3/packages/flutter/lib" />
             </list>
           </value>
         </entry>
@@ -367,6 +367,13 @@
             </list>
           </value>
         </entry>
+        <entry key="flutter_svg">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_svg-1.0.3/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="flutter_template_images">
           <value>
             <list>
@@ -377,8 +384,8 @@
         <entry key="flutter_test">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.7.3/packages/flutter_test/lib" />
               <option value="$USER_HOME$/fvm/versions/3.7.7/packages/flutter_test/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.7.3/packages/flutter_test/lib" />
             </list>
           </value>
         </entry>
@@ -630,6 +637,20 @@
             </list>
           </value>
         </entry>
+        <entry key="path_drawing">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_drawing-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="path_parsing">
+          <value>
+            <list>
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_parsing-1.0.1/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="path_provider">
           <value>
             <list>
@@ -668,8 +689,8 @@
         <entry key="path_provider_windows">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.3/lib" />
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_windows-2.0.7/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_windows-2.1.3/lib" />
             </list>
           </value>
         </entry>
@@ -796,8 +817,8 @@
         <entry key="sky_engine">
           <value>
             <list>
-              <option value="$USER_HOME$/fvm/versions/3.7.3/bin/cache/pkg/sky_engine/lib" />
               <option value="$USER_HOME$/fvm/versions/3.7.7/bin/cache/pkg/sky_engine/lib" />
+              <option value="$USER_HOME$/fvm/versions/3.7.3/bin/cache/pkg/sky_engine/lib" />
             </list>
           </value>
         </entry>
@@ -1014,8 +1035,8 @@
         <entry key="win32">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/win32-3.1.3/lib" />
               <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/win32-2.6.1/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/win32-3.1.3/lib" />
             </list>
           </value>
         </entry>
@@ -1101,6 +1122,7 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_lints-2.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_rating_bar-4.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_screenutil-5.6.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_svg-1.0.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/flutter_template_images-4.2.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/fluttertoast-8.1.3/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/font_awesome_flutter-10.4.0/lib" />
@@ -1138,6 +1160,8 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/octo_image-1.0.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/package_config-2.1.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path-1.8.2/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path_drawing-1.0.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path_parsing-1.0.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider-2.0.12/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_android-2.0.22/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/path_provider_foundation-2.1.1/lib" />

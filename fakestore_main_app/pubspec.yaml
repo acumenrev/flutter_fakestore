@@ -60,6 +60,7 @@ dependencies:
       path: 'tf_framework'
       ref: 'develop'
   loadmore_listview: ^1.0.6
+  flutter_svg: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -90,6 +91,9 @@ flutter:
   assets:
     - resources/images/img_avatar_placeholder.png
     - .env
+    - resources/images/rose-petals.svg
+    - resources/images/42-Doge-Face.jpg
+    - resources/images/pattern-randomized.svg
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

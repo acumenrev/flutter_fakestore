@@ -56,5 +56,11 @@
   "home_category_women_clothing": "Women Clothing",
   "home_category_unknown": "Unknown",
   "wishlist_empty_list":  "It seems you do not have wishlist items",
-  "wishlist_discover": "Discover"
+  "wishlist_discover": "Discover",
+  "login_username": "Username",
+  "login_username_helper_text": "Please enter your username",
+  "login_password": "Password",
+  "login_password_helper_text": "Please enter your password",
+  "login_login_button": "Log In",
+  "login_error_invalid_credentials": "Incorrect username or password"
 }

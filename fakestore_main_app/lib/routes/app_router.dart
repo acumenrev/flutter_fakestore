@@ -1,4 +1,6 @@
+import 'package:fakestore_main_app/managers/user_data_manager.dart';
 import 'package:fakestore_main_app/routes/home/home_routes.dart';
+import 'package:fakestore_main_app/routes/login/login_controller.dart';
 import 'package:fakestore_main_app/routes/main/main_controller.dart';
 import 'package:fakestore_main_app/routes/main/main_view.dart';
 import 'package:fakestore_main_app/routes/profile/profile_routes.dart';
@@ -6,6 +8,8 @@ import 'package:fakestore_main_app/ui/scafford_with_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
+
+import 'login/login_view.dart';
 
 abstract class BaseRoutes {
   late GoRoute routes;
@@ -40,74 +44,6 @@ class AppRouter {
     _homeRoutes = HomeRoutes();
     _router = GoRouter(routes: [_setupMainRoutes()]);
   }
-
-  _setupRouterWithShellRoutes() {
-    _router = GoRouter(
-        initialLocation: "/",
-        debugLogDiagnostics: true,
-        navigatorKey: _rootNavigatorKey,
-        routes: [
-          ShellRoute(
-            navigatorKey: _shellNavigatorKey,
-            pageBuilder: (context, state, child) {
-              return NoTransitionPage(
-                  child: ScaffoldWithNavBar(
-                location: state.location,
-                child: child,
-              ));
-            },
-            routes: [
-              GoRoute(
-                path: '/',
-                parentNavigatorKey: _shellNavigatorKey,
-                pageBuilder: (context, state) {
-                  return const NoTransitionPage(
-                    child: Scaffold(
-                      body: Center(child: Text("Home")),
-                    ),
-                  );
-                },
-              ),
-              GoRoute(
-                path: '/discover',
-                parentNavigatorKey: _shellNavigatorKey,
-                pageBuilder: (context, state) {
-                  return const NoTransitionPage(
-                    child: Scaffold(
-                      body: Center(child: Text("Discover")),
-                    ),
-                  );
-                },
-              ),
-              GoRoute(
-                  parentNavigatorKey: _shellNavigatorKey,
-                  path: AppRouter.shared
-                      .getProfileRoutes()
-                      .getPageLocation(ProfileRoutesLocation.profile),
-                  pageBuilder: (context, state) {
-                    return const NoTransitionPage(
-                      child: Scaffold(
-                        body: Center(child: Text("Shop")),
-                      ),
-                    );
-                  }),
-            ],
-          ),
-          GoRoute(
-              path: "/login",
-              parentNavigatorKey: _rootNavigatorKey,
-              pageBuilder: (context, state) {
-                return NoTransitionPage(
-                    child: Scaffold(
-                  appBar: AppBar(),
-                  key: UniqueKey(),
-                  body: const Center(
-                    child: Text("Login"),
-                  ),
-                ));
-              })
-        ]);
-  }
 }
 
 extension MainRoutes on AppRouter {
@@ -115,6 +51,12 @@ extension MainRoutes on AppRouter {
     return GoRoute(
         path: "/",
         builder: (context, state) {
+          // check if user is not logged in, then open the login screen
+          debugPrint(
+              "User is null ${UserDataManager.shared.currentUser.value == null ? "true" : "false"}");
+          if (UserDataManager.shared.currentUser.value == null) {
+            return LoginView(controller: LoginControllerImplementation());
+          }
           return MainView(controller: Get.put(MainControllerImplementation()));
         },
         routes: [_profileRoutes.routes, _homeRoutes.routes]);
