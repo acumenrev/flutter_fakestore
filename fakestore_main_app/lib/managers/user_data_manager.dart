@@ -7,9 +7,7 @@ class UserDataManager {
   Rx<FSUser?> currentUser = (null as FSUser?).obs;
 
   // private constructor
-  UserDataManager._() {
-    _initFakeUser();
-  }
+  UserDataManager._() {}
 
   _initFakeUser() {
     Map<String, dynamic> sampleJson = {
@@ -31,5 +29,9 @@ class UserDataManager {
 
     FSUser user = FSUser.fromJson(sampleJson);
     currentUser.value = user;
+  }
+
+  loginWithFakeUser() {
+    _initFakeUser();
   }
 }
